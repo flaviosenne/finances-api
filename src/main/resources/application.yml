@@ -1,1 +1,11 @@
 
+spring:
+  application:
+    name: finances
+
+  port: 8090
+
+  datasources:
+    url: jdbc:mysql//localhost:3306/finances
+    username: root
+    password: joaoflavio
