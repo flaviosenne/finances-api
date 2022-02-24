@@ -1,5 +1,6 @@
 package com.project.finances.infra.service.jwt;
 
+import com.project.finances.domain.protocols.TokenProtocol;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
-public class JwtTokenService {
+public class JwtTokenService implements TokenProtocol {
 
     @Value("${security.jwt.token.secret-key}")
     private final String secretKey;
@@ -21,7 +22,8 @@ public class JwtTokenService {
     @Value("${security.jwt.token.expire-length}")
     private final String expireIn;
 
-    public String createToken(String id){
+    @Override
+    public String generateToken(String id){
         Claims claims = Jwts.claims().setSubject(id);
 
         Date today = new Date();
@@ -35,7 +37,8 @@ public class JwtTokenService {
                 .compact();
     }
 
-    public String getIdByToken(String token){
+    @Override
+    public String decodeToken(String token){
         return Jwts.parser()
                 .setSigningKey(this.secretKey)
                 .parseClaimsJws(token)
@@ -50,7 +53,8 @@ public class JwtTokenService {
                 bearerToken.substring(7): null;
     }
 
-    public boolean validateToken(String token){
+    @Override
+    public boolean tokenIsValid(String token){
         try{
             Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token);
             return true;
