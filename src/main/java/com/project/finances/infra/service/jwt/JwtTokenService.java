@@ -17,10 +17,10 @@ import java.util.Date;
 public class JwtTokenService implements TokenProtocol {
 
     @Value("${security.jwt.token.secret-key}")
-    private final String secretKey;
+    private String secretKey;
 
-    @Value("${security.jwt.token.expire-length}")
-    private final String expireIn;
+    @Value("${security.jwt.token.expire-in}")
+    private String expireIn;
 
     @Override
     public String generateToken(String id){

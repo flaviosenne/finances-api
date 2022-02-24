@@ -9,3 +9,10 @@ spring:
     url: jdbc:mysql//localhost:3306/finances
     username: root
     password: joaoflavio
+
+
+security:
+  jwt:
+    token:
+      expire-in:  86400000
+      secret-key: c2VjcmV0LWZpbmFuY2Vz
