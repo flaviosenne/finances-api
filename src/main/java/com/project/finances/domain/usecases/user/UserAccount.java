@@ -4,6 +4,8 @@ import com.project.finances.domain.entity.User;
 import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.UserAccountProtocol;
+import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol;
+import com.project.finances.domain.usecases.user.repository.UserCodeCommand;
 import com.project.finances.domain.usecases.user.repository.UserCommand;
 import com.project.finances.domain.usecases.user.repository.UserQuery;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     private final UserQuery userQuery;
     private final UserCommand userCommand;
     private final CryptographyProtocol cryptographyProtocol;
+    private final MailCreateAccountProtocol mailCreateAccountProtocol;
+    private final UserCodeCommand userCodeCommand;
 
     @Override
     public User createAccount(User user) {
@@ -34,7 +38,13 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
 
         user.withPassword(hash);
 
-        return userCommand.save(user);
+        User userSaved = userCommand.save(user);
+
+        String code = userCodeCommand.save(user);
+
+        mailCreateAccountProtocol.sendEmail(userSaved, code);
+
+        return userSaved;
     }
 
     @Override
