@@ -7,13 +7,18 @@ import com.project.finances.domain.protocols.UserAccountProtocol;
 import com.project.finances.domain.usecases.user.repository.UserCommand;
 import com.project.finances.domain.usecases.user.repository.UserQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.project.finances.domain.exception.messages.MessagesException.USER_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
-public class UserAccount implements UserAccountProtocol {
+public class UserAccount implements UserAccountProtocol, UserDetailsService {
 
     private final UserQuery userQuery;
     private final UserCommand userCommand;
@@ -39,5 +44,11 @@ public class UserAccount implements UserAccountProtocol {
         User userToUpdate = user.activeAccount();
 
         userCommand.update(userToUpdate, user.getId());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userQuery.findByUsername(email).orElseThrow(
+                () -> new UsernameNotFoundException(USER_NOT_FOUND));
     }
 }

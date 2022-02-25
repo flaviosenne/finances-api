@@ -10,6 +10,13 @@ spring:
     username: root
     password: joaoflavio
 
+  mail:
+    host: smtp.mailtrap.io
+    port: 2525
+    username:
+    password:
+    test-connection: true
+
 
 security:
   jwt:
