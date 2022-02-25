@@ -1,5 +1,8 @@
 package com.project.finances.domain.entity;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
@@ -9,19 +12,20 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+@Data
 @MappedSuperclass
-public class BasicEntity implements Serializable {
+public abstract class BasicEntity implements Serializable {
 
     private static final long serialVersionUID = 2739706603628858379L;
 
     @Id
-    private final String id = UUID.randomUUID().toString();
+    protected String id = UUID.randomUUID().toString();
 
     @Column(name = "created_at")
     @CreatedDate
-    private final Date createdAt = new Date();
+    protected Date createdAt = new Date();
 
     @Column(name = "updated_at")
     @CreatedDate
-    private final Date updatedAt = new Date();
+    protected Date updatedAt = new Date();
 }

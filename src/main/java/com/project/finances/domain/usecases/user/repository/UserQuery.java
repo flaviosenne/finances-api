@@ -1,4 +1,4 @@
-package com.project.finances.domain.repository;
+package com.project.finances.domain.usecases.user.repository;
 
 import com.project.finances.domain.entity.User;
 import lombok.AllArgsConstructor;

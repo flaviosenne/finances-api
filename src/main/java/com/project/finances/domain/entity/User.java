@@ -3,6 +3,7 @@ package com.project.finances.domain.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Collection;
+
 
 @AllArgsConstructor
 @Builder
@@ -30,6 +32,31 @@ public class User extends BasicEntity implements UserDetails {
 
     @Column(name = "is_active")
     private final boolean isActive;
+
+    public User withPassword(String hash){
+        return User.builder()
+                .password(hash)
+                .email(email)
+                .firstName(firstName)
+                .lastName(lastName)
+                .isActive(isActive)
+                .build();
+    }
+
+    public User activeAccount(){
+        return User.builder()
+                .password(password)
+                .email(email)
+                .firstName(firstName)
+                .lastName(lastName)
+                .isActive(true)
+                .build();
+    }
+
+    public User withId(String id){
+        this.id = id;
+        return this;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,6 +1,6 @@
 package com.project.finances.infra.service.user;
 
-import com.project.finances.domain.repository.UserQuery;
+import com.project.finances.domain.usecases.user.repository.UserQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -5,7 +5,7 @@ import com.project.finances.app.dto.ResponseLoginDto;
 import com.project.finances.domain.protocols.AuthenticationProtocol;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.TokenProtocol;
-import com.project.finances.domain.repository.UserQuery;
+import com.project.finances.domain.usecases.user.repository.UserQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
