@@ -1,8 +1,6 @@
 package com.project.finances.domain.entity;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
