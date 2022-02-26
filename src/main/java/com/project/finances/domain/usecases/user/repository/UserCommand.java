@@ -1,6 +1,5 @@
 package com.project.finances.domain.usecases.user.repository;
 
-import com.project.finances.app.dto.user.UserDto;
 import com.project.finances.domain.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
