@@ -40,7 +40,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
 
         User userSaved = userCommand.save(user);
 
-        String code = userCodeCommand.save(user);
+        String code = userCodeCommand.save(userSaved);
 
         mailCreateAccountProtocol.sendEmail(userSaved, code);
 
