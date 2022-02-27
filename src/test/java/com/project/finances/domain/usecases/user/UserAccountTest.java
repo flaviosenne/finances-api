@@ -96,4 +96,25 @@ class UserAccountTest {
 
         verify(userCommand, never()).save(any(User.class));
     }
+
+    @Test
+    @DisplayName("Should update user active account when user exist in DB")
+    void activeAccount(){
+        User userMock = new User("example@email.com", "first-name", "last-name", "hash", false);
+        User userActive = userMock.activeAccount();
+        String id = "valid-code";
+        userMock.withId(id);
+        userActive.withId(id);
+
+        when(userQuery.findById(anyString())).thenReturn(Optional.of(userMock));
+        when(userCommand.update(any(User.class), anyString())).thenReturn(userActive);
+
+        User result = userAccountProtocol.activeAccount(id);
+
+        BDDAssertions.assertThat(result).isNotNull();
+        BDDAssertions.assertThat(result.isActive()).isTrue();
+
+        verify(userQuery, times(1)).findById(anyString());
+        verify(userCommand, times(1)).update(any(User.class), eq(id));
+    }
 }

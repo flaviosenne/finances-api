@@ -48,12 +48,14 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     }
 
     @Override
-    public void activeAccount(String id) {
+    public User activeAccount(String id) {
         User user = userQuery.findById(id).orElseThrow(() -> new BadRequestException("Código do usuário inválido"));
 
         User userToUpdate = user.activeAccount();
+        userToUpdate.withId(id);
 
-        userCommand.update(userToUpdate, user.getId());
+        System.out.println("user: "+ userToUpdate.toString());
+        return userCommand.update(userToUpdate, user.getId());
     }
 
     @Override

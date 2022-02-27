@@ -6,5 +6,5 @@ public interface UserAccountProtocol {
 
     User createAccount(User user);
 
-    void activeAccount(String id);
+    User activeAccount(String id);
 }
