@@ -117,4 +117,5 @@ class UserAccountTest {
         verify(userQuery, times(1)).findById(anyString());
         verify(userCommand, times(1)).update(any(User.class), eq(id));
     }
+
 }

@@ -1,7 +1,7 @@
 package com.project.finances.domain.protocols;
 
-import com.project.finances.app.dto.LoginDto;
-import com.project.finances.app.dto.ResponseLoginDto;
+import com.project.finances.domain.usecases.user.dto.LoginDto;
+import com.project.finances.domain.usecases.user.dto.ResponseLoginDto;
 
 public interface AuthenticationProtocol {
 

@@ -54,12 +54,11 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
         User userToUpdate = user.activeAccount();
         userToUpdate.withId(id);
 
-        System.out.println("user: "+ userToUpdate.toString());
         return userCommand.update(userToUpdate, user.getId());
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         return userQuery.findByUsername(email).orElseThrow(
                 () -> new UsernameNotFoundException(USER_NOT_FOUND));
     }

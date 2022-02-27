@@ -1,4 +1,4 @@
-package com.project.finances.app.dto;
+package com.project.finances.domain.usecases.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

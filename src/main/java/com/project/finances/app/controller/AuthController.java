@@ -1,7 +1,7 @@
 package com.project.finances.app.controller;
 
-import com.project.finances.app.dto.LoginDto;
-import com.project.finances.app.dto.ResponseLoginDto;
+import com.project.finances.domain.usecases.user.dto.LoginDto;
+import com.project.finances.domain.usecases.user.dto.ResponseLoginDto;
 import com.project.finances.domain.protocols.AuthenticationProtocol;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
