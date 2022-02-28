@@ -15,14 +15,16 @@ public class UserCodeCommand {
     public String save(User user){
         Optional<UserCode> userCodeOptional = repository.findByUserId(user.getId());
 
-        if(userCodeOptional.isPresent()){
-            userCodeOptional.get().disableCode();
-            repository.save(userCodeOptional.get());
-        }
+        userCodeOptional.ifPresent(this::invalidateCode);
 
         UserCode userCodeSaved = repository.save(UserCode.builder().user(user).isValid(true).build());
 
         return userCodeSaved.getId();
+    }
+
+    public UserCode invalidateCode(UserCode userCode){
+        userCode.disableCode();
+        return repository.save(userCode);
     }
 
 }

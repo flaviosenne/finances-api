@@ -7,6 +7,7 @@ import com.project.finances.domain.protocols.UserAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
 import com.project.finances.domain.usecases.user.repository.UserCodeCommand;
+import com.project.finances.domain.usecases.user.repository.UserCodeQuery;
 import com.project.finances.domain.usecases.user.repository.UserCommand;
 import com.project.finances.domain.usecases.user.repository.UserQuery;
 import org.assertj.core.api.BDDAssertions;
@@ -40,13 +41,15 @@ class UserAccountTest {
     private MailRetrievePasswordProtocol mailRetrievePasswordProtocol;
     @Mock
     private UserCodeCommand userCodeCommand;
+    @Mock
+    private UserCodeQuery userCodeQuery;
 
     private UserAccountProtocol userAccountProtocol;
 
     @BeforeEach
     void setup(){
         userAccountProtocol = new UserAccount(userQuery, userCommand, cryptographyProtocol,
-                mailCreateAccountProtocol, mailRetrievePasswordProtocol, userCodeCommand);
+                mailCreateAccountProtocol, mailRetrievePasswordProtocol, userCodeCommand, userCodeQuery);
     }
 
     @Test
@@ -155,7 +158,7 @@ class UserAccountTest {
     @DisplayName("Should return user details when email exist in DB")
     void loadByUsername(){
         UserAccount service = new UserAccount(userQuery, userCommand, cryptographyProtocol,
-                mailCreateAccountProtocol, mailRetrievePasswordProtocol, userCodeCommand);
+                mailCreateAccountProtocol, mailRetrievePasswordProtocol, userCodeCommand, userCodeQuery);
 
         User userMock = new User("valid@email.com", "first-name", "last-name", "hash", false);
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.of(userMock));
@@ -172,7 +175,7 @@ class UserAccountTest {
     @DisplayName("Should throw UsernameNotFoundException when email not exist in DB")
     void loadByUsernameException(){
         UserAccount service = new UserAccount(userQuery, userCommand, cryptographyProtocol,
-                mailCreateAccountProtocol, mailRetrievePasswordProtocol, userCodeCommand);
+                mailCreateAccountProtocol, mailRetrievePasswordProtocol, userCodeCommand, userCodeQuery);
 
         User userMock = new User("invalid@email.com", "first-name", "last-name", "hash", false);
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.empty());

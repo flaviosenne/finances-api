@@ -18,4 +18,5 @@ public class UserQuery {
     public Optional<User> findByUsername(String email){
         return repository.findByEmail(email);
     }
+
 }

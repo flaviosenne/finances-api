@@ -1,12 +1,14 @@
 package com.project.finances.domain.usecases.user;
 
 import com.project.finances.domain.entity.User;
+import com.project.finances.domain.entity.UserCode;
 import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.UserAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
 import com.project.finances.domain.usecases.user.repository.UserCodeCommand;
+import com.project.finances.domain.usecases.user.repository.UserCodeQuery;
 import com.project.finances.domain.usecases.user.repository.UserCommand;
 import com.project.finances.domain.usecases.user.repository.UserQuery;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     private final MailCreateAccountProtocol mailCreateAccountProtocol;
     private final MailRetrievePasswordProtocol mailRetrievePasswordProtocol;
     private final UserCodeCommand userCodeCommand;
+    private final UserCodeQuery userCodeQuery;
 
     @Override
     public User createAccount(User user) {
@@ -59,7 +62,17 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
 
     @Override
     public User redefinePassword(String code, String newPassword) {
-        return null;
+        UserCode userCode = userCodeQuery.findByCode(code).orElseThrow(()->new BadRequestException("Código inexistente ou inválido"));
+
+        userCodeCommand.invalidateCode(userCode);
+
+        User user = userCode.getUser();
+
+        String newHash = cryptographyProtocol.encodePassword(newPassword);
+
+        User userToUpdate = user.withPassword(newHash);
+
+        return userCommand.update(userToUpdate, user.getId());
     }
 
     @Override
