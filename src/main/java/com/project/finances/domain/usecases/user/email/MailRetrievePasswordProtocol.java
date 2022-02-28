@@ -2,8 +2,8 @@ package com.project.finances.domain.usecases.user.email;
 
 import com.project.finances.domain.entity.User;
 
-public interface MailCreateAccountProtocol {
+public interface MailRetrievePasswordProtocol {
 
-    void sendEmail(User user);
+    void sendEmail(User user, String code);
 
 }

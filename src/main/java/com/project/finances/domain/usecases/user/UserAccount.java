@@ -5,6 +5,7 @@ import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.UserAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol;
+import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
 import com.project.finances.domain.usecases.user.repository.UserCodeCommand;
 import com.project.finances.domain.usecases.user.repository.UserCommand;
 import com.project.finances.domain.usecases.user.repository.UserQuery;
@@ -26,6 +27,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     private final UserCommand userCommand;
     private final CryptographyProtocol cryptographyProtocol;
     private final MailCreateAccountProtocol mailCreateAccountProtocol;
+    private final MailRetrievePasswordProtocol mailRetrievePasswordProtocol;
     private final UserCodeCommand userCodeCommand;
 
     @Override
@@ -40,9 +42,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
 
         User userSaved = userCommand.save(user);
 
-        String code = userCodeCommand.save(userSaved);
-
-        mailCreateAccountProtocol.sendEmail(userSaved, code);
+        mailCreateAccountProtocol.sendEmail(userSaved);
 
         return userSaved;
     }
@@ -55,6 +55,23 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
         userToUpdate.withId(id);
 
         return userCommand.update(userToUpdate, user.getId());
+    }
+
+    @Override
+    public User redefinePassword(String code, String newPassword) {
+        return null;
+    }
+
+    @Override
+    public void retrievePassword(String email) {
+        Optional<User> optionalUser = userQuery.findByUsername(email);
+
+        if(optionalUser.isPresent()){
+            String code = userCodeCommand.save(optionalUser.get());
+
+            mailRetrievePasswordProtocol.sendEmail(optionalUser.get(), code);
+        }
+
     }
 
     @Override
