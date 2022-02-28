@@ -1,6 +1,7 @@
 package com.project.finances.domain.usecases.user;
 
 import com.project.finances.domain.entity.User;
+import com.project.finances.domain.entity.UserCode;
 import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.UserAccountProtocol;
@@ -52,6 +53,7 @@ class UserAccountTest {
                 mailCreateAccountProtocol, mailRetrievePasswordProtocol, userCodeCommand, userCodeQuery);
     }
 
+    //todo create account
     @Test
     @DisplayName("Should throw bad request exception when email already exist in Data base")
     void notCreateAccount(){
@@ -92,6 +94,7 @@ class UserAccountTest {
     }
 
 
+    //todo active account
     @Test
     @DisplayName("Should throw bad request exception when code user do not exist in DB")
     void notActiveAccount(){
@@ -125,6 +128,7 @@ class UserAccountTest {
         verify(userCommand, times(1)).update(any(User.class), eq(id));
     }
 
+    // todo retrieve password
     @Test
     @DisplayName("Should send email retrieve password to user when exist in DB")
     void retrievePassword(){
@@ -154,6 +158,7 @@ class UserAccountTest {
         verify(mailRetrievePasswordProtocol, never()).sendEmail(any(User.class), anyString());
     }
 
+    //todo load user by email
     @Test
     @DisplayName("Should return user details when email exist in DB")
     void loadByUsername(){
@@ -185,6 +190,53 @@ class UserAccountTest {
         BDDAssertions.assertThat(exception).isInstanceOf(UsernameNotFoundException.class).hasMessage(USER_NOT_FOUND);
 
         verify(userQuery, times(1)).findByUsername(userMock.getEmail());
+    }
+
+    //todo redefine password
+    @Test
+    @DisplayName("Should throw bad request exception when code invalid")
+    void notRedefinePassword(){
+        String code = "invalid-code";
+        String pass = "new-password";
+
+        when(userCodeQuery.findByCode(anyString())).thenReturn(Optional.empty());
+
+        Throwable exception = BDDAssertions.catchThrowable(()->userAccountProtocol.redefinePassword(code, pass));
+
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Código inexistente ou inválido");
+
+        verify(userCodeQuery, times(1)).findByCode(code);
+        verify(userCodeCommand, never()).invalidateCode(any(UserCode.class));
+        verify(cryptographyProtocol, never()).encodePassword(anyString());
+        verify(userCommand, never()).update(any(User.class),anyString());
+    }
+
+    @Test
+    @DisplayName("Should redefine password of user and invalidate code in DB")
+    void redefinePassword(){
+        User userMock = new User("valid@email.com", "first-name", "last-name", "hash", true);
+        User userUpdatedMock = new User("valid@email.com", "first-name", "last-name", "new-pass-hashed", true);
+        UserCode userCodeMock = new UserCode(userMock, true);
+        userUpdatedMock.withId(userMock.getId());
+        UserCode codeInvalid = userCodeMock.disableCode();
+
+        String code = userCodeMock.getId();
+        String pass = "new-password";
+
+        when(userCodeQuery.findByCode(anyString())).thenReturn(Optional.of(userCodeMock));
+        when(userCodeCommand.invalidateCode(userCodeMock)).thenReturn(codeInvalid);
+        when(cryptographyProtocol.encodePassword(pass)).thenReturn("new-pass-hashed");
+        when(userCommand.update(any(User.class), eq(userMock.getId()))).thenReturn(userUpdatedMock);
+
+        User result = userAccountProtocol.redefinePassword(code, pass);
+
+        BDDAssertions.assertThat(result).isNotNull().isEqualTo(userUpdatedMock);
+        BDDAssertions.assertThat(result.getPassword()).isEqualTo("new-pass-hashed");
+
+        verify(userCodeQuery, times(1)).findByCode(code);
+        verify(userCodeCommand, times(1)).invalidateCode(userCodeMock);
+        verify(cryptographyProtocol, times(1)).encodePassword(pass);
+        verify(userCommand, times(1)).update(any(User.class),eq(userMock.getId()));
     }
 
 }
