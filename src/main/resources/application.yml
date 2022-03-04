@@ -1,25 +1,4 @@
 
 spring:
-  application:
-    name: finances
-
-  port: 8090
-
-  datasources:
-    url: jdbc:mysql//localhost:3306/finances
-    username: root
-    password: joaoflavio
-
-  mail:
-    host: smtp.mailtrap.io
-    port: 2525
-    username:
-    password:
-    test-connection: true
-
-
-security:
-  jwt:
-    token:
-      expire-in:  86400000
-      secret-key: c2VjcmV0LWZpbmFuY2Vz
+  profiles:
+    active: dev

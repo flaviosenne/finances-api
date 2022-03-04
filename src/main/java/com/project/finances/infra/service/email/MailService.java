@@ -30,6 +30,7 @@ public class MailService implements MailProtocol {
             mailSender.send(message);
             log.info("Mail send with success");
         } catch (Exception e) {
+            e.printStackTrace();
             throw new InternalError("Falha no envio de email");
         }
     }

@@ -1,0 +1,25 @@
+
+spring:
+  application:
+    name: finances
+
+  port: 8090
+
+  datasources:
+    url: jdbc:mysql//localhost:3306/finances
+    username: root
+    password: joaoflavio
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: facildespesa@gmail.com
+    password: D3spes@Fac1l
+    test-connection: true
+
+
+security:
+  jwt:
+    token:
+      expire-in:  86400000
+      secret-key: c2VjcmV0LWZpbmFuY2Vz
