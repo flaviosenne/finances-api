@@ -1,7 +1,7 @@
 package com.project.finances.domain.usecases.release;
 
-import com.project.finances.domain.entity.Release;
 import com.project.finances.domain.protocols.ReleaseProtocol;
+import com.project.finances.domain.usecases.release.dto.ReleaseDto;
 import com.project.finances.domain.usecases.release.repository.ReleaseCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,9 @@ public class Releases implements ReleaseProtocol {
     private final ReleaseCommand releaseCommand;
 
     @Override
-    public Release createRelease(Release release) {
-        return releaseCommand.create(release);
+    public ReleaseDto createRelease(ReleaseDto dto) {
+        releaseCommand.create(ReleaseDto.of(dto));
+
+        return null;
     }
 }

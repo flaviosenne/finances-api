@@ -22,7 +22,12 @@ public enum Status {
         }
     }
 
-    public String getStatus(String statusName){
+    public static Status getStatus(String statusName){
+        return map.get(statusName);
+    }
+
+    public static String getDescription(String statusName){
         return map.get(statusName).getDescription();
     }
+
 }

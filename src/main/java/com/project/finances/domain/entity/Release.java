@@ -35,4 +35,33 @@ public class Release extends BasicEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public Release withUser(User user){
+        return Release.builder()
+                .value(this.value)
+                .type(this.type)
+                .status(this.status)
+                .description(this.description)
+                .dueDate(this.dueDate)
+                .category(this.category)
+                .user(user)
+                .build();
+    }
+
+    public Release withCategory(Category category){
+        return Release.builder()
+                .value(this.value)
+                .type(this.type)
+                .status(this.status)
+                .description(this.description)
+                .dueDate(this.dueDate)
+                .category(category)
+                .user(this.user)
+                .build();
+    }
+
+    public Release withId(String id){
+        this.id = id;
+        return this;
+    }
 }

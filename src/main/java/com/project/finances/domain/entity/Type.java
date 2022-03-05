@@ -21,7 +21,11 @@ public enum Type {
         }
     }
 
-    public String getStatus(String statusName){
+    public static Type getType(String typeName){
+        return map.get(typeName);
+    }
+
+    public static String getDescription(String statusName){
         return map.get(statusName).getDescription();
     }
 }
