@@ -80,7 +80,7 @@ class UserAccountTest {
         userMock.withId(userToSaveMock.getId());
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.empty());
         when(cryptographyProtocol.encodePassword(anyString())).thenReturn("hash");
-        when(userCommand.save(userToSaveMock)).thenReturn(userMock);
+        when(userCommand.save(any(User.class))).thenReturn(userMock);
 
         User result = userAccountProtocol.createAccount(userToSaveMock);
 
@@ -89,7 +89,7 @@ class UserAccountTest {
         BDDAssertions.assertThat(result.getId()).isNotNull().isEqualTo(userToSaveMock.getId());
 
         verify(cryptographyProtocol, times(1)).encodePassword(userToSaveMock.getPassword());
-        verify(userCommand, times(1)).save(userToSaveMock);
+        verify(userCommand, times(1)).save(any(User.class));
         verify(mailCreateAccountProtocol, times(1)).sendEmail(userMock);
     }
 

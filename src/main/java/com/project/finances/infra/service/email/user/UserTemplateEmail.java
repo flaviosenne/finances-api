@@ -5,6 +5,7 @@ import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol
 import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
 import com.project.finances.infra.service.email.MailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -15,6 +16,7 @@ public class UserTemplateEmail implements MailCreateAccountProtocol, MailRetriev
     private final TemplateEngine templateEngine;
     private final MailService mailService;
 
+    @Async
     @Override
     public void sendEmail(User user){
 
@@ -26,6 +28,7 @@ public class UserTemplateEmail implements MailCreateAccountProtocol, MailRetriev
         mailService.sendEmail(content, "Ativação da conta", new String[]{user.getEmail()});
     }
 
+    @Async
     @Override
     public void sendEmail(User user, String code) {
         Context context = new Context();

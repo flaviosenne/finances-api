@@ -1,6 +1,5 @@
 package com.project.finances.infra.security;
 
-import com.fasterxml.jackson.core.filter.TokenFilter;
 import com.project.finances.domain.usecases.user.repository.UserQuery;
 import com.project.finances.infra.config.JwtConfig;
 import com.project.finances.infra.service.jwt.JwtTokenService;
@@ -35,19 +34,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.httpBasic().disable()
+        http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
                 .antMatchers(HttpMethod.POST,
                         "/v1/auth/login",
-                        "/v1/user",
-                        "v1/user/active")
-                .permitAll()
-
-                .antMatchers(HttpMethod.GET,
-                        "/v1/user/retrieve-password")
+                        "/v1/users",
+                        "/v1/users/active",
+                        "/v1/users/retrieve-password")
                 .permitAll()
 
                 .anyRequest().authenticated()

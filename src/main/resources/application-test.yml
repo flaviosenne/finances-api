@@ -3,16 +3,12 @@ spring:
   application:
     name: finances
 
-  port: 8090
-
   mail:
     host: smtp.mailtrap.io
-    port: 25
+    port: 2525
     username: d02c5b57a35423
     password: 9117bf7177395f
-    ssl: false
     test-connection: true
-
 
 security:
   jwt:

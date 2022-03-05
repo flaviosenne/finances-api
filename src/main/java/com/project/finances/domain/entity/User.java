@@ -1,9 +1,6 @@
 package com.project.finances.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,6 +10,7 @@ import javax.persistence.Table;
 import java.util.Collection;
 
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Builder
 @ToString
@@ -21,18 +19,19 @@ import java.util.Collection;
 @Table(name = "user")
 public class User extends BasicEntity implements UserDetails {
 
-    private final String email;
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @Column(name = "first_name")
-    private final String firstName;
+    private String firstName;
 
     @Column(name = "last_name")
-    private final String lastName;
+    private String lastName;
 
-    private final String password;
+    private String password;
 
     @Column(name = "is_active")
-    private final boolean isActive;
+    private boolean isActive;
 
     public User withPassword(String hash){
         return User.builder()

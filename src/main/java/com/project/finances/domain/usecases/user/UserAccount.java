@@ -41,9 +41,9 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
 
         String hash = cryptographyProtocol.encodePassword(user.getPassword());
 
-        user.withPassword(hash);
+        User userToSaved = user.withPassword(hash);
 
-        User userSaved = userCommand.save(user);
+        User userSaved = userCommand.save(userToSaved);
 
         mailCreateAccountProtocol.sendEmail(userSaved);
 
