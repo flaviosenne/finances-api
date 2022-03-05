@@ -16,7 +16,7 @@ import java.util.Collection;
 @ToString
 @Getter
 @Entity
-@Table(name = "user")
+@Table(name = "custom_user")
 public class User extends BasicEntity implements UserDetails {
 
     @Column(nullable = false, unique = true)
