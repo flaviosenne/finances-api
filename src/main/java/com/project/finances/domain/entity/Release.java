@@ -18,11 +18,12 @@ public class Release extends BasicEntity {
 
     private String description;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.PENDING;
 
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private Type type = Type.EXPENSE;
 
     @Column(name = "due_date", columnDefinition = "datetime not null default now()")
     private Date dueDate;
