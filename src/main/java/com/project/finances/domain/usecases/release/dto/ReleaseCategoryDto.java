@@ -8,6 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 @Getter
-public class CategoryDto {
+public class ReleaseCategoryDto {
     private String id;
 }

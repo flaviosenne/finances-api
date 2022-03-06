@@ -21,4 +21,16 @@ public class Category extends BasicEntity{
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public Category withUser(User user){
+        return Category.builder()
+                .description(this.description)
+                .user(user)
+                .build();
+    }
+
+    public Category withId(String id){
+        this.id = id;
+        return  this;
+    }
 }

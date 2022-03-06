@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 @Getter
-public class UserDto {
+public class ReleaseUserDto {
     private String id;
 }
