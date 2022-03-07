@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -13,5 +14,9 @@ public class CategoryQuery {
 
     public List<Category> getCategoriesByUser(String userId) {
         return repository.findCategoryByUserId(userId);
+    }
+
+    public Optional<Category> getCategoryById(String id) {
+        return repository.findById(id);
     }
 }
