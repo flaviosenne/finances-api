@@ -23,7 +23,7 @@ public class ManagerCategory implements CategoryManagerProtocol {
 
     @Override
     public CategoryDto create(CategoryDto dto, String userId) {
-        User user = userQuery.findById(userId).orElseThrow(()-> new BadRequestException("Usuário não vinculado a categoria"));
+        User user = userQuery.findById(userId).orElseThrow(()-> new BadRequestException("Usuário não informado para categoria"));
 
         Category categoryToSave = CategoryDto.of(dto).withUser(user);
 
