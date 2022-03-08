@@ -1,7 +1,6 @@
-package com.project.finances.infra.security;
+package com.project.finances.infra.config;
 
 import com.project.finances.domain.usecases.user.repository.UserQuery;
-import com.project.finances.infra.config.JwtConfig;
 import com.project.finances.infra.service.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,6 +31,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception{
         return super.authenticationManagerBean();
     }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers(
+                        "/v1/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/**",
+                        "/swagger-ui.html",
+                        "/webjars/**");
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
