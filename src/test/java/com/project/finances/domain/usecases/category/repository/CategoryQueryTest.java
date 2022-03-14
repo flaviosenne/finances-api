@@ -13,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -63,4 +62,24 @@ class CategoryQueryTest {
 
         verify(repository, times(1)).findById(id);
     }
+
+    @Test
+    @DisplayName("Should return a category by id and by user id")
+    void getCategoryByIdAndByUser(){
+        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        Category categoryMock = new Category("category 1", userMock);
+
+        String id = "id-valid";
+
+        when(repository.findByIdAndByUserId(id, userMock.getId())).thenReturn(Optional.of(categoryMock));
+
+        Optional<Category> result = query.getCategoryByIdAndByUserId(id, userMock.getId());
+
+        BDDAssertions.assertThat(result).isPresent();
+        BDDAssertions.assertThat(result.get()).isEqualTo(categoryMock);
+
+        verify(repository, times(1)).findByIdAndByUserId(id, userMock.getId());
+    }
+
+
 }

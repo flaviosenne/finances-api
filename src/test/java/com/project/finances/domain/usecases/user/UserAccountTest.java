@@ -5,6 +5,7 @@ import com.project.finances.domain.entity.UserCode;
 import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.UserAccountProtocol;
+import com.project.finances.domain.usecases.user.dto.RedefinePasswordDto;
 import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
 import com.project.finances.domain.usecases.user.repository.UserCodeCommand;
@@ -98,7 +99,7 @@ class UserAccountTest {
     @Test
     @DisplayName("Should throw bad request exception when code user do not exist in DB")
     void notActiveAccount(){
-        when(userQuery.findById(anyString())).thenReturn(Optional.empty());
+        when(userQuery.findByIdToActiveAccount(anyString())).thenReturn(Optional.empty());
 
         Throwable exception = BDDAssertions.catchThrowable(() ->userAccountProtocol.activeAccount("invalid-code"));
 
@@ -116,7 +117,7 @@ class UserAccountTest {
         userMock.withId(id);
         userActive.withId(id);
 
-        when(userQuery.findById(anyString())).thenReturn(Optional.of(userMock));
+        when(userQuery.findByIdToActiveAccount(anyString())).thenReturn(Optional.of(userMock));
         when(userCommand.update(any(User.class), anyString())).thenReturn(userActive);
 
         User result = userAccountProtocol.activeAccount(id);
@@ -124,7 +125,7 @@ class UserAccountTest {
         BDDAssertions.assertThat(result).isNotNull();
         BDDAssertions.assertThat(result.isActive()).isTrue();
 
-        verify(userQuery, times(1)).findById(anyString());
+        verify(userQuery, times(1)).findByIdToActiveAccount(anyString());
         verify(userCommand, times(1)).update(any(User.class), eq(id));
     }
 
@@ -192,16 +193,45 @@ class UserAccountTest {
         verify(userQuery, times(1)).findByUsername(userMock.getEmail());
     }
 
+    //todo load user by email
+    @Test
+    @DisplayName("Should return account details when id exist in DB")
+    void findById(){
+
+        User userMock = new User("valid@email.com", "first-name", "last-name", "hash", true);
+        when(userQuery.findByIdIsActive(anyString())).thenReturn(Optional.of(userMock));
+
+        User result = userAccountProtocol.detailsAccount(userMock.getId());
+
+        BDDAssertions.assertThat(result).isNotNull().isEqualTo(userMock);
+
+        verify(userQuery, times(1)).findByIdIsActive(userMock.getId());
+    }
+
+    @Test
+    @DisplayName("Should throw BadRequestException when id not found in DB")
+    void findByIdException(){
+        User userMock = new User("invalid@email.com", "first-name", "last-name", "hash", false);
+        when(userQuery.findByIdIsActive(anyString())).thenReturn(Optional.empty());
+
+        Throwable exception = BDDAssertions.catchThrowable(() ->userAccountProtocol.detailsAccount(userMock.getId()));
+
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage(USER_NOT_FOUND);
+
+        verify(userQuery, times(1)).findByIdIsActive(userMock.getId());
+    }
+
     //todo redefine password
     @Test
     @DisplayName("Should throw bad request exception when code invalid")
     void notRedefinePassword(){
         String code = "invalid-code";
         String pass = "new-password";
+        RedefinePasswordDto dto = new RedefinePasswordDto(code, pass);
 
         when(userCodeQuery.findByCode(anyString())).thenReturn(Optional.empty());
 
-        Throwable exception = BDDAssertions.catchThrowable(()->userAccountProtocol.redefinePassword(code, pass));
+        Throwable exception = BDDAssertions.catchThrowable(()->userAccountProtocol.redefinePassword(dto));
 
         BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Código inexistente ou inválido");
 
@@ -220,22 +250,20 @@ class UserAccountTest {
         userUpdatedMock.withId(userMock.getId());
         UserCode codeInvalid = userCodeMock.disableCode();
 
-        String code = userCodeMock.getId();
-        String pass = "new-password";
-
+        RedefinePasswordDto dto = RedefinePasswordDto.builder().password("new-password").code(userCodeMock.getId()).build();
         when(userCodeQuery.findByCode(anyString())).thenReturn(Optional.of(userCodeMock));
         when(userCodeCommand.invalidateCode(userCodeMock)).thenReturn(codeInvalid);
-        when(cryptographyProtocol.encodePassword(pass)).thenReturn("new-pass-hashed");
+        when(cryptographyProtocol.encodePassword(dto.getPassword())).thenReturn("new-pass-hashed");
         when(userCommand.update(any(User.class), eq(userMock.getId()))).thenReturn(userUpdatedMock);
 
-        User result = userAccountProtocol.redefinePassword(code, pass);
+        User result = userAccountProtocol.redefinePassword(dto);
 
         BDDAssertions.assertThat(result).isNotNull().isEqualTo(userUpdatedMock);
         BDDAssertions.assertThat(result.getPassword()).isEqualTo("new-pass-hashed");
 
-        verify(userCodeQuery, times(1)).findByCode(code);
+        verify(userCodeQuery, times(1)).findByCode(dto.getCode());
         verify(userCodeCommand, times(1)).invalidateCode(userCodeMock);
-        verify(cryptographyProtocol, times(1)).encodePassword(pass);
+        verify(cryptographyProtocol, times(1)).encodePassword(dto.getPassword());
         verify(userCommand, times(1)).update(any(User.class),eq(userMock.getId()));
     }
 

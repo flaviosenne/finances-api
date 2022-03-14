@@ -4,9 +4,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Finanças</title>
 </head>
 <body>
-
+    <div>
+        <p>Bem Vindo [[${user.firstName}]], percebemos que vc acabou de criar uma conta em nossa plataforma.</p>
+        <p>Caso queira ativar sua conta, basta clicar <a th:href="@{http://localhost:8090/users/active-account/{id}(id=${user.id})}">neste link.</a></p>
+        <p>Caso não tenha sido você, desconsidere essa mensagem</p>
+    </div>
 </body>
 </html>

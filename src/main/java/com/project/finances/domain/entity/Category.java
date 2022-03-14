@@ -15,6 +15,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "category")
+@EqualsAndHashCode
 public class Category extends BasicEntity{
     private String description;
 
@@ -31,6 +32,11 @@ public class Category extends BasicEntity{
 
     public Category withId(String id){
         this.id = id;
+        return  this;
+    }
+
+    public Category withDescription(String description){
+        this.description = description;
         return  this;
     }
 }

@@ -12,6 +12,7 @@ import java.util.Date;
 @Getter
 @Entity
 @Table(name = "custom_release")
+@EqualsAndHashCode
 public class Release extends BasicEntity {
 
     private Double value;

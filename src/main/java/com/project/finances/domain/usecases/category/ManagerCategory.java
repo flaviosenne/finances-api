@@ -23,11 +23,11 @@ public class ManagerCategory implements CategoryManagerProtocol {
 
     @Override
     public CategoryDto create(CategoryDto dto, String userId) {
-        User user = userQuery.findById(userId).orElseThrow(()-> new BadRequestException("Usuário não informado para categoria"));
+        User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException("Usuário não informado para categoria"));
 
         Category categoryToSave = CategoryDto.of(dto).withUser(user);
 
-        Category categorySaved = categoryCommand.create(categoryToSave);
+        Category categorySaved = categoryCommand.save(categoryToSave);
 
         return CategoryDto.of(categorySaved);
     }
@@ -39,6 +39,11 @@ public class ManagerCategory implements CategoryManagerProtocol {
 
     @Override
     public CategoryDto update(CategoryDto dto, String userId) {
-        return null;
+        Category categoryToUpdate = categoryQuery.getCategoryByIdAndByUserId(dto.getId(), userId)
+                .orElseThrow(()-> new BadRequestException("Categoria não encontrada"));
+
+        categoryToUpdate.withDescription(dto.getDescription());
+
+        return CategoryDto.of(categoryCommand.save(categoryToUpdate));
     }
 }

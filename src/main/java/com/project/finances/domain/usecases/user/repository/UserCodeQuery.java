@@ -12,6 +12,6 @@ public class UserCodeQuery {
     private final UserCodeRepository repository;
 
     public Optional<UserCode> findByCode(String code){
-        return repository.findById(code);
+        return repository.findByIdAndByUserActive(code);
     }
 }

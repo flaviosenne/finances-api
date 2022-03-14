@@ -5,6 +5,7 @@ import com.project.finances.domain.entity.UserCode;
 import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.UserAccountProtocol;
+import com.project.finances.domain.usecases.user.dto.RedefinePasswordDto;
 import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
 import com.project.finances.domain.usecases.user.repository.UserCodeCommand;
@@ -37,6 +38,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     public User createAccount(User user) {
         Optional<User> optionalUser = userQuery.findByUsername(user.getEmail());
 
+
         if(optionalUser.isPresent()) throw new BadRequestException("Email já cadastrado na base de dados");
 
         String hash = cryptographyProtocol.encodePassword(user.getPassword());
@@ -51,24 +53,28 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     }
 
     @Override
-    public User activeAccount(String id) {
-        User user = userQuery.findById(id).orElseThrow(() -> new BadRequestException("Código do usuário inválido"));
+    public User detailsAccount(String id) {
+        return userQuery.findByIdIsActive(id).orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
+    }
 
-        User userToUpdate = user.activeAccount();
-        userToUpdate.withId(id);
+    @Override
+    public User activeAccount(String id) {
+        User user = userQuery.findByIdToActiveAccount(id).orElseThrow(() -> new BadRequestException("Código do usuário inválido"));
+
+        User userToUpdate = user.activeAccount().withId(user.getId());
 
         return userCommand.update(userToUpdate, user.getId());
     }
 
     @Override
-    public User redefinePassword(String code, String newPassword) {
-        UserCode userCode = userCodeQuery.findByCode(code).orElseThrow(()->new BadRequestException("Código inexistente ou inválido"));
+    public User redefinePassword(RedefinePasswordDto dto) {
+        UserCode userCode = userCodeQuery.findByCode(dto.getCode()).orElseThrow(()->new BadRequestException("Código inexistente ou inválido"));
 
         userCodeCommand.invalidateCode(userCode);
 
         User user = userCode.getUser();
 
-        String newHash = cryptographyProtocol.encodePassword(newPassword);
+        String newHash = cryptographyProtocol.encodePassword(dto.getPassword());
 
         User userToUpdate = user.withPassword(newHash);
 

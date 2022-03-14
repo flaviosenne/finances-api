@@ -19,8 +19,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -49,15 +47,15 @@ class ManagerCategoryTest {
         String userId = "user-id-valid";
 
 
-        when(userQuery.findById(userId)).thenReturn(Optional.of(userMock));
-        when(categoryCommand.create(any(Category.class))).thenReturn(categoryMock);
+        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(userMock));
+        when(categoryCommand.save(any(Category.class))).thenReturn(categoryMock);
 
         CategoryDto result = categoryManagerProtocol.create(dto, userId);
 
         BDDAssertions.assertThat(result).isNotNull();
 
-        verify(userQuery, times(1)).findById(userId);
-        verify(categoryCommand, times(1)).create(any(Category.class));
+        verify(userQuery, times(1)).findByIdIsActive(userId);
+        verify(categoryCommand, times(1)).save(any(Category.class));
 
     }
 
@@ -67,14 +65,14 @@ class ManagerCategoryTest {
         CategoryDto dto = new CategoryDto(null, "categoryMock");
         String userId = "user-id-invalid";
 
-        when(userQuery.findById(userId)).thenReturn(Optional.empty());
+        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.empty());
 
         Throwable exception = BDDAssertions.catchThrowable(()->categoryManagerProtocol.create(dto, userId));
 
         BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Usuário não informado para categoria");
 
-        verify(userQuery, times(1)).findById(userId);
-        verify(categoryCommand, never()).create(any(Category.class));
+        verify(userQuery, times(1)).findByIdIsActive(userId);
+        verify(categoryCommand, never()).save(any(Category.class));
 
     }
 
@@ -94,6 +92,45 @@ class ManagerCategoryTest {
         BDDAssertions.assertThat(result).isNotEmpty().hasSize(1);
 
         verify(categoryQuery, times(1)).getCategoriesByUser(userId);
+
+    }
+
+    // todo update
+    @Test
+    @DisplayName("Should update a category when request is successful")
+    void updateCategory(){
+        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        Category categoryMock = new Category("category 1", userMock);
+        CategoryDto dto = new CategoryDto("id-valid", categoryMock.getDescription());
+        String userId = "user-id-valid";
+
+        when(categoryQuery.getCategoryByIdAndByUserId(dto.getId(), userId)).thenReturn(Optional.of(categoryMock));
+        when(categoryCommand.save(any(Category.class))).thenReturn(categoryMock);
+
+        CategoryDto result = categoryManagerProtocol.update(dto, userId);
+
+        BDDAssertions.assertThat(result).isNotNull();
+
+        verify(categoryQuery, times(1)).getCategoryByIdAndByUserId(dto.getId(),userId);
+        verify(categoryCommand, times(1)).save(any(Category.class));
+
+    }
+    @Test
+    @DisplayName("Should throw bad request exception when try update a category nad not found resource in DB")
+    void notUpdateCategory(){
+        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        Category categoryMock = new Category("category 1", userMock);
+        CategoryDto dto = new CategoryDto("id-invalid", categoryMock.getDescription());
+        String userId = "user-id-invalid";
+
+        when(categoryQuery.getCategoryByIdAndByUserId(categoryMock.getId(), userId)).thenReturn(Optional.empty());
+
+        Throwable exception = BDDAssertions.catchThrowable(()->categoryManagerProtocol.update(dto, userId));
+
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Categoria não encontrada");
+
+        verify(categoryQuery, times(1)).getCategoryByIdAndByUserId(dto.getId(),userId);
+        verify(categoryCommand, never()).save(any(Category.class));
 
     }
 

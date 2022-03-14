@@ -14,6 +14,7 @@ public class AuthController {
 
     private final AuthenticationProtocol auth;
 
+    @CrossOrigin
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public ResponseLoginDto login(@RequestBody LoginDto dto){

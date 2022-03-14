@@ -19,4 +19,8 @@ public class CategoryQuery {
     public Optional<Category> getCategoryById(String id) {
         return repository.findById(id);
     }
+
+    public Optional<Category> getCategoryByIdAndByUserId(String id, String userId) {
+        return repository.findByIdAndByUserId(id, userId);
+    }
 }

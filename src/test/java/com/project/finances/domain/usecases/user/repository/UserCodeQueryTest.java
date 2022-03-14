@@ -35,14 +35,14 @@ class UserCodeQueryTest {
 
         String code = userCodeMock.getId();
 
-        when(repository.findById(anyString())).thenReturn(Optional.of(userCodeMock));
+        when(repository.findByIdAndByUserActive(anyString())).thenReturn(Optional.of(userCodeMock));
 
         Optional<UserCode> result = userCodeQuery.findByCode(code);
 
         BDDAssertions.assertThat(result).isPresent();
         BDDAssertions.assertThat(result.get().getId()).isEqualTo(code);
 
-        verify(repository, times(1)).findById(code);
+        verify(repository, times(1)).findByIdAndByUserActive(code);
     }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class CategoryCommand {
     private final CategoryRepository repository;
 
-    public Category create(Category category) {
+    public Category save(Category category) {
         return repository.save(category);
     }
 }

@@ -29,19 +29,36 @@ class UserQueryTest {
 
     @Test
     @DisplayName("Should return a optional user when id is provider")
-    void findById(){
+    void findByIdAndIsActive(){
+        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        when(repository.findByIdAndIsActive(anyString())).thenReturn(Optional.of(userMock));
+
+        String idUser = "id-valid";
+
+        Optional<User> result = userQuery.findByIdIsActive(idUser);
+
+        BDDAssertions.assertThat(result).isPresent();
+        BDDAssertions.assertThat(result.get()).isEqualTo(userMock);
+
+        verify(repository, times(1)).findByIdAndIsActive(idUser);
+    }
+
+    @Test
+    @DisplayName("Should return a optional user when id is provider")
+    void findByIdToActive(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
         when(repository.findById(anyString())).thenReturn(Optional.of(userMock));
 
         String idUser = "id-valid";
 
-        Optional<User> result = userQuery.findById(idUser);
+        Optional<User> result = userQuery.findByIdToActiveAccount(idUser);
 
         BDDAssertions.assertThat(result).isPresent();
         BDDAssertions.assertThat(result.get()).isEqualTo(userMock);
 
         verify(repository, times(1)).findById(idUser);
     }
+
 
     @Test
     @DisplayName("Should return a optional user when email is provider")

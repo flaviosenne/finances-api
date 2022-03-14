@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -35,7 +34,7 @@ class CategoryCommandTest {
 
         when(repository.save(any(Category.class))).thenReturn(categoryMock);
 
-        Category result = command.create(categoryMock);
+        Category result = command.save(categoryMock);
 
         BDDAssertions.assertThat(result).isEqualTo(categoryMock);
 

@@ -8,22 +8,27 @@ import com.project.finances.domain.protocols.FlowCashProtocol;
 import com.project.finances.domain.usecases.category.repository.CategoryQuery;
 import com.project.finances.domain.usecases.release.dto.ReleaseDto;
 import com.project.finances.domain.usecases.release.repository.ReleaseCommand;
+import com.project.finances.domain.usecases.release.repository.ReleaseQuery;
 import com.project.finances.domain.usecases.user.repository.UserQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
 public class FlowCash implements FlowCashProtocol {
 
-    private final ReleaseCommand releaseCommand;
+    private final ReleaseCommand command;
     private final UserQuery userQuery;
-    private CategoryQuery categoryQuery;
-
+    private final CategoryQuery categoryQuery;
+    private final ReleaseQuery query;
     @Override
     public ReleaseDto createRelease(ReleaseDto dto) {
 
-        User user = userQuery.findByUsername(dto.getUser().getId()).orElseThrow(()-> new BadRequestException("Usuário não informado"));
+        User user = userQuery.findByIdIsActive(dto.getUser().getId()).orElseThrow(()-> new BadRequestException("Usuário não informado"));
 
         Category category = categoryQuery.getCategoryById(dto.getCategory().getId()).orElseThrow(()-> new BadRequestException("Categoria não informada"));
 
@@ -31,8 +36,13 @@ public class FlowCash implements FlowCashProtocol {
                 .withCategory(category)
                 .withUser(user);
 
-        Release releaseSaved = releaseCommand.create(releaseToSave);
+        Release releaseSaved = command.create(releaseToSave);
 
         return ReleaseDto.of(releaseSaved);
+    }
+
+    @Override
+    public Page<Release> listReleases(String userId, Specification specification, Pageable pageable) {
+        return query.getReleases(userId, specification, pageable);
     }
 }

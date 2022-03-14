@@ -39,7 +39,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private void setContext(String userId){
-        Optional<User> optionalUser = userQuery.findById(userId);
+        Optional<User> optionalUser = userQuery.findByIdIsActive(userId);
 
         if(optionalUser.isPresent()){
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(optionalUser.get(), "", null);

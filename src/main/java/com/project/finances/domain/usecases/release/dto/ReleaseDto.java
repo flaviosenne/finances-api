@@ -5,6 +5,7 @@ import com.project.finances.domain.entity.Status;
 import com.project.finances.domain.entity.Type;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Getter
+@EqualsAndHashCode
 public class ReleaseDto {
     private String id;
     private Date dueDate;

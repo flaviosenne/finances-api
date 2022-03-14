@@ -14,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @RequiredArgsConstructor
@@ -21,9 +24,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] ENDPOINTS_PUBLIC_POST = {
+            "/v1/auth/login",
+            "/v1/users",
+            "/v1/users/active",
+            "/v1/users/retrieve-password"
+    };
+
+    private static final String[] ENDPOINTS_PUBLIC_PUT = {
+            "/v1/users/redefine-password",
+            "/v1/users/active-account/*"
+    };
+
     private final JwtTokenService jwtTokenService;
     private final UserQuery userQuery;
-
 
     @Bean
     public BCryptPasswordEncoder  bCryptPasswordEncoder(){
@@ -51,21 +65,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests()
-                .antMatchers(HttpMethod.POST,
-                        "/v1/auth/login",
-                        "/v1/users",
-                        "/v1/users/active",
-                        "/v1/users/retrieve-password")
-                .permitAll()
+        http.cors().and().csrf().disable();
 
-                .anyRequest().authenticated()
-                .and()
-                .apply(new JwtConfig(jwtTokenService, userQuery))
-        ;
+        http.authorizeHttpRequests()
+                .antMatchers(HttpMethod.POST,ENDPOINTS_PUBLIC_POST).permitAll()
+                .antMatchers(HttpMethod.PUT, ENDPOINTS_PUBLIC_PUT).permitAll()
+                .anyRequest().authenticated();
+
+        http.apply(new JwtConfig(jwtTokenService, userQuery));
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource(){
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 }

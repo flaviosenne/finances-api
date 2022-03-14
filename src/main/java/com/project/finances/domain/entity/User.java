@@ -17,6 +17,7 @@ import java.util.Collection;
 @Getter
 @Entity
 @Table(name = "custom_user")
+@EqualsAndHashCode
 public class User extends BasicEntity implements UserDetails {
 
     @Column(nullable = false, unique = true)

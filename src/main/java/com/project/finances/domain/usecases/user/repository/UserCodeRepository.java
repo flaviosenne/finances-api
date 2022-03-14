@@ -10,7 +10,8 @@ public interface UserCodeRepository extends JpaRepository<UserCode, String> {
     @Query("select c from UserCode c join c.user u where u.id = :userId and c.isValid = true")
     Optional<UserCode> findByUserId(String userId);
 
-    @Query("select code from UserCode code  " +
-            "where code.id = :code and code.isValid = true")
-    Optional<UserCode> findUserByCode(String code);
+    @Query("select code from UserCode code " +
+            "join code.user user " +
+            "where code.id = :code and user.isActive = true and code.isValid = true")
+    Optional<UserCode> findByIdAndByUserActive(String code);
 }
