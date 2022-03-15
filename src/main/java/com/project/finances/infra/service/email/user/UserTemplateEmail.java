@@ -5,11 +5,13 @@ import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol
 import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
 import com.project.finances.infra.service.email.MailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserTemplateEmail implements MailCreateAccountProtocol, MailRetrievePasswordProtocol {
@@ -26,6 +28,7 @@ public class UserTemplateEmail implements MailCreateAccountProtocol, MailRetriev
         String content =  templateEngine.process("mail/ActiveAccountEmailTemplate", context);
 
         mailService.sendEmail(content, "Ativação da conta", new String[]{user.getEmail()});
+        log.info("Send email success "+ user.getEmail());
     }
 
     @Async
@@ -38,5 +41,6 @@ public class UserTemplateEmail implements MailCreateAccountProtocol, MailRetriev
         String content =  templateEngine.process("mail/RetrievePasswordEmailTemplate", context);
 
         mailService.sendEmail(content, "Recuperação de senha", new String[]{user.getEmail()});
+        log.info("Send email success "+ user.getEmail());
     }
 }
