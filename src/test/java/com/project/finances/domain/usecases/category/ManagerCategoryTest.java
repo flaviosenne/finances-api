@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,7 +86,7 @@ class ManagerCategoryTest {
         String userId = "user-id-valid";
 
 
-        when(categoryQuery.getCategoriesByUser(userId)).thenReturn(List.of(categoryMock));
+        when(categoryQuery.getCategoriesByUser(userId)).thenReturn(Arrays.asList(categoryMock));
 
         List<CategoryDto> result = categoryManagerProtocol.getCategories(userId);
 

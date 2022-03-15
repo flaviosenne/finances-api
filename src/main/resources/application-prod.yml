@@ -6,7 +6,7 @@ spring:
     name: finances
 
   datasource:
-    url: ${JDBC_DATASOURCE_URL} # variavel de ambiente do heroku, que providencia um banco padrão
+    url: ${DATABASE_URL} # variavel de ambiente do heroku, que providencia um banco padrão
 
   jpa:
     hibernate.ddl-auto: none

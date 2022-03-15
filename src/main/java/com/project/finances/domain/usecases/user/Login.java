@@ -25,7 +25,7 @@ public class Login implements AuthenticationProtocol {
     public ResponseLoginDto login(LoginDto dto) {
         Optional<User> optionalUser = userQuery.findByEmailActive(dto.getEmail());
 
-        if(optionalUser.isEmpty()) throw new BadCredentialsException("Credenciais inválidas");
+        if(!optionalUser.isPresent()) throw new BadCredentialsException("Credenciais inválidas");
 
         boolean isMatcher = cryptographyProtocol.passwordMatchers(dto.getPassword(), optionalUser.get().getPassword());
 

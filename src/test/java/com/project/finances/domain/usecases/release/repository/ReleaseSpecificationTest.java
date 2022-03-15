@@ -11,13 +11,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 class ReleaseSpecificationTest {
 
-    @Test
-    void test(){
-        String userId = "user-id-valid";
-
-        Specification<Release> result = ReleaseSpecification.listReleaseByUserId(userId);
-
-        BDDAssertions.assertThat(result).isNotNull();
-    }
+//    @Test
+//    void test(){
+//        String userId = "user-id-valid";
+//
+//        Specification<Release> result = ReleaseSpecification.listReleaseByUserId(userId);
+//
+//        BDDAssertions.assertThat(result).isNotNull();
+//    }
 
 }

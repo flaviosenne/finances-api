@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,11 +37,11 @@ class CategoryQueryTest {
 
         String userId = "user-id-valid";
 
-        when(repository.findCategoryByUserId(userId)).thenReturn(List.of(categoryMock));
+        when(repository.findCategoryByUserId(userId)).thenReturn(Arrays.asList(categoryMock));
 
         List<Category> result = query.getCategoriesByUser(userId);
 
-        BDDAssertions.assertThat(result).isNotEmpty().hasSize(1).isEqualTo(List.of(categoryMock));
+        BDDAssertions.assertThat(result).isNotEmpty().hasSize(1).isEqualTo(Arrays.asList(categoryMock));
 
         verify(repository, times(1)).findCategoryByUserId(userId);
     }

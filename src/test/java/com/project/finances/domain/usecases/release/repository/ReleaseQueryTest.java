@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +45,7 @@ class ReleaseQueryTest {
         Category categoryMock = new Category("category 1", userMock);
         Release releaseMock = new Release(100d, "test", Status.PENDING, Type.EXPENSE, new Date(), categoryMock, userMock);
 
-        when(repository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(new PageImpl<Release>(List.of(releaseMock)));
+        when(repository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(new PageImpl<Release>(Arrays.asList(releaseMock)));
 
         Page<Release> result = query.getReleases(userId, specificationMock, pageMock);
 
