@@ -27,4 +27,10 @@ public class UserCode extends BasicEntity  {
         return this;
     }
 
+    public UserCode withId(String id){
+        this.id = id;
+        return this;
+    }
+
+
 }

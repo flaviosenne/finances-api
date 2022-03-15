@@ -23,7 +23,7 @@ public class Login implements AuthenticationProtocol {
 
     @Override
     public ResponseLoginDto login(LoginDto dto) {
-        Optional<User> optionalUser = userQuery.findByUsername(dto.getEmail());
+        Optional<User> optionalUser = userQuery.findByEmailActive(dto.getEmail());
 
         if(optionalUser.isEmpty()) throw new BadCredentialsException("Credenciais inválidas");
 

@@ -3,13 +3,11 @@ package com.project.finances.domain.usecases.release.dto;
 import com.project.finances.domain.entity.Release;
 import com.project.finances.domain.entity.Status;
 import com.project.finances.domain.entity.Type;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Date;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Builder
 @Getter

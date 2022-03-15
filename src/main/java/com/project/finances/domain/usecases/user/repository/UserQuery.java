@@ -24,4 +24,8 @@ public class UserQuery {
         return repository.findByEmail(email);
     }
 
+    public Optional<User> findByEmailActive(String email){
+        return repository.findByEmailAndIsActive(email);
+    }
+
 }

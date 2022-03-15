@@ -75,4 +75,19 @@ class UserQueryTest {
         verify(repository, times(1)).findByEmail(email);
     }
 
+    @Test
+    @DisplayName("Should return a optional user when email is provider and account is active")
+    void findByUsernameAndIsActive(){
+        String email = "example@email.com";
+        User userMock = new User(email, "first-name", "last-name", "hash", true);
+        when(repository.findByEmailAndIsActive(anyString())).thenReturn(Optional.of(userMock));
+
+        Optional<User> result = userQuery.findByEmailActive(email);
+
+        BDDAssertions.assertThat(result).isPresent();
+        BDDAssertions.assertThat(result.get()).isEqualTo(userMock);
+
+        verify(repository, times(1)).findByEmailAndIsActive(email);
+    }
+
 }

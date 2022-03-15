@@ -42,13 +42,13 @@ class LoginTest {
     @DisplayName("Should throw bad request exception when email incorrect")
     void emailInvalid(){
         LoginDto dto = LoginDto.builder().email("incorrect@emal.com").build();
-        when(userQuery.findByUsername(anyString())).thenReturn(Optional.empty());
+        when(userQuery.findByEmailActive(anyString())).thenReturn(Optional.empty());
 
         Throwable exception = BDDAssertions.catchThrowable(()->authenticationProtocol.login(dto));
 
         BDDAssertions.assertThat(exception).isInstanceOf(BadCredentialsException.class).hasMessage("Credenciais inválidas");
 
-        verify(userQuery,times(1)).findByUsername("incorrect@emal.com");
+        verify(userQuery,times(1)).findByEmailActive("incorrect@emal.com");
         verify(cryptographyProtocol, never()).passwordMatchers(anyString(), anyString());
         verify(tokenProtocol, never()).generateToken(anyString());
     }
@@ -59,14 +59,14 @@ class LoginTest {
         LoginDto dto = LoginDto.builder().email("correct@emal.com").password("password-invalid").build();
         User userMock = User.builder().email(dto.getEmail()).password("hash").build();
 
-        when(userQuery.findByUsername(anyString())).thenReturn(Optional.of(userMock));
+        when(userQuery.findByEmailActive(anyString())).thenReturn(Optional.of(userMock));
         when(cryptographyProtocol.passwordMatchers(dto.getPassword(), userMock.getPassword())).thenReturn(false);
 
         Throwable exception = BDDAssertions.catchThrowable(()->authenticationProtocol.login(dto));
 
         BDDAssertions.assertThat(exception).isInstanceOf(BadCredentialsException.class).hasMessage("Credenciais inválidas");
 
-        verify(userQuery,times(1)).findByUsername("correct@emal.com");
+        verify(userQuery,times(1)).findByEmailActive("correct@emal.com");
         verify(cryptographyProtocol, times(1)).passwordMatchers(dto.getPassword(), "hash");
         verify(tokenProtocol, never()).generateToken(anyString());
     }
@@ -79,7 +79,7 @@ class LoginTest {
         User userMock = User.builder().email(dto.getEmail()).password("hash").build();
         userMock.withId("id");
 
-        when(userQuery.findByUsername(anyString())).thenReturn(Optional.of(userMock));
+        when(userQuery.findByEmailActive(anyString())).thenReturn(Optional.of(userMock));
         when(cryptographyProtocol.passwordMatchers(dto.getPassword(), userMock.getPassword())).thenReturn(true);
         when(tokenProtocol.generateToken(userMock.getId())).thenReturn("token");
 
@@ -88,7 +88,7 @@ class LoginTest {
         BDDAssertions.assertThat(result).isNotNull();
         BDDAssertions.assertThat(result.getToken()).isEqualTo("token");
 
-        verify(userQuery,times(1)).findByUsername("correct@emal.com");
+        verify(userQuery,times(1)).findByEmailActive("correct@emal.com");
         verify(cryptographyProtocol, times(1)).passwordMatchers(dto.getPassword(), "hash");
         verify(tokenProtocol, times(1)).generateToken("id");
     }

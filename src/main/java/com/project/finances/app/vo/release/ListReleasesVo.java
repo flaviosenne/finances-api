@@ -1,6 +1,5 @@
 package com.project.finances.app.vo.release;
 
-import com.project.finances.domain.entity.Category;
 import com.project.finances.domain.entity.Release;
 import com.project.finances.domain.entity.Status;
 import com.project.finances.domain.entity.Type;
@@ -9,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Date;
-import java.util.List;
 
 @Builder
 @Getter
