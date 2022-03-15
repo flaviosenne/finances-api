@@ -16,6 +16,6 @@ public class ReleaseQuery {
     private final ReleaseRepository repository;
 
     public Page<Release> getReleases(String userId, Specification specification, Pageable pageable){
-        return repository.findAll(listReleaseByUserId(userId).and(specification), pageable);
+        return repository.findAll(listReleaseByUserId(userId), pageable);
     }
 }
