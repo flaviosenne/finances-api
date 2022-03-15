@@ -26,7 +26,7 @@ public class Release extends BasicEntity {
     @Enumerated(EnumType.STRING)
     private Type type = Type.EXPENSE;
 
-    @Column(name = "due_date", columnDefinition = "datetime not null default now()")
+    @Column(name = "due_date")
     private Date dueDate;
 
     @ManyToOne

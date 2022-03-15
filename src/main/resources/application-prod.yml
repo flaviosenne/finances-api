@@ -6,13 +6,17 @@ spring:
     name: finances
 
   datasource:
-    url: postgres://hpsyvogsqbztvk:a6749e009a1180146ca374e2a884690fa59b7f5535e61de9b5c63dd2f70a1221@ec2-54-158-26-89.compute-1.amazonaws.com:5432/de31lhss3cultl
+    url: jdbc:postgresql://ec2-54-158-26-89.compute-1.amazonaws.com:5432/de31lhss3cultl
+    username: hpsyvogsqbztvk
+    password: a6749e009a1180146ca374e2a884690fa59b7f5535e61de9b5c63dd2f70a1221
   # variavel de ambiente do heroku, que providencia um banco padrão
 
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: true
     show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
   mail:
     host: smtp.gmail.com
