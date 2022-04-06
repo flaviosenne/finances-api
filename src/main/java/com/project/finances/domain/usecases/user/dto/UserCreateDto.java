@@ -1,29 +1,26 @@
-package com.project.finances.app.vo.user;
+package com.project.finances.domain.usecases.user.dto;
 
 import com.project.finances.domain.entity.User;
-import com.project.finances.domain.usecases.user.dto.UserCreateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Builder
 @Getter
-public class CreateUserVo {
-    private String email;
-
+@AllArgsConstructor
+public class UserCreateDto {
     private String firstName;
-
     private String lastName;
-
+    private String email;
     private String password;
 
-    public static UserCreateDto of(CreateUserVo dto){
-        return UserCreateDto.builder()
+    public User withPassword(UserCreateDto dto, String hash){
+        return User.builder()
+                .password(hash)
                 .email(dto.getEmail())
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
-                .password(dto.getPassword())
+                .isActive(false)
                 .build();
     }
 }

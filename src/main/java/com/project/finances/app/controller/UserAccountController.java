@@ -2,6 +2,7 @@ package com.project.finances.app.controller;
 
 import com.project.finances.app.vo.user.CreateUserVo;
 import com.project.finances.app.vo.user.GetUserVo;
+import com.project.finances.app.vo.user.UpdateUserVo;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.protocols.UserAccountProtocol;
 import com.project.finances.domain.usecases.user.dto.RedefinePasswordDto;
@@ -22,6 +23,13 @@ public class UserAccountController {
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody CreateUserVo dto){
         accountProtocol.createAccount(CreateUserVo.of(dto));
+    }
+
+    @CrossOrigin
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@RequestBody UpdateUserVo dto, @AuthenticationPrincipal User user){
+        accountProtocol.updateAccount(UpdateUserVo.of(dto, user.getId()));
     }
 
     @CrossOrigin

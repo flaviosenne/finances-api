@@ -6,6 +6,7 @@ import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.UserAccountProtocol;
 import com.project.finances.domain.usecases.user.dto.RedefinePasswordDto;
+import com.project.finances.domain.usecases.user.dto.UserCreateDto;
 import com.project.finances.domain.usecases.user.dto.UserUpdateDto;
 import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
@@ -36,14 +37,14 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     private final UserCodeQuery userCodeQuery;
 
     @Override
-    public User createAccount(User user) {
-        Optional<User> optionalUser = userQuery.findByUsername(user.getEmail());
+    public User createAccount(UserCreateDto dto) {
+        Optional<User> optionalUser = userQuery.findByUsername(dto.getEmail());
 
         if(optionalUser.isPresent()) throw new BadRequestException(EMAIL_ALREADY_EXISTS);
 
-        String hash = cryptographyProtocol.encodePassword(user.getPassword());
+        String hash = cryptographyProtocol.encodePassword(dto.getPassword());
 
-        User userToSaved = user.withPassword(hash);
+        User userToSaved = dto.withPassword(dto, hash);
 
         User userSaved = userCommand.save(userToSaved);
 
@@ -53,12 +54,12 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     }
 
     @Override
-    public User updateAccount(UserUpdateDto userRequest) {
-        Optional<User> optionalUser = userQuery.findByIdIsActive(userRequest.getId());
+    public User updateAccount(UserUpdateDto dto) {
+        Optional<User> optionalUser = userQuery.findByIdIsActive(dto.getId());
 
         if(!optionalUser.isPresent()) throw new BadRequestException(USER_NOT_FOUND);
 
-        User userToUpdate = userRequest.updateAccount(optionalUser.get(), userRequest);
+        User userToUpdate = dto.updateAccount(optionalUser.get(), dto);
 
         return userCommand.save(userToUpdate);
     }
