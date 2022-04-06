@@ -33,8 +33,8 @@ public class ManagerCategory implements CategoryManagerProtocol {
     }
 
     @Override
-    public List<CategoryDto> getCategories(String userId) {
-        return categoryQuery.getCategoriesByUser(userId).stream().map(CategoryDto::of).collect(Collectors.toList());
+    public List<CategoryDto> getCategories(String userId, String description) {
+        return categoryQuery.getCategoriesByUser(userId, description).stream().map(CategoryDto::of).collect(Collectors.toList());
     }
 
     @Override

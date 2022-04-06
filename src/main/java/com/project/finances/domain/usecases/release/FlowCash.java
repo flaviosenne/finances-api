@@ -26,9 +26,9 @@ public class FlowCash implements FlowCashProtocol {
     private final CategoryQuery categoryQuery;
     private final ReleaseQuery query;
     @Override
-    public ReleaseDto createRelease(ReleaseDto dto) {
+    public ReleaseDto createRelease(ReleaseDto dto, String userId) {
 
-        User user = userQuery.findByIdIsActive(dto.getUser().getId()).orElseThrow(()-> new BadRequestException("Usuário não informado"));
+        User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException("Usuário não informado"));
 
         Category category = categoryQuery.getCategoryById(dto.getCategory().getId()).orElseThrow(()-> new BadRequestException("Categoria não informada"));
 

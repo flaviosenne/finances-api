@@ -20,7 +20,6 @@ public class ReleaseDto {
     private String type;
     private Double value;
     private ReleaseCategoryDto category;
-    private ReleaseUserDto user;
 
     public static Release of(ReleaseDto dto){
         return Release.builder()
@@ -40,7 +39,6 @@ public class ReleaseDto {
                 .type(entity.getType().name())
                 .value(entity.getValue())
                 .category(ReleaseCategoryDto.builder().id(entity.getCategory().getId()).build())
-                .user(ReleaseUserDto.builder().id(entity.getUser().getId()).build())
                 .build();
     }
 

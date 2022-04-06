@@ -59,9 +59,9 @@ class FlowCashTest {
         when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(getUser()));
         when(command.create(any(Release.class))).thenReturn(getRelease());
 
-        ReleaseDto dto = getReleaseDto(categoryId,userId);
+        ReleaseDto dto = getReleaseDto(categoryId);
 
-        ReleaseDto result = flowCashProtocol.createRelease(dto);
+        ReleaseDto result = flowCashProtocol.createRelease(dto, userId);
 
         BDDAssertions.assertThat(result).isNotNull().isInstanceOf(ReleaseDto.class);
 
@@ -78,9 +78,9 @@ class FlowCashTest {
 
         when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.empty());
 
-        ReleaseDto dto = getReleaseDto(categoryId, userId);
+        ReleaseDto dto = getReleaseDto(categoryId);
 
-        Throwable exception = BDDAssertions.catchThrowable(()->flowCashProtocol.createRelease(dto));
+        Throwable exception = BDDAssertions.catchThrowable(()->flowCashProtocol.createRelease(dto, userId));
 
         BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Usuário não informado");
 
@@ -98,9 +98,9 @@ class FlowCashTest {
         when(categoryQuery.getCategoryById(categoryId)).thenReturn(Optional.empty());
         when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(getUser()));
 
-        ReleaseDto dto = getReleaseDto(categoryId, userId);
+        ReleaseDto dto = getReleaseDto(categoryId);
 
-        Throwable exception = BDDAssertions.catchThrowable(()->flowCashProtocol.createRelease(dto));
+        Throwable exception = BDDAssertions.catchThrowable(()->flowCashProtocol.createRelease(dto, userId));
 
         BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Categoria não informada");
 
@@ -109,12 +109,10 @@ class FlowCashTest {
         verify(command, never()).create(any(Release.class));
     }
 
-    private ReleaseDto getReleaseDto(String categoryId, String userId){
+    private ReleaseDto getReleaseDto(String categoryId){
         ReleaseCategoryDto categoryDto = ReleaseCategoryDto.builder().id(categoryId).build();
-        ReleaseUserDto userDto = ReleaseUserDto.builder().id(userId).build();
         return ReleaseDto.builder()
                 .category(categoryDto)
-                .user(userDto)
                 .description(getRelease().getDescription())
                 .dueDate(getRelease().getDueDate())
                 .status(getRelease().getStatus().name())

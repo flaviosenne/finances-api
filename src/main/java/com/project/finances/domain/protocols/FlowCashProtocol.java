@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public interface FlowCashProtocol {
 
-    ReleaseDto createRelease(ReleaseDto release);
+    ReleaseDto createRelease(ReleaseDto release, String userId);
 
     Page<Release> listReleases(String userId, Specification specification, Pageable pageable);
 }

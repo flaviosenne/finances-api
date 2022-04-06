@@ -16,7 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,15 +84,16 @@ class ManagerCategoryTest {
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
         Category categoryMock = new Category("category 1", userMock);
         String userId = "user-id-valid";
+        String description = "example-description";
 
 
-        when(categoryQuery.getCategoriesByUser(userId)).thenReturn(Arrays.asList(categoryMock));
+        when(categoryQuery.getCategoriesByUser(userId, description)).thenReturn(Collections.singletonList(categoryMock));
 
-        List<CategoryDto> result = categoryManagerProtocol.getCategories(userId);
+        List<CategoryDto> result = categoryManagerProtocol.getCategories(userId,description);
 
         BDDAssertions.assertThat(result).isNotEmpty().hasSize(1);
 
-        verify(categoryQuery, times(1)).getCategoriesByUser(userId);
+        verify(categoryQuery, times(1)).getCategoriesByUser(userId, description);
 
     }
 
