@@ -5,11 +5,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +17,7 @@ public class ExceptionHandle extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<CustomException> handleBadRequestException(BadRequestException badRequestException, HttpServletRequest request){
-        return new ResponseEntity<CustomException>(
+        return new ResponseEntity<>(
                 CustomException.builder()
                         .path(request.getRequestURI())
                         .message(badRequestException.getMessage())
@@ -34,7 +31,7 @@ public class ExceptionHandle extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<CustomException> handleBadCredentialRequestException(BadCredentialsException badRequestException, HttpServletRequest request){
-        return new ResponseEntity<CustomException>(
+        return new ResponseEntity<>(
                 CustomException.builder()
                         .path(request.getRequestURI())
                         .message(badRequestException.getMessage())
@@ -46,7 +43,7 @@ public class ExceptionHandle extends ResponseEntityExceptionHandler {
     }
      @ExceptionHandler(DataIntegrityViolationException.class)
         public ResponseEntity<CustomException> handleBadCredentialRequestException(DataIntegrityViolationException dataIntegrityViolationException, HttpServletRequest request){
-            return new ResponseEntity<CustomException>(
+            return new ResponseEntity<>(
                     CustomException.builder()
                             .path(request.getRequestURI())
                             .message(dataIntegrityViolationException.getMessage())

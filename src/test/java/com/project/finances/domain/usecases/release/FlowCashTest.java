@@ -6,7 +6,6 @@ import com.project.finances.domain.protocols.FlowCashProtocol;
 import com.project.finances.domain.usecases.category.repository.CategoryQuery;
 import com.project.finances.domain.usecases.release.dto.ReleaseCategoryDto;
 import com.project.finances.domain.usecases.release.dto.ReleaseDto;
-import com.project.finances.domain.usecases.release.dto.ReleaseUserDto;
 import com.project.finances.domain.usecases.release.repository.ReleaseCommand;
 import com.project.finances.domain.usecases.release.repository.ReleaseQuery;
 import com.project.finances.domain.usecases.user.repository.UserQuery;
@@ -25,7 +24,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;

@@ -6,6 +6,7 @@ import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.UserAccountProtocol;
 import com.project.finances.domain.usecases.user.dto.RedefinePasswordDto;
+import com.project.finances.domain.usecases.user.dto.UserUpdateDto;
 import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
 import com.project.finances.domain.usecases.user.repository.UserCodeCommand;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.project.finances.domain.exception.messages.MessagesException.USER_NOT_FOUND;
+import static com.project.finances.domain.exception.messages.MessagesException.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +39,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     public User createAccount(User user) {
         Optional<User> optionalUser = userQuery.findByUsername(user.getEmail());
 
-
-        if(optionalUser.isPresent()) throw new BadRequestException("Email já cadastrado na base de dados");
+        if(optionalUser.isPresent()) throw new BadRequestException(EMAIL_ALREADY_EXISTS);
 
         String hash = cryptographyProtocol.encodePassword(user.getPassword());
 
@@ -53,13 +53,24 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     }
 
     @Override
+    public User updateAccount(UserUpdateDto userRequest) {
+        Optional<User> optionalUser = userQuery.findByIdIsActive(userRequest.getId());
+
+        if(!optionalUser.isPresent()) throw new BadRequestException(USER_NOT_FOUND);
+
+        User userToUpdate = userRequest.updateAccount(optionalUser.get(), userRequest);
+
+        return userCommand.save(userToUpdate);
+    }
+
+    @Override
     public User detailsAccount(String id) {
         return userQuery.findByIdIsActive(id).orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
     }
 
     @Override
     public User activeAccount(String id) {
-        User user = userQuery.findByIdToActiveAccount(id).orElseThrow(() -> new BadRequestException("Código do usuário inválido"));
+        User user = userQuery.findByIdToActiveAccount(id).orElseThrow(() -> new BadRequestException(INVALID_CODE_USER));
 
         User userToUpdate = user.activeAccount().withId(user.getId());
 

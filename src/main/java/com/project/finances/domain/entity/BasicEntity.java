@@ -2,6 +2,7 @@ package com.project.finances.domain.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -23,6 +24,7 @@ public abstract class BasicEntity implements Serializable {
     @CreatedDate
     protected Date createdAt = new Date();
 
+    @LastModifiedDate
     @Column(name = "updated_at")
     @CreatedDate
     protected Date updatedAt = new Date();
