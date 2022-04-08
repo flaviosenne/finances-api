@@ -61,7 +61,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
 
         User userToUpdate = dto.updateAccount(optionalUser.get(), dto);
 
-        return userCommand.save(userToUpdate);
+        return userCommand.save(userToUpdate.withId(optionalUser.get().getId()));
     }
 
     @Override
