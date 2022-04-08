@@ -62,10 +62,9 @@ public class FlowCash implements FlowCashProtocol {
                 .orElseThrow(()-> new BadRequestException(CASH_FLOW_CATEGORY_NOT_PROVIDER));
 
         Release releaseToUpdate = ReleaseDto.of(dto)
-                .withId(entity.getId())
                 .withCategory(category)
                 .withUser(user);
 
-        return ReleaseDto.of(command.create(releaseToUpdate));
+        return ReleaseDto.of(command.create(releaseToUpdate.withId(entity.getId())));
     }
 }
