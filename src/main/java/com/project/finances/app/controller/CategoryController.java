@@ -27,7 +27,7 @@ public class CategoryController {
     @CrossOrigin
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> getCategories(@AuthenticationPrincipal User user, @RequestParam("description")String description){
+    public List<CategoryDto> getCategories(@AuthenticationPrincipal User user, @RequestParam(value = "description",defaultValue = "")String description){
         return categoryManagerProtocol.getCategories(user.getId(), description);
     }
 

@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import static com.project.finances.domain.exception.messages.MessagesException.CASH_FLOW_CATEGORY_NOT_PROVIDER;
+import static com.project.finances.domain.exception.messages.MessagesException.USER_NOT_FOUND;
+
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +31,9 @@ public class FlowCash implements FlowCashProtocol {
     @Override
     public ReleaseDto createRelease(ReleaseDto dto, String userId) {
 
-        User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException("Usuário não informado"));
+        User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
 
-        Category category = categoryQuery.getCategoryById(dto.getCategory().getId()).orElseThrow(()-> new BadRequestException("Categoria não informada"));
+        Category category = categoryQuery.getCategoryByIdAndByUserId(dto.getCategory().getId(), user.getId()).orElseThrow(()-> new BadRequestException(CASH_FLOW_CATEGORY_NOT_PROVIDER));
 
         Release releaseToSave = ReleaseDto.of(dto)
                 .withCategory(category)

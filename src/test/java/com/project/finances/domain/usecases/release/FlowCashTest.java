@@ -52,9 +52,10 @@ class FlowCashTest {
     void saveRelease(){
         String categoryId = "category-id-valid";
         String userId = "user-id-valid";
+        User user = getUser();
 
-        when(categoryQuery.getCategoryById(categoryId)).thenReturn(Optional.of(getCategory()));
-        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(getUser()));
+        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(user));
+        when(categoryQuery.getCategoryByIdAndByUserId(categoryId, user.getId())).thenReturn(Optional.of(getCategory()));
         when(command.create(any(Release.class))).thenReturn(getRelease());
 
         ReleaseDto dto = getReleaseDto(categoryId);
@@ -64,7 +65,7 @@ class FlowCashTest {
         BDDAssertions.assertThat(result).isNotNull().isInstanceOf(ReleaseDto.class);
 
         verify(userQuery, times(1)).findByIdIsActive(userId);
-        verify(categoryQuery, times(1)).getCategoryById(categoryId);
+        verify(categoryQuery, times(1)).getCategoryByIdAndByUserId(categoryId, user.getId());
         verify(command, times(1)).create(ReleaseDto.of(dto).withCategory(getCategory()).withUser(getUser()));
     }
 
@@ -80,7 +81,7 @@ class FlowCashTest {
 
         Throwable exception = BDDAssertions.catchThrowable(()->flowCashProtocol.createRelease(dto, userId));
 
-        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Usuário não informado");
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Usuário não encontrado");
 
         verify(userQuery, times(1)).findByIdIsActive(userId);
         verify(categoryQuery, never()).getCategoryById(anyString());
@@ -92,18 +93,19 @@ class FlowCashTest {
     void notFoundCategory(){
         String categoryId = "category-id-invalid";
         String userId = "user-id-valid";
+        User user = getUser();
 
         when(categoryQuery.getCategoryById(categoryId)).thenReturn(Optional.empty());
-        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(getUser()));
+        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(user));
 
         ReleaseDto dto = getReleaseDto(categoryId);
 
         Throwable exception = BDDAssertions.catchThrowable(()->flowCashProtocol.createRelease(dto, userId));
 
-        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Categoria não informada");
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Categoria não exitente para esse usuario");
 
         verify(userQuery, times(1)).findByIdIsActive(userId);
-        verify(categoryQuery, times(1)).getCategoryById(categoryId);
+        verify(categoryQuery, times(1)).getCategoryByIdAndByUserId(categoryId, user.getId());
         verify(command, never()).create(any(Release.class));
     }
 
