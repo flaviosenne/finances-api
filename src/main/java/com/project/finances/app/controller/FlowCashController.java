@@ -35,6 +35,13 @@ public class FlowCashController {
     }
 
     @CrossOrigin
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update(@RequestBody ReleaseDto dto, @AuthenticationPrincipal User user){
+        flowCashProtocol.updateRelease(dto, user.getId());
+    }
+
+    @CrossOrigin
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PageGenerics<ListReleasesVo> listReleases(@AuthenticationPrincipal User user,

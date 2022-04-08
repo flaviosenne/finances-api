@@ -7,7 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 interface ReleaseRepository extends JpaRepository<Release, String>, JpaSpecificationExecutor<Release> {
     @Query("select r from Release r join r.user u where u.id = :userId")
     Page<Release> findAllByUser(String userId, Pageable pageable);
+
+    @Query("select r from Release r join r.user u where u.id = :userId and r.id = :id")
+    Optional<Release> findByIdAndByUserId(String id, String userId);
 }

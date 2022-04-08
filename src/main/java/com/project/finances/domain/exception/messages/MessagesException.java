@@ -11,6 +11,7 @@ public class MessagesException {
 
 
     public static final String CASH_FLOW_CATEGORY_NOT_PROVIDER = "Categoria não exitente para esse usuario";
+    public static final String CASH_FLOW_NOT_FOUND = "Lançamento não encontrado";
 
 
 
