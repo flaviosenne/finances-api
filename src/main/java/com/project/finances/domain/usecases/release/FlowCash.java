@@ -67,4 +67,16 @@ public class FlowCash implements FlowCashProtocol {
 
         return ReleaseDto.of(command.update(releaseToUpdate, entity.getId()));
     }
+
+    @Override
+    public void deleteRelease(String id, String userId){
+        Release entity = query.findReleaseById(id, userId)
+                .orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
+
+        User user = userQuery.findByIdIsActive(userId)
+                .orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
+
+        command.delete(entity.getId(), user.getId());
+
+    }
 }

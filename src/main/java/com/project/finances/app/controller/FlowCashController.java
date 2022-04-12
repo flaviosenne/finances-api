@@ -42,6 +42,13 @@ public class FlowCashController {
     }
 
     @CrossOrigin
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") String id, @AuthenticationPrincipal User user){
+        flowCashProtocol.deleteRelease(id, user.getId());
+    }
+
+    @CrossOrigin
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PageGenerics<ListReleasesVo> listReleases(@AuthenticationPrincipal User user,

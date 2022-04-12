@@ -11,6 +11,8 @@ public interface FlowCashProtocol {
 
     ReleaseDto createRelease(ReleaseDto release, String userId);
 
+    void deleteRelease(String id, String userId);
+
     ReleaseDto updateRelease(ReleaseDto release, String userId);
 
     Page<Release> listReleases(String userId, Specification specification, Pageable pageable);

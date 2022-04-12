@@ -16,4 +16,8 @@ public class ReleaseCommand {
     public Release update(Release release, String id){
         return repository.save(release.withId(id));
     }
+
+    public void delete(String id, String userId){
+        repository.deleteByIdAndByUserId(id, userId);
+    }
 }

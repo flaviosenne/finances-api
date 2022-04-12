@@ -15,4 +15,7 @@ interface ReleaseRepository extends JpaRepository<Release, String>, JpaSpecifica
 
     @Query("select r from Release r join r.user u where u.id = :userId and r.id = :id")
     Optional<Release> findByIdAndByUserId(String id, String userId);
+
+    @Query("delete from Release r where r.id = :id and r.user.id = :userId")
+    void deleteByIdAndByUserId(String id, String userId);
 }
