@@ -65,6 +65,6 @@ public class FlowCash implements FlowCashProtocol {
                 .withCategory(category)
                 .withUser(user);
 
-        return ReleaseDto.of(command.create(releaseToUpdate.withId(entity.getId())));
+        return ReleaseDto.of(command.update(releaseToUpdate, entity.getId()));
     }
 }

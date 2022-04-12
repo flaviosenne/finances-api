@@ -42,4 +42,22 @@ class ReleaseCommandTest {
         verify(repository, times(1)).save(releaseMock);
     }
 
+
+    @Test
+    @DisplayName("Should update release when request is success")
+    void update(){
+        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        Category categoryMock = new Category("category 1", userMock);
+        Release releaseMock = new Release(100d, "test", Status.PENDING, Type.EXPENSE, new Date(), categoryMock, userMock);
+
+        when(repository.save(releaseMock)).thenReturn(releaseMock);
+
+        Release result = command.update(releaseMock, userMock.getId());
+
+        BDDAssertions.assertThat(result).isNotNull().isEqualTo(releaseMock);
+        BDDAssertions.assertThat(result.getId()).isNotNull().isEqualTo(userMock.getId());
+
+        verify(repository, times(1)).save(releaseMock);
+    }
+
 }

@@ -33,6 +33,7 @@ public class ReleaseDto {
 
     public static ReleaseDto of(Release entity){
         return ReleaseDto.builder()
+                .id(entity.getId())
                 .dueDate(entity.getDueDate())
                 .description(entity.getDescription())
                 .status(entity.getStatus().name())

@@ -12,4 +12,8 @@ public class ReleaseCommand {
     public Release create(Release release){
         return repository.save(release);
     }
+
+    public Release update(Release release, String id){
+        return repository.save(release.withId(id));
+    }
 }
