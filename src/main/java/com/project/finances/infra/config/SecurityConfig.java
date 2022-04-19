@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] ENDPOINTS_PUBLIC_POST = {
             "/v1/auth/login",
             "/v1/users",
-            "/v1/users/active",
+            "/v1/users/active/*",
             "/v1/users/retrieve-password"
     };
 
