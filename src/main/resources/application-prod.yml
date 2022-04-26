@@ -27,10 +27,10 @@ spring:
     username: facildespesa@gmail.com
     password: D3spes@Fac1l
     test-connection: true
-#    properties.mail.smtp:
-#      auth: true
-#      starttls.enable: true
-#      ssl.trust: smtp.gmail.com
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp.gmail.com
 
 #  mail:
 #    host: smtp.mailtrap.io
