@@ -25,7 +25,6 @@ public class MailService implements MailProtocol {
             helper.setTo(to);
             helper.setText(content, true);
             helper.setSubject(subject);
-            helper.setFrom("não-responder@finances.com.br");
 
             mailSender.send(message);
             log.info("Mail send with success");

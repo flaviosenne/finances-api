@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import static com.project.finances.domain.exception.messages.MessagesException.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -25,24 +27,56 @@ public class FlowCash implements FlowCashProtocol {
     private final UserQuery userQuery;
     private final CategoryQuery categoryQuery;
     private final ReleaseQuery query;
+
     @Override
-    public ReleaseDto createRelease(ReleaseDto dto) {
+    public ReleaseDto createRelease(ReleaseDto dto, String userId) {
 
-        User user = userQuery.findByIdIsActive(dto.getUser().getId()).orElseThrow(()-> new BadRequestException("Usuário não informado"));
+        User user = userQuery.findByIdIsActive(userId)
+                .orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
 
-        Category category = categoryQuery.getCategoryById(dto.getCategory().getId()).orElseThrow(()-> new BadRequestException("Categoria não informada"));
+        Category category = categoryQuery.getCategoryByIdAndByUserId(dto.getCategory().getId(), user.getId())
+                .orElseThrow(()-> new BadRequestException(CASH_FLOW_CATEGORY_NOT_PROVIDER));
 
         Release releaseToSave = ReleaseDto.of(dto)
                 .withCategory(category)
                 .withUser(user);
 
-        Release releaseSaved = command.create(releaseToSave);
-
-        return ReleaseDto.of(releaseSaved);
+        return ReleaseDto.of(command.create(releaseToSave));
     }
 
     @Override
     public Page<Release> listReleases(String userId, Specification specification, Pageable pageable) {
         return query.getReleases(userId, specification, pageable);
+    }
+
+    @Override
+    public ReleaseDto updateRelease(ReleaseDto dto, String userId) {
+
+        Release entity = query.findReleaseById(dto.getId(), userId)
+                .orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
+
+        User user = userQuery.findByIdIsActive(userId)
+                .orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
+
+        Category category = categoryQuery.getCategoryByIdAndByUserId(dto.getCategory().getId(), userId)
+                .orElseThrow(()-> new BadRequestException(CASH_FLOW_CATEGORY_NOT_PROVIDER));
+
+        Release releaseToUpdate = ReleaseDto.of(dto)
+                .withCategory(category)
+                .withUser(user);
+
+        return ReleaseDto.of(command.update(releaseToUpdate, entity.getId()));
+    }
+
+    @Override
+    public void deleteRelease(String id, String userId){
+        Release entity = query.findReleaseById(id, userId)
+                .orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
+
+        User user = userQuery.findByIdIsActive(userId)
+                .orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
+
+        command.delete(entity.getId(), user.getId());
+
     }
 }

@@ -6,6 +6,8 @@ import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.CryptographyProtocol;
 import com.project.finances.domain.protocols.UserAccountProtocol;
 import com.project.finances.domain.usecases.user.dto.RedefinePasswordDto;
+import com.project.finances.domain.usecases.user.dto.UserCreateDto;
+import com.project.finances.domain.usecases.user.dto.UserUpdateDto;
 import com.project.finances.domain.usecases.user.email.MailCreateAccountProtocol;
 import com.project.finances.domain.usecases.user.email.MailRetrievePasswordProtocol;
 import com.project.finances.domain.usecases.user.repository.UserCodeCommand;
@@ -56,10 +58,10 @@ class UserAccountTest {
 
     //todo create account
     @Test
-    @DisplayName("Should throw bad request exception when email already exist in Data base")
+    @DisplayName("Should throw bad request exception when try create user and email already exist in Data base")
     void notCreateAccount(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        User userToSaveMock = new User("example@email.com", "first-name", "last-name", "password", false);
+        UserCreateDto userToSaveMock = new UserCreateDto("first-name", "last-name","example@email.com", "password");
 
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.of(userMock));
 
@@ -76,9 +78,8 @@ class UserAccountTest {
     @DisplayName("Should create new user when email do not exist in DB and request is successful")
     void createAccount(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", false);
-        User userToSaveMock = new User("example@email.com", "first-name", "last-name", "password", false);
+        UserCreateDto userToSaveMock = new UserCreateDto("first-name", "last-name", "example@email.com","password");
 
-        userMock.withId(userToSaveMock.getId());
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.empty());
         when(cryptographyProtocol.encodePassword(anyString())).thenReturn("hash");
         when(userCommand.save(any(User.class))).thenReturn(userMock);
@@ -87,11 +88,45 @@ class UserAccountTest {
 
         BDDAssertions.assertThat(result).isNotNull();
         BDDAssertions.assertThat(result.getPassword()).isEqualTo("hash");
-        BDDAssertions.assertThat(result.getId()).isNotNull().isEqualTo(userToSaveMock.getId());
 
         verify(cryptographyProtocol, times(1)).encodePassword(userToSaveMock.getPassword());
         verify(userCommand, times(1)).save(any(User.class));
         verify(mailCreateAccountProtocol, times(1)).sendEmail(userMock);
+    }
+
+    //todo update account
+    @Test
+    @DisplayName("Should throw bad request exception when try update user and id do not exists in Data base")
+    void notUpdateAccount(){
+        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        UserUpdateDto userToUpdateMock = new UserUpdateDto("id-invalid","first-name", "last-name","example@email.com");
+
+        when(userQuery.findByIdIsActive(userToUpdateMock.getId())).thenReturn(Optional.empty());
+
+        Throwable exception = BDDAssertions.catchThrowable(()-> userAccountProtocol.updateAccount(userToUpdateMock));
+
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Usuário não encontrado");
+
+        verify(userQuery, times(1)).findByIdIsActive(userToUpdateMock.getId());
+        verify(userCommand, never()).save(any(User.class));
+    }
+
+    //todo update account
+    @Test
+    @DisplayName("Should update account when exist user in Data base")
+    void updateAccount(){
+        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        UserUpdateDto userToUpdateMock = new UserUpdateDto("id-valid","first-name", "last-name","example@email.com");
+
+        when(userQuery.findByIdIsActive(userToUpdateMock.getId())).thenReturn(Optional.of(userMock));
+        when(userCommand.save(any(User.class))).thenReturn(userMock);
+
+        User result = userAccountProtocol.updateAccount(userToUpdateMock);
+
+        BDDAssertions.assertThat(result).isNotNull();
+
+        verify(userQuery, times(1)).findByIdIsActive(userToUpdateMock.getId());
+        verify(userCommand, times(1)).save(any(User.class));
     }
 
 

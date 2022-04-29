@@ -8,7 +8,7 @@ public interface CategoryManagerProtocol {
 
     CategoryDto create(CategoryDto dto, String userId);
 
-    List<CategoryDto> getCategories(String userId);
+    List<CategoryDto> getCategories(String userId, String description);
 
     CategoryDto update(CategoryDto dto, String userId);
 
