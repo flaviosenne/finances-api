@@ -1,7 +1,9 @@
 package com.project.finances.domain.protocols;
 
+import com.project.finances.domain.usecases.user.dto.ResponseLoginDto;
+
 public interface TokenProtocol {
-    String generateToken(String id);
+    ResponseLoginDto generateToken(String id);
 
     String decodeToken(String token);
 

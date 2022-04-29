@@ -81,7 +81,7 @@ class LoginTest {
 
         when(userQuery.findByEmailActive(anyString())).thenReturn(Optional.of(userMock));
         when(cryptographyProtocol.passwordMatchers(dto.getPassword(), userMock.getPassword())).thenReturn(true);
-        when(tokenProtocol.generateToken(userMock.getId())).thenReturn("token");
+        when(tokenProtocol.generateToken(userMock.getId())).thenReturn(ResponseLoginDto.builder().token("token").build());
 
         ResponseLoginDto result = authenticationProtocol.login(dto);
 

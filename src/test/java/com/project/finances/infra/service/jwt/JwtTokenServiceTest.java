@@ -1,5 +1,6 @@
 package com.project.finances.infra.service.jwt;
 
+import com.project.finances.domain.usecases.user.dto.ResponseLoginDto;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +35,7 @@ class JwtTokenServiceTest {
     @DisplayName("Should return a token when payload is provider")
     void  generateToken(){
         String payload = "id";
-        String result = jwtTokenService.generateToken(payload);
+        ResponseLoginDto result = jwtTokenService.generateToken(payload);
 
         BDDAssertions.assertThat(result).isNotNull().isNotEqualTo(payload);
     }
@@ -43,9 +44,9 @@ class JwtTokenServiceTest {
     @DisplayName("Should return payload when token is provider")
     void  decodeToken(){
         String payload = "id";
-        String token = jwtTokenService.generateToken(payload);
+        ResponseLoginDto token = jwtTokenService.generateToken(payload);
 
-        String result = jwtTokenService.decodeToken(token);
+        String result = jwtTokenService.decodeToken(token.getToken());
 
         BDDAssertions.assertThat(result).isNotNull().isEqualTo(payload);
     }
@@ -73,9 +74,9 @@ class JwtTokenServiceTest {
     @Test
     @DisplayName("Should return true when token valid")
     void  validToken(){
-        String token = jwtTokenService.generateToken("payload");
+        ResponseLoginDto token = jwtTokenService.generateToken("payload");
 
-        boolean result = jwtTokenService.tokenIsValid(token);
+        boolean result = jwtTokenService.tokenIsValid(token.getToken());
 
         BDDAssertions.assertThat(result).isNotNull().isTrue();
     }
@@ -83,10 +84,10 @@ class JwtTokenServiceTest {
     @Test
     @DisplayName("Should return false when token invalid")
     void  invalidToken(){
-        String token = jwtTokenService.generateToken("payload");
+        ResponseLoginDto token = jwtTokenService.generateToken("payload");
 
         ReflectionTestUtils.setField(jwtTokenService, "secretKey", "other key");
-        boolean result = jwtTokenService.tokenIsValid(token);
+        boolean result = jwtTokenService.tokenIsValid(token.getToken());
 
         BDDAssertions.assertThat(result).isNotNull().isFalse();
     }
