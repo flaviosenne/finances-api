@@ -6,9 +6,9 @@ spring:
     name: finances
 
   datasource:
-    url: jdbc:postgresql://ec2-54-158-26-89.compute-1.amazonaws.com:5432/de31lhss3cultl
-    username: hpsyvogsqbztvk
-    password: a6749e009a1180146ca374e2a884690fa59b7f5535e61de9b5c63dd2f70a1221
+    url: jdbc:postgresql://ec2-3-224-125-117.compute-1.amazonaws.com:5432/d3evemq0sdh006
+    username: ivcafcfqoykzhj
+    password: ff5138d64bf916d5c5cf40256d2411e03a024025db4c09764286061fac4baf55
   # variavel de ambiente do heroku, que providencia um banco padrão
 
 
