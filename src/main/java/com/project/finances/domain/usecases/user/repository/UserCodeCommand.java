@@ -2,6 +2,7 @@ package com.project.finances.domain.usecases.user.repository;
 
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserCode;
+import com.project.finances.domain.usecases.user.utils.UserUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,13 @@ public class UserCodeCommand {
 
         userCodeOptional.ifPresent(this::invalidateCode);
 
-        UserCode userCodeSaved = repository.save(UserCode.builder().user(user).isValid(true).build());
+        UserCode userCodeToSave = UserCode.builder()
+                .user(user).isValid(true).build()
+                .withCode(UserUtils.generateCode());
 
-        return userCodeSaved.getId();
+        UserCode userCodeSaved = repository.save(userCodeToSave);
+
+        return userCodeSaved.getCode();
     }
 
     public UserCode invalidateCode(UserCode userCode){

@@ -31,7 +31,7 @@ class UserCodeCommandTest {
     @DisplayName("Should disable preview code user when user already contains saved in DB")
     void disableAndSaveCode(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        UserCode userCodeMock = new UserCode(userMock, true);
+        UserCode userCodeMock = new UserCode(userMock, true, "");
 
         String userId = userMock.getId();
 
@@ -40,7 +40,7 @@ class UserCodeCommandTest {
 
         String result = userCodeCommand.save(userMock);
 
-        BDDAssertions.assertThat(result).isNotNull().isEqualTo(userCodeMock.getId());
+        BDDAssertions.assertThat(result).isNotNull().isEqualTo(userCodeMock.getCode());
         BDDAssertions.assertThat(userCodeMock.isValid()).isFalse();
 
         verify(repository, times(1)).findByUserId(userId);
@@ -51,7 +51,7 @@ class UserCodeCommandTest {
     @DisplayName("Should save code user when user don't has code saved in DB")
     void saveCode(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        UserCode userCodeMock = new UserCode(userMock, true);
+        UserCode userCodeMock = new UserCode(userMock, true, "");
 
         String userId = userMock.getId();
 
@@ -60,7 +60,7 @@ class UserCodeCommandTest {
 
         String result = userCodeCommand.save(userMock);
 
-        BDDAssertions.assertThat(result).isNotNull().isEqualTo(userCodeMock.getId());
+        BDDAssertions.assertThat(result).isNotNull().isEqualTo(userCodeMock.getCode());
         BDDAssertions.assertThat(userCodeMock.isValid()).isTrue();
 
         verify(repository, times(1)).findByUserId(userId);

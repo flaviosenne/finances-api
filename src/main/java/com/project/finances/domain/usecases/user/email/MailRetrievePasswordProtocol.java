@@ -4,6 +4,6 @@ import com.project.finances.domain.entity.User;
 
 public interface MailRetrievePasswordProtocol {
 
-    void sendEmail(User user, String code);
+    void sendEmailRetrievePassword(User user, String code);
 
 }

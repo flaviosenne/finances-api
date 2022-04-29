@@ -11,7 +11,12 @@ import java.util.Optional;
 public class UserCodeQuery {
     private final UserCodeRepository repository;
 
-    public Optional<UserCode> findByCode(String code){
-        return repository.findByIdAndByUserActive(code);
+    public Optional<UserCode> findByCodeToRetrievePassword(String code){
+        return repository.findByCodeRetrievePassword(code);
+    }
+
+
+    public Optional<UserCode> findByCodeToActiveAccount(String code){
+        return repository.findByCodeActiveAccount(code);
     }
 }

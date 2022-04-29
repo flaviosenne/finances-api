@@ -48,7 +48,9 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
 
         User userSaved = userCommand.save(userToSaved);
 
-        mailCreateAccountProtocol.sendEmail(userSaved);
+        String code = userCodeCommand.save(userSaved);
+
+        mailCreateAccountProtocol.sendEmailActiveAccount(userSaved, code);
 
         return userSaved;
     }
@@ -70,17 +72,19 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     }
 
     @Override
-    public User activeAccount(String id) {
-        User user = userQuery.findByIdToActiveAccount(id).orElseThrow(() -> new BadRequestException(INVALID_CODE_USER));
+    public User activeAccount(String code) {
+        UserCode userCode = userCodeQuery.findByCodeToActiveAccount(code).orElseThrow(() -> new BadRequestException(INVALID_CODE_USER));
 
-        User userToUpdate = user.activeAccount().withId(user.getId());
+        User userToUpdate = userCode.getUser().activeAccount().withId(userCode.getUser().getId());
 
-        return userCommand.update(userToUpdate, user.getId());
+        userCodeCommand.invalidateCode(userCode);
+
+        return userCommand.update(userToUpdate, userCode.getUser().getId());
     }
 
     @Override
     public User redefinePassword(RedefinePasswordDto dto) {
-        UserCode userCode = userCodeQuery.findByCode(dto.getCode()).orElseThrow(()->new BadRequestException("Código inexistente ou inválido"));
+        UserCode userCode = userCodeQuery.findByCodeToRetrievePassword(dto.getCode()).orElseThrow(()->new BadRequestException("Código inexistente ou inválido"));
 
         userCodeCommand.invalidateCode(userCode);
 
@@ -100,7 +104,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
         if(optionalUser.isPresent()){
             String code = userCodeCommand.save(optionalUser.get());
 
-            mailRetrievePasswordProtocol.sendEmail(optionalUser.get(), code);
+            mailRetrievePasswordProtocol.sendEmailRetrievePassword(optionalUser.get(), code);
         }
 
     }

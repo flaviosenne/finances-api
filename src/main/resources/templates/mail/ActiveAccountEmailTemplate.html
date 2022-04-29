@@ -5,12 +5,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Finanças</title>
+    <style>
+        .code {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #03396c;
+        }
+    </style>
 </head>
 <body>
     <div>
         <p>Bem Vindo [[${user.firstName}]], percebemos que vc acabou de criar uma conta em nossa plataforma.</p>
         <p>Caso queira ativar sua conta, basta copiar o código a seguir</p>
-        <p> [[${user.id}]]</p>
+        <p class="code"> [[${code}]]</p>
         <p>Caso não tenha sido você, desconsidere essa mensagem</p>
     </div>
 </body>

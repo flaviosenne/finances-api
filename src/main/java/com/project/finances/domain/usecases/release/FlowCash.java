@@ -79,4 +79,8 @@ public class FlowCash implements FlowCashProtocol {
         command.delete(entity.getId(), user.getId());
 
     }
+
+    public void sharedReleases(){
+
+    }
 }

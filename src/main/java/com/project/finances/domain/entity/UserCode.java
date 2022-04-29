@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Random;
 
 
 @NoArgsConstructor
@@ -22,13 +23,15 @@ public class UserCode extends BasicEntity  {
 
     private boolean isValid;
 
+    private String code;
+
     public UserCode disableCode(){
         this.isValid = false;
         return this;
     }
 
-    public UserCode withId(String id){
-        this.id = id;
+    public UserCode withCode(String code){
+        this.code = code;
         return this;
     }
 
