@@ -63,4 +63,11 @@ public class FlowCashController {
                 pageable.getPageSize(), pageable.getPageNumber(),
                 resultPageable.isLast(), resultPageable.getContent());
     }
+
+    @CrossOrigin
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void requestShareCashFlow(){
+
+    }
 }
