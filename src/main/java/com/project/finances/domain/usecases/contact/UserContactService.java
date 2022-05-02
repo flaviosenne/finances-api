@@ -1,6 +1,8 @@
 package com.project.finances.domain.usecases.contact;
 
+import com.project.finances.domain.entity.Contact;
 import com.project.finances.domain.entity.UserContact;
+import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.UserContactProtocol;
 import com.project.finances.domain.usecases.contact.dto.CreateContactDto;
 import com.project.finances.domain.usecases.contact.dto.MakeUserPublicDto;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.project.finances.domain.exception.messages.MessagesException.CONTACT_NOT_FOUND;
+
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +24,7 @@ public class UserContactService implements UserContactProtocol {
 
     private final UserContactCommand userContactCommand;
     private final UserContactQuery userContactQuery;
-    private final UserQuery userQuery;
+    private final ContactQuery contactQuery;
 
     @Override
     public UserContact addContact(CreateContactDto dto) {
@@ -33,9 +37,12 @@ public class UserContactService implements UserContactProtocol {
     }
 
     @Override
-    public List<UserContact> listContacts(String userId) {
-        return null;
+    public List<Contact> listContacts(String userId) {
+        UserContact usercontact = userContactQuery.getUserContact(userId).orElseThrow(()-> new BadRequestException(CONTACT_NOT_FOUND));
+
+        return contactQuery.getContacts(usercontact.getId());
     }
+
 
     @Override
     public List<UserContact> searchUsers(String username) {

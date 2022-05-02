@@ -24,4 +24,6 @@ public class UserContactQuery {
     public List<UserContact> searchUsers(String username){
         return userContactRepository.search(username);
     }
+
+
 }

@@ -46,7 +46,7 @@ public class UserContactController {
     @CrossOrigin
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ListContactsVo> list(@AuthenticationPrincipal User user){
+    public List<ListContactsVo> getContacts(@AuthenticationPrincipal User user){
         return contactProtocol.listContacts(user.getId()).stream().map(ListContactsVo::of)
                 .collect(Collectors.toList());
 

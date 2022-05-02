@@ -1,5 +1,6 @@
 package com.project.finances.app.vo.user;
 
+import com.project.finances.domain.entity.Contact;
 import com.project.finances.domain.entity.UserContact;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,12 +16,12 @@ public class ListContactsVo {
     private ListContactsUserVo user;
 
 
-    public  static ListContactsVo of(UserContact entity){
+    public  static ListContactsVo of(Contact entity){
         return ListContactsVo.builder()
                 .id(entity.getId())
-                .avatar(entity.getAvatar())
-                .username(entity.getUsername())
-                .user(ListContactsUserVo.of(entity.getUser()))
+                .avatar(entity.getUserReceive().getAvatar())
+                .username(entity.getUserReceive().getUsername())
+                .user(ListContactsUserVo.of(entity.getUserReceive().getUser()))
                 .build();
     }
 }
