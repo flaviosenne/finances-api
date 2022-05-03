@@ -16,7 +16,19 @@ public class ContactQuery {
         return contactRepository.findByIdAndByUserReceiveInviteId(id, contactUserReceiveInviteId);
     }
 
+    public Optional<Contact> findByIdAndStatusPending(String id, String contactUserReceiveInviteId){
+        return contactRepository.findByIdAndByUserReceiveInviteIdAndStatusPending(id, contactUserReceiveInviteId);
+    }
+
     public List<Contact> getContacts(String userContactId) {
         return contactRepository.getContacts(userContactId);
+    }
+
+    public List<Contact> listInvitesPending(String userReceiveInviteId) {
+        return contactRepository.findAllContactsByStatusPending(userReceiveInviteId);
+    }
+
+    public boolean alreadyExistsInvite(String userSendInviteId, String userReceiveInviteId){
+        return contactRepository.findByUserSendInviteIdAndUserReceiveInviteId(userSendInviteId, userReceiveInviteId).isPresent();
     }
 }

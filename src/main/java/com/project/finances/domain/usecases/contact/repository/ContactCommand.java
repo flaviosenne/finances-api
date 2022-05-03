@@ -9,6 +9,8 @@ import com.project.finances.domain.usecases.user.repository.UserQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.project.finances.domain.exception.messages.MessagesException.*;
 
 @Service
@@ -20,20 +22,19 @@ public class ContactCommand {
     private final ContactQuery contactQuery;
 
     public Contact inviteUser(CreateContactDto dto, String userRequestId){
-        if(userRequestId.equals(dto.getUserReceive().getId())) throw new BadRequestException(USER_CANT_BE_THE_SAME);
-
         User userRequest = userQuery.findByIdIsActive(userRequestId).orElseThrow(()-> new BadRequestException(USER_REQUEST_INVITE_NOT_FOUND));
 
-        UserContact userContact = userContactQuery.getUserContact(userRequest.getId())
+        UserContact userSendInviteId = userContactQuery.getUserContact(userRequest.getId())
                 .orElseThrow(() ->new BadRequestException(CONTACT_NOT_FOUND));
 
-        UserContact userContactReceive = userContactQuery.getUserContact(dto.getUserReceive().getId())
+        if(userSendInviteId.getId().equals(dto.getUserContactId())) throw new BadRequestException(USER_CANT_BE_THE_SAME);
+
+        UserContact userReceiveInviteId = userContactQuery.findContactById(dto.getUserContactId())
                 .orElseThrow(() ->new BadRequestException(CONTACT_NOT_FOUND));
 
-        Contact addContact = Contact.builder()
-                .userRequest(userContact)
-                .userReceive(userContactReceive)
-                .build();
+        if(contactQuery.alreadyExistsInvite(userSendInviteId.getId(), userReceiveInviteId.getId())) throw new BadRequestException(INVITE_ALREADY_EXISTS);
+
+        Contact addContact = CreateContactDto.createContact(userSendInviteId, userReceiveInviteId);
 
         return contactRepository.save(addContact);
 
@@ -43,7 +44,7 @@ public class ContactCommand {
         UserContact userContact = userContactQuery.getUserContact(userReceiveInviteId)
                 .orElseThrow(()-> new BadRequestException(CONTACT_NOT_FOUND));
 
-        return contactQuery.findById(inviteId, userContact.getId())
+        return contactQuery.findByIdAndStatusPending(inviteId, userContact.getId())
                 .orElseThrow(()-> new BadRequestException(INVITE_NOT_FOUND));
 
     }
@@ -55,11 +56,11 @@ public class ContactCommand {
         return contactRepository.save(invite.acceptInvite());
     }
 
-
     public Contact refusedInvite(String inviteId, String userReceiveInviteId){
         Contact invite = getInvite(inviteId, userReceiveInviteId);
 
         return contactRepository.save(invite.refusedInvite());
     }
+
 
 }

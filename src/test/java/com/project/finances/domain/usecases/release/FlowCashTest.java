@@ -252,7 +252,7 @@ class FlowCashTest {
                 .description(getRelease().getDescription())
                 .dueDate(getRelease().getDueDate())
                 .status(getRelease().getStatusRelease().name())
-                .typeRelease(getRelease().getTypeRelease().name())
+                .type(getRelease().getTypeRelease().name())
                 .value(getRelease().getValue())
                 .build();
 

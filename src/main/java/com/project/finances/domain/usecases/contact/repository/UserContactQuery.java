@@ -21,6 +21,10 @@ public class UserContactQuery {
         return userContactRepository.findByUserId(userId);
     }
 
+    public Optional<UserContact> findContactById(String id){
+        return userContactRepository.findById(id);
+    }
+
     public List<UserContact> searchUsers(String username){
         return userContactRepository.search(username);
     }

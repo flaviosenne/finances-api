@@ -11,7 +11,7 @@ import javax.persistence.*;
 @ToString
 @Getter
 @Entity
-@Table(name = "custom_contact")
+@Table(name = "custom_user_contact")
 @EqualsAndHashCode
 public class UserContact extends BasicEntity {
 

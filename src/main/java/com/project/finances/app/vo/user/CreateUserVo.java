@@ -1,6 +1,5 @@
 package com.project.finances.app.vo.user;
 
-import com.project.finances.domain.entity.User;
 import com.project.finances.domain.usecases.user.dto.UserCreateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

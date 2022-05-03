@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserContactProtocol {
 
-    UserContact addContact(CreateContactDto dto);
+    Contact addContact(CreateContactDto dto, String userId);
 
     void makePublic(String userId, MakeUserPublicDto dto);
 

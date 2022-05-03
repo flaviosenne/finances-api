@@ -31,6 +31,7 @@ public class Contact extends BasicEntity {
         return this;
     }
 
+
     public Contact acceptInvite(){
         this.status = StatusInvite.ACCEPT;
         return this;

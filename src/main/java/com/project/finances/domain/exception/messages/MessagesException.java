@@ -9,7 +9,8 @@ public class MessagesException {
     public static final String INVITE_NOT_FOUND = "Convite não encontrado";
     public static final String EMAIL_ALREADY_EXISTS = "Email já cadastrado na base de dados";
     public static final String INVALID_CODE_USER = "Código do usuário inválido";
-    public static final String USER_CANT_BE_THE_SAME = "Você não pode mandar convite para você mesmo";
+    public static final String USER_CANT_BE_THE_SAME = "Você não pode mandar convite para si mesmo";
+    public static final String INVITE_ALREADY_EXISTS = "Você já tem uma solicitação com esse usuário";
 
 
     public static final String CATEGORY_NOT_FOUND = "Categoria não encontrada";

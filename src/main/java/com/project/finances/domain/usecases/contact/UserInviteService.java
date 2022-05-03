@@ -4,6 +4,7 @@ import com.project.finances.domain.entity.Contact;
 import com.project.finances.domain.entity.UserContact;
 import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.UserContactProtocol;
+import com.project.finances.domain.protocols.UserInviteProtocol;
 import com.project.finances.domain.usecases.contact.dto.CreateContactDto;
 import com.project.finances.domain.usecases.contact.dto.MakeUserPublicDto;
 import com.project.finances.domain.usecases.contact.repository.ContactCommand;
@@ -20,33 +21,24 @@ import static com.project.finances.domain.exception.messages.MessagesException.C
 
 @Service
 @RequiredArgsConstructor
-public class UserContactService implements UserContactProtocol {
+public class UserInviteService implements UserInviteProtocol {
 
-    private final UserContactCommand userContactCommand;
-    private final UserContactQuery userContactQuery;
     private final ContactQuery contactQuery;
     private final ContactCommand contactCommand;
 
     @Override
-    public Contact addContact(CreateContactDto dto, String userId) {
-        return contactCommand.inviteUser(dto, userId);
+    public List<Contact> listInvites(String userReceiveInviteId) {
+        return contactQuery.listInvitesPending(userReceiveInviteId);
     }
 
     @Override
-    public void makePublic(String userId, MakeUserPublicDto dto) {
-        userContactCommand.makeUserPublic(userId, dto);
+    public void acceptInvite(String inviteId, String userReceiveInviteId) {
+        contactCommand.acceptInvite(inviteId, userReceiveInviteId);
     }
 
     @Override
-    public List<Contact> listContacts(String userId) {
-        UserContact usercontact = userContactQuery.getUserContact(userId).orElseThrow(()-> new BadRequestException(CONTACT_NOT_FOUND));
-
-        return contactQuery.getContacts(usercontact.getId());
+    public void refusedInvite(String inviteId, String userReceiveInviteId) {
+        contactCommand.refusedInvite(inviteId, userReceiveInviteId);
     }
 
-
-    @Override
-    public List<UserContact> searchUsers(String username) {
-        return userContactQuery.searchUsers(username);
-    }
 }

@@ -65,7 +65,7 @@ public class FlowCashController {
     }
 
     @CrossOrigin
-    @PutMapping
+    @PutMapping("/share")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void requestShareCashFlow(){
 
