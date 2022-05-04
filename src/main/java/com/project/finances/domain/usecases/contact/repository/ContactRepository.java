@@ -19,9 +19,11 @@ interface ContactRepository extends JpaRepository<Contact, String> {
     Optional<Contact> findByIdAndByUserReceiveInviteIdAndStatusPending(String id, String userInviteReceiveId);
 
 
-    @Query("select c from Contact c join c.userReceive u " +
+    @Query("select c from Contact c " +
+            "join c.userRequest sendInvite " +
+            "join c.userReceive receiveInvite " +
             "where c.status = 'ACCEPT' " +
-            "and u.id = :userContactId")
+            "and  (sendInvite.id = :userContactId OR receiveInvite.id = :userContactId) ")
     List<Contact> getContacts(String userContactId);
 
     @Query("select c from Contact c " +
