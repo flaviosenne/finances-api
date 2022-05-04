@@ -29,14 +29,6 @@ public class UserContactController {
     }
 
     @CrossOrigin
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody CreateContactDto dto, @AuthenticationPrincipal User user){
-        contactProtocol.addContact(dto, user.getId());
-    }
-
-
-    @CrossOrigin
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ListContactsVo> getContacts(@AuthenticationPrincipal User user){

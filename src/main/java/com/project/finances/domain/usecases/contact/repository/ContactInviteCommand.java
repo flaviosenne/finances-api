@@ -16,26 +16,10 @@ import static com.project.finances.domain.exception.messages.MessagesException.*
 public class ContactInviteCommand {
     private final UserContactQuery userContactQuery;
     private final ContactInviteRepository contactInviteRepository;
-    private final UserQuery userQuery;
     private final ContactInviteQuery contactInviteQuery;
 
-    public ContactInvite inviteUser(CreateContactDto dto, String userRequestId){
-        User userRequest = userQuery.findByIdIsActive(userRequestId).orElseThrow(()-> new BadRequestException(USER_REQUEST_INVITE_NOT_FOUND));
-
-        UserContact userSendInviteId = userContactQuery.getUserContact(userRequest.getId())
-                .orElseThrow(() ->new BadRequestException(CONTACT_NOT_FOUND));
-
-        if(userSendInviteId.getId().equals(dto.getUserContactId())) throw new BadRequestException(USER_CANT_BE_THE_SAME);
-
-        UserContact userReceiveInviteId = userContactQuery.findContactById(dto.getUserContactId())
-                .orElseThrow(() ->new BadRequestException(CONTACT_NOT_FOUND));
-
-        if(contactInviteQuery.alreadyExistsInvite(userSendInviteId.getId(), userReceiveInviteId.getId())) throw new BadRequestException(INVITE_ALREADY_EXISTS);
-
-        ContactInvite addContactInvite = CreateContactDto.createContact(userSendInviteId, userReceiveInviteId);
-
-        return contactInviteRepository.save(addContactInvite);
-
+    public ContactInvite inviteUser(ContactInvite contactInvite){
+        return contactInviteRepository.save(contactInvite);
     }
 
     private ContactInvite getInvite(String inviteId, String userReceiveInviteId){
