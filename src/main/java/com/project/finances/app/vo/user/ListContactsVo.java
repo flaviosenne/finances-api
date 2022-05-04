@@ -1,7 +1,6 @@
 package com.project.finances.app.vo.user;
 
-import com.project.finances.domain.entity.Contact;
-import com.project.finances.domain.entity.UserContact;
+import com.project.finances.domain.entity.ContactInvite;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +15,7 @@ public class ListContactsVo {
     private ListContactsUserVo user;
 
 
-    public  static ListContactsVo of(Contact entity){
+    public  static ListContactsVo of(ContactInvite entity){
         return ListContactsVo.builder()
                 .id(entity.getId())
                 .avatar(entity.getUserReceive().getAvatar())

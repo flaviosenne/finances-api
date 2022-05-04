@@ -11,9 +11,9 @@ import javax.persistence.*;
 @ToString
 @Getter
 @Entity
-@Table(name = "custom_contact")
+@Table(name = "custom_user_contact_invite")
 @EqualsAndHashCode
-public class Contact extends BasicEntity {
+public class ContactInvite extends BasicEntity {
 
     @Enumerated(EnumType.STRING)
     private StatusInvite status = StatusInvite.PENDING;
@@ -26,19 +26,19 @@ public class Contact extends BasicEntity {
     @JoinColumn(name = "user_contact_receive_id", referencedColumnName = "id")
     private UserContact userReceive;
 
-    public Contact withId(String id){
+    public ContactInvite withId(String id){
         this.id = id;
         return this;
     }
 
 
-    public Contact acceptInvite(){
+    public ContactInvite acceptInvite(){
         this.status = StatusInvite.ACCEPT;
         return this;
     }
 
 
-    public Contact refusedInvite(){
+    public ContactInvite refusedInvite(){
         this.status = StatusInvite.REFUSED;
         return this;
     }

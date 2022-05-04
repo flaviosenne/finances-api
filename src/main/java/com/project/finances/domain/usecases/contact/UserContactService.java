@@ -1,13 +1,13 @@
 package com.project.finances.domain.usecases.contact;
 
-import com.project.finances.domain.entity.Contact;
+import com.project.finances.domain.entity.ContactInvite;
 import com.project.finances.domain.entity.UserContact;
 import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.UserContactProtocol;
 import com.project.finances.domain.usecases.contact.dto.CreateContactDto;
 import com.project.finances.domain.usecases.contact.dto.MakeUserPublicDto;
-import com.project.finances.domain.usecases.contact.repository.ContactCommand;
-import com.project.finances.domain.usecases.contact.repository.ContactQuery;
+import com.project.finances.domain.usecases.contact.repository.ContactInviteCommand;
+import com.project.finances.domain.usecases.contact.repository.ContactInviteQuery;
 import com.project.finances.domain.usecases.contact.repository.UserContactCommand;
 import com.project.finances.domain.usecases.contact.repository.UserContactQuery;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,12 @@ public class UserContactService implements UserContactProtocol {
 
     private final UserContactCommand userContactCommand;
     private final UserContactQuery userContactQuery;
-    private final ContactQuery contactQuery;
-    private final ContactCommand contactCommand;
+    private final ContactInviteQuery contactInviteQuery;
+    private final ContactInviteCommand contactInviteCommand;
 
     @Override
-    public Contact addContact(CreateContactDto dto, String userId) {
-        return contactCommand.inviteUser(dto, userId);
+    public ContactInvite addContact(CreateContactDto dto, String userId) {
+        return contactInviteCommand.inviteUser(dto, userId);
     }
 
     @Override
@@ -38,10 +38,10 @@ public class UserContactService implements UserContactProtocol {
     }
 
     @Override
-    public List<Contact> listContacts(String userId) {
+    public List<ContactInvite> listContacts(String userId) {
         UserContact usercontact = userContactQuery.getUserContact(userId).orElseThrow(()-> new BadRequestException(CONTACT_NOT_FOUND));
 
-        return contactQuery.getContacts(usercontact.getId());
+        return contactInviteQuery.getContacts(usercontact.getId());
     }
 
 
