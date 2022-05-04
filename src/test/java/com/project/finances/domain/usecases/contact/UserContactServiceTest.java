@@ -1,5 +1,6 @@
 package com.project.finances.domain.usecases.contact;
 
+import com.project.finances.domain.entity.ContactInvite;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserContact;
 import com.project.finances.domain.exception.BadRequestException;
@@ -17,6 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -40,6 +43,7 @@ class UserContactServiceTest {
                 contactInviteQuery, userQuery);
     }
 
+    // todo make public
     @Test
     @DisplayName("Should throw bad request exception when user not found in DB")
     void userNotFound(){
@@ -103,6 +107,53 @@ class UserContactServiceTest {
         verify(userQuery, times(1)).findByIdIsActive(userId);
         verify(userContactQuery, times(1)).getUserContact(userId);
         verify(userContactCommand, times(1)).makeUserPublic(any(UserContact.class));
+    }
+
+    @Test
+    @DisplayName("Should throw bad request exception when user is not a contact")
+    void userContactNotFound(){
+        String userId = "valid-id";
+
+        when(userContactQuery.getUserContact(userId)).thenReturn(Optional.empty());
+
+        Throwable exception = BDDAssertions.catchThrowable(()->userContactProtocol.listContacts(userId));
+
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class)
+                .hasMessage("Username não encontrado / visibilidade privada");
+
+        verify(userContactQuery, times(1)).getUserContact(userId);
+        verify(contactInviteQuery, never()).getContacts(anyString());
+    }
+
+    @Test
+    @DisplayName("Should return a list of contacts")
+    void getContacts(){
+        String userId = "valid-id";
+
+        when(userContactQuery.getUserContact(userId)).thenReturn(Optional.of(UserContact.builder().build()));
+        when(contactInviteQuery.getContacts(anyString())).thenReturn(Arrays.asList(ContactInvite.builder().build()));
+
+        List<ContactInvite> result = userContactProtocol.listContacts(userId);
+
+        BDDAssertions.assertThat(result).isNotEmpty();
+
+        verify(userContactQuery, times(1)).getUserContact(userId);
+        verify(contactInviteQuery, times(1)).getContacts(anyString());
+    }
+
+    // todo search contact
+    @Test
+    @DisplayName("Should return a list of contacts with usernames")
+    void searchUsers(){
+        String username = "username";
+
+        when(userContactQuery.searchUsers(username)).thenReturn(Arrays.asList(UserContact.builder().build()));
+
+        List<UserContact> result = userContactProtocol.searchUsers(username);
+
+        BDDAssertions.assertThat(result).isNotEmpty().hasSize(1);
+
+        verify(userContactQuery, times(1)).searchUsers(username);
     }
 
 }
