@@ -14,21 +14,9 @@ import static com.project.finances.domain.exception.messages.MessagesException.U
 @Service
 @RequiredArgsConstructor
 public class UserContactCommand {
-    private final UserQuery userQuery;
-    private final UserContactQuery userContactQuery;
     private final UserContactRepository userContactRepository;
 
-    public UserContact makeUserPublic(String userId, MakeUserPublicDto dto){
-        User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
-
-        if(userContactQuery.getUserContact(user.getId()).isPresent()) throw  new BadRequestException(USER_ALREADY_PUBLIC);
-
-        UserContact userContactToSave = UserContact.builder()
-                .user(user)
-                .avatar(dto.getAvatar())
-                .username(dto.getUsername())
-                .build();
-
+    public UserContact makeUserPublic(UserContact userContactToSave){
         return userContactRepository.save(userContactToSave);
     }
 }
