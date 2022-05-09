@@ -1,0 +1,9 @@
+services:
+  db-mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: joao
+      MYSQL_DATABASE: finances
+    ports:
+      - "3307:3306"

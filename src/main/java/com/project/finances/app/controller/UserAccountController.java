@@ -57,10 +57,10 @@ public class UserAccountController {
     }
 
     @CrossOrigin
-    @PutMapping("/active-account/{user-id}")
+    @PutMapping("/active-account/{code}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void activeAccount(@PathVariable("user-id") String id) {
-        accountProtocol.activeAccount(id);
+    public void activeAccount(@PathVariable("code") String code) {
+        accountProtocol.activeAccount(code);
     }
 
 
