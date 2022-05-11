@@ -11,7 +11,7 @@ public interface UserContactProtocol {
 
     void makePublic(String userId, MakeUserPublicDto dto);
 
-    List<ContactInvite> listContacts(String userId);
+    List<UserContact> listContacts(String userId);
 
     List<UserContact> searchUsers(String username);
 

@@ -1,6 +1,7 @@
 package com.project.finances.domain.usecases.contact.repository;
 
 import com.project.finances.domain.entity.ContactInvite;
+import com.project.finances.domain.entity.UserContact;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

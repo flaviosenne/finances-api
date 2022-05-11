@@ -32,7 +32,7 @@ public class UserInviteController {
     @CrossOrigin
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody CreateContactDto dto, @AuthenticationPrincipal User user){
+    public void invite(@RequestBody CreateContactDto dto, @AuthenticationPrincipal User user){
         inviteProtocol.inviteContact(dto, user.getId());
     }
 

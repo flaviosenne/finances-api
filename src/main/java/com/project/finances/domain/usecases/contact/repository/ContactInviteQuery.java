@@ -1,11 +1,13 @@
 package com.project.finances.domain.usecases.contact.repository;
 
 import com.project.finances.domain.entity.ContactInvite;
+import com.project.finances.domain.entity.UserContact;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +22,14 @@ public class ContactInviteQuery {
         return contactInviteRepository.findByIdAndByUserReceiveInviteIdAndStatusPending(id, contactUserReceiveInviteId);
     }
 
-    public List<ContactInvite> getContacts(String userContactId) {
-        return contactInviteRepository.getContacts(userContactId);
+    public List<UserContact> getContacts(String userContactId) {
+        return contactInviteRepository.getContacts(userContactId)
+                .stream()
+                .map(invite ->
+                        invite.getUserRequest().getId().equals(userContactId)
+                        ? UserContact.contactReceive(invite)
+                        : UserContact.contactRequest(invite)
+                ).collect(Collectors.toList());
     }
 
     public List<ContactInvite> listInvitesPending(String userReceiveInviteId) {

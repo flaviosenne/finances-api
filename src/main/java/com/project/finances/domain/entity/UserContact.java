@@ -28,4 +28,21 @@ public class UserContact extends BasicEntity {
         this.id = id;
         return this;
     }
+
+    public static UserContact contactRequest(ContactInvite invite){
+        return UserContact.builder()
+                .user(invite.getUserRequest().getUser())
+                .avatar(invite.getUserRequest().getAvatar())
+                .username(invite.getUserRequest().getUsername())
+                .build();
+    }
+
+
+    public static UserContact contactReceive(ContactInvite invite){
+        return UserContact.builder()
+                .user(invite.getUserReceive().getUser())
+                .avatar(invite.getUserReceive().getAvatar())
+                .username(invite.getUserReceive().getUsername())
+                .build();
+    }
 }

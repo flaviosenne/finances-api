@@ -39,7 +39,7 @@ public class UserContactService implements UserContactProtocol {
     }
 
     @Override
-    public List<ContactInvite> listContacts(String userId) {
+    public List<UserContact> listContacts(String userId) {
         UserContact usercontact = userContactQuery.getUserContact(userId)
                 .orElseThrow(()-> new BadRequestException(CONTACT_NOT_FOUND));
 
