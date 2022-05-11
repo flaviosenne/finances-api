@@ -8,6 +8,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static com.project.finances.domain.usecases.release.repository.ReleaseSpecification.listReleaseByUserId;
@@ -23,5 +26,11 @@ public class ReleaseQuery {
 
     public Optional<Release> findReleaseById(String id, String userId){
         return repository.findByIdAndByUserId(id, userId);
+    }
+
+    public List<Release> findReleasesCloseExpiration(String userId) {
+        Date yesterday = new Date(new Date().getTime() - 86400000);
+        Date plus6day = new Date(yesterday.getTime() + 518400000);
+        return repository.findReleasesCloseExpirationIn5Days(userId, yesterday, plus6day);
     }
 }

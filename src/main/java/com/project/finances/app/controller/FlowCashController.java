@@ -6,6 +6,7 @@ import com.project.finances.app.utils.PageGenerics;
 import com.project.finances.app.vo.release.ListReleasesVo;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.protocols.FlowCashProtocol;
+import com.project.finances.domain.protocols.ReleaseReminderProtocol;
 import com.project.finances.domain.usecases.release.dto.ReleaseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -26,6 +28,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 public class FlowCashController {
 
     private final FlowCashProtocol flowCashProtocol;
+    private final ReleaseReminderProtocol releaseReminderProtocol;
 
     @CrossOrigin
     @PostMapping
@@ -64,6 +67,16 @@ public class FlowCashController {
                 resultPageable.isLast(), resultPageable.getContent());
     }
 
+
+    @CrossOrigin
+    @GetMapping("/reminder")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ListReleasesVo> listReleasesReminder(@AuthenticationPrincipal User user){
+        return releaseReminderProtocol
+                .listReleasesReminder(user.getId())
+                .stream().map(ListReleasesVo::of)
+                .collect(Collectors.toList());
+    }
     @CrossOrigin
     @PutMapping("/share")
     @ResponseStatus(HttpStatus.NO_CONTENT)
