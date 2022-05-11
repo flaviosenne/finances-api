@@ -20,10 +20,11 @@ public class UserTemplateEmail implements MailCreateAccountProtocol, MailRetriev
 
     @Async
     @Override
-    public void sendEmail(User user){
+    public void sendEmailActiveAccount(User user, String code){
 
         Context context = new Context();
         context.setVariable("user", user);
+        context.setVariable("code", code);
 
         String content =  templateEngine.process("mail/ActiveAccountEmailTemplate", context);
 
@@ -33,7 +34,7 @@ public class UserTemplateEmail implements MailCreateAccountProtocol, MailRetriev
 
     @Async
     @Override
-    public void sendEmail(User user, String code) {
+    public void sendEmailRetrievePassword(User user, String code) {
         Context context = new Context();
         context.setVariable("user", user);
         context.setVariable("code", code);

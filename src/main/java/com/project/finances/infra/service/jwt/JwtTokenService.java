@@ -1,6 +1,7 @@
 package com.project.finances.infra.service.jwt;
 
 import com.project.finances.domain.protocols.TokenProtocol;
+import com.project.finances.domain.usecases.user.dto.ResponseLoginDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -23,18 +24,20 @@ public class JwtTokenService implements TokenProtocol {
     private String expireIn;
 
     @Override
-    public String generateToken(String id){
+    public ResponseLoginDto generateToken(String id){
         Claims claims = Jwts.claims().setSubject(id);
 
         Date today = new Date();
         Date validate = new Date(today.getTime() + Long.parseLong(this.expireIn));
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(today)
                 .setExpiration(validate)
                 .signWith(SignatureAlgorithm.HS512, this.secretKey)
                 .compact();
+
+        return ResponseLoginDto.builder().expireIn(validate).token(token).build();
     }
 
     @Override

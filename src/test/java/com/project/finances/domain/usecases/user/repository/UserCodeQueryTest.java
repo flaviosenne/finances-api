@@ -31,18 +31,18 @@ class UserCodeQueryTest {
     @Test
     @DisplayName("Should return a optional UserCode when code (id) is provider")
     void findByCode(){
-        UserCode userCodeMock = new UserCode(User.builder().build(), true);
+        UserCode userCodeMock = new UserCode(User.builder().build(), true, "");
 
         String code = userCodeMock.getId();
 
-        when(repository.findByIdAndByUserActive(anyString())).thenReturn(Optional.of(userCodeMock));
+        when(repository.findByCodeActiveAccount(anyString())).thenReturn(Optional.of(userCodeMock));
 
-        Optional<UserCode> result = userCodeQuery.findByCode(code);
+        Optional<UserCode> result = userCodeQuery.findByCodeToActiveAccount(code);
 
         BDDAssertions.assertThat(result).isPresent();
         BDDAssertions.assertThat(result.get().getId()).isEqualTo(code);
 
-        verify(repository, times(1)).findByIdAndByUserActive(code);
+        verify(repository, times(1)).findByCodeActiveAccount(code);
     }
 
 }

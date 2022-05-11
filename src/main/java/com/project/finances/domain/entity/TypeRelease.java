@@ -7,21 +7,21 @@ import java.util.HashMap;
 
 @AllArgsConstructor
 @Getter
-public enum Type {
+public enum TypeRelease {
 
     RECEP("Receita"), EXPENSE("Despesa");
 
-    private static final HashMap<String, Type> map = new HashMap<>();
+    private static final HashMap<String, TypeRelease> map = new HashMap<>();
 
     private String description;
 
     static {
-        for(Type type: values()){
-            map.put(type.name(), type);
+        for(TypeRelease typeRelease : values()){
+            map.put(typeRelease.name(), typeRelease);
         }
     }
 
-    public static Type getType(String typeName){
+    public static TypeRelease getType(String typeName){
         return map.get(typeName);
     }
 

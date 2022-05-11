@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static com.project.finances.domain.exception.messages.MessagesException.INVALID_CREDENTIALS;
+
 @Service
 @AllArgsConstructor
 public class Login implements AuthenticationProtocol {
@@ -25,14 +27,12 @@ public class Login implements AuthenticationProtocol {
     public ResponseLoginDto login(LoginDto dto) {
         Optional<User> optionalUser = userQuery.findByEmailActive(dto.getEmail());
 
-        if(!optionalUser.isPresent()) throw new BadCredentialsException("Credenciais inválidas");
+        if(!optionalUser.isPresent()) throw new BadCredentialsException(INVALID_CREDENTIALS);
 
         boolean isMatcher = cryptographyProtocol.passwordMatchers(dto.getPassword(), optionalUser.get().getPassword());
 
-        if(!isMatcher) throw new BadCredentialsException("Credenciais inválidas");
+        if(!isMatcher) throw new BadCredentialsException(INVALID_CREDENTIALS);
 
-        String token = tokenProtocol.generateToken(optionalUser.get().getId());
-
-        return ResponseLoginDto.builder().token(token).build();
+        return tokenProtocol.generateToken(optionalUser.get().getId());
     }
 }

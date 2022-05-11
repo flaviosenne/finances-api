@@ -17,7 +17,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -43,7 +42,7 @@ class ReleaseQueryTest {
 
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
         Category categoryMock = new Category("category 1", userMock);
-        Release releaseMock = new Release(100d, "test", Status.PENDING, Type.EXPENSE, new Date(), categoryMock, userMock);
+        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), categoryMock, userMock);
 
         when(repository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(new PageImpl<Release>(Arrays.asList(releaseMock)));
 

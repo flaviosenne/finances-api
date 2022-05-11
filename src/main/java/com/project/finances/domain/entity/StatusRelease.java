@@ -2,27 +2,26 @@ package com.project.finances.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 
 @AllArgsConstructor
 @Getter
-public enum Status {
+public enum StatusRelease {
 
     PENDING("Pendente"), PAID("Pago"), CANCEL("Cancelado");
 
-    private static final HashMap<String, Status> map = new HashMap<>();
+    private static final HashMap<String, StatusRelease> map = new HashMap<>();
 
     private String description;
 
     static {
-        for(Status status: values()){
-            map.put(status.name(), status);
+        for(StatusRelease statusRelease : values()){
+            map.put(statusRelease.name(), statusRelease);
         }
     }
 
-    public static Status getStatus(String statusName){
+    public static StatusRelease getStatus(String statusName){
         return map.get(statusName);
     }
 

@@ -120,7 +120,7 @@ class FlowCashTest {
 
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
         Category categoryMock = new Category("category 1", userMock);
-        Release releaseMock = new Release(100d, "test", Status.PENDING, Type.EXPENSE, new Date(), categoryMock, userMock);
+        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), categoryMock, userMock);
 
         when(query.getReleases(userId, specificationMock, pageMock)).thenReturn(new PageImpl<Release>(Arrays.asList(releaseMock)));
 
@@ -152,7 +152,7 @@ class FlowCashTest {
 
         when(command.update(any(Release.class), eq(dto.getId()))).thenReturn(Release.builder()
                         .category(Category.builder().build().withId(dto.getCategory().getId()))
-                        .type(Type.EXPENSE).status(Status.PENDING).build().withId(dto.getId()));
+                        .typeRelease(TypeRelease.EXPENSE).statusRelease(StatusRelease.PENDING).build().withId(dto.getId()));
 
         ReleaseDto result = flowCashProtocol.updateRelease(dto,userId);
 
@@ -242,7 +242,7 @@ class FlowCashTest {
     }
 
     private Release getRelease(){
-        return new Release(100d, "test", Status.PENDING, Type.EXPENSE, new Date(), getCategory(), getUser());
+        return new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), getCategory(), getUser());
     }
 
     private ReleaseDto getReleaseDto(String categoryId){
@@ -251,8 +251,8 @@ class FlowCashTest {
                 .category(categoryDto)
                 .description(getRelease().getDescription())
                 .dueDate(getRelease().getDueDate())
-                .status(getRelease().getStatus().name())
-                .type(getRelease().getType().name())
+                .status(getRelease().getStatusRelease().name())
+                .type(getRelease().getTypeRelease().name())
                 .value(getRelease().getValue())
                 .build();
 

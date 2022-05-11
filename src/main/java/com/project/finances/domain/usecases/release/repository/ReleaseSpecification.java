@@ -1,8 +1,6 @@
 package com.project.finances.domain.usecases.release.repository;
 
 import com.project.finances.domain.entity.Release;
-//import com.project.finances.domain.entity.Release_;
-//import com.project.finances.domain.entity.User_;
 import com.project.finances.domain.entity.Release_;
 import com.project.finances.domain.entity.User_;
 import org.springframework.data.jpa.domain.Specification;

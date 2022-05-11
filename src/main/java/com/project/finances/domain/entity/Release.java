@@ -21,10 +21,10 @@ public class Release extends BasicEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status = Status.PENDING;
+    private StatusRelease statusRelease = StatusRelease.PENDING;
 
     @Enumerated(EnumType.STRING)
-    private Type type = Type.EXPENSE;
+    private TypeRelease typeRelease = TypeRelease.EXPENSE;
 
     @Column(name = "due_date")
     private Date dueDate;
@@ -40,8 +40,8 @@ public class Release extends BasicEntity {
     public Release withUser(User user){
         return Release.builder()
                 .value(this.value)
-                .type(this.type)
-                .status(this.status)
+                .typeRelease(this.typeRelease)
+                .statusRelease(this.statusRelease)
                 .description(this.description)
                 .dueDate(this.dueDate)
                 .category(this.category)
@@ -52,8 +52,8 @@ public class Release extends BasicEntity {
     public Release withCategory(Category category){
         return Release.builder()
                 .value(this.value)
-                .type(this.type)
-                .status(this.status)
+                .typeRelease(this.typeRelease)
+                .statusRelease(this.statusRelease)
                 .description(this.description)
                 .dueDate(this.dueDate)
                 .category(category)

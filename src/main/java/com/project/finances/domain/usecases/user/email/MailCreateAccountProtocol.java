@@ -4,6 +4,6 @@ import com.project.finances.domain.entity.User;
 
 public interface MailCreateAccountProtocol {
 
-    void sendEmail(User user);
+    void sendEmailActiveAccount(User user, String code);
 
 }

@@ -1,8 +1,8 @@
 package com.project.finances.app.vo.release;
 
 import com.project.finances.domain.entity.Release;
-import com.project.finances.domain.entity.Status;
-import com.project.finances.domain.entity.Type;
+import com.project.finances.domain.entity.StatusRelease;
+import com.project.finances.domain.entity.TypeRelease;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +20,9 @@ public class ListReleasesVo {
 
     private String description;
 
-    private Status status;
+    private StatusRelease statusRelease;
 
-    private Type type;
+    private TypeRelease typeRelease;
 
     private Date createdAt;
 
@@ -35,8 +35,8 @@ public class ListReleasesVo {
                 .id(release.getId())
                 .value(release.getValue())
                 .description(release.getDescription())
-                .status(release.getStatus())
-                .type(release.getType())
+                .statusRelease(release.getStatusRelease())
+                .typeRelease(release.getTypeRelease())
                 .createdAt(release.getCreatedAt())
                 .dueDate(release.getDueDate())
                 .category(CategoryVo.builder().name(release.getCategory().getDescription()).build())
