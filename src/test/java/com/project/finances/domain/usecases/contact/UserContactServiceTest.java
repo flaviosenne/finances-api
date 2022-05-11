@@ -131,9 +131,9 @@ class UserContactServiceTest {
         String userId = "valid-id";
 
         when(userContactQuery.getUserContact(userId)).thenReturn(Optional.of(UserContact.builder().build()));
-        when(contactInviteQuery.getContacts(anyString())).thenReturn(Arrays.asList(ContactInvite.builder().build()));
+        when(contactInviteQuery.getContacts(anyString())).thenReturn(Arrays.asList(UserContact.builder().build()));
 
-        List<ContactInvite> result = userContactProtocol.listContacts(userId);
+        List<UserContact> result = userContactProtocol.listContacts(userId);
 
         BDDAssertions.assertThat(result).isNotEmpty();
 

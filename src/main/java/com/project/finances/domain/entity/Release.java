@@ -19,7 +19,6 @@ public class Release extends BasicEntity {
 
     private String description;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusRelease statusRelease = StatusRelease.PENDING;
 
