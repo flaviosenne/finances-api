@@ -13,6 +13,7 @@ public class PageGenerics<T> {
     private long totalElements;
     private int totalPages;
     private int actualPage;
+    private int size;
     private boolean last;
     private List<T> content;
 }

@@ -4,11 +4,13 @@ package com.project.finances.app.controller;
 //import br.com.monkey.ecx.annotation.SearchParameter;
 import com.project.finances.app.utils.PageGenerics;
 import com.project.finances.app.vo.release.ListReleasesVo;
+import com.project.finances.domain.entity.Release;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.protocols.FlowCashProtocol;
 import com.project.finances.domain.protocols.ReleaseReminderProtocol;
 import com.project.finances.domain.usecases.release.dto.ReleaseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
@@ -57,14 +59,15 @@ public class FlowCashController {
     public PageGenerics<ListReleasesVo> listReleases(@AuthenticationPrincipal User user,
 //                                                     @SearchParameter Specification<Release> search,
                                                      @SortDefault.SortDefaults({ @SortDefault(sort = "createdAt", direction = DESC) }) Pageable pageable){
-        PageImpl<ListReleasesVo> resultPageable = new PageImpl<>(flowCashProtocol
-                .listReleases(user.getId(), null, pageable).getContent()
+        Page<Release> result = flowCashProtocol.listReleases(user.getId(), null, pageable);
+        PageImpl<ListReleasesVo> resultPageable = new PageImpl<>(result.getContent()
                 .stream().map(ListReleasesVo::of)
                 .collect(Collectors.toList()));
 
-        return new PageGenerics<>(resultPageable.getTotalElements(),
-                pageable.getPageSize(), pageable.getPageNumber(),
-                resultPageable.isLast(), resultPageable.getContent());
+        return new PageGenerics<>(result.getTotalElements(),
+                result.getTotalPages(), pageable.getPageNumber(),
+                result.getSize(),result.isLast(),
+                resultPageable.getContent());
     }
 
 
