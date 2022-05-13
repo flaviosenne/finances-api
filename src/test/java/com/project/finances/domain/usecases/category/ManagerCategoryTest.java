@@ -1,13 +1,14 @@
 package com.project.finances.domain.usecases.category;
 
+import com.project.finances.app.usecases.category.ManagerCategory;
 import com.project.finances.domain.entity.Category;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.exception.BadRequestException;
-import com.project.finances.domain.protocols.CategoryManagerProtocol;
-import com.project.finances.domain.usecases.category.dto.CategoryDto;
-import com.project.finances.domain.usecases.category.repository.CategoryCommand;
-import com.project.finances.domain.usecases.category.repository.CategoryQuery;
-import com.project.finances.domain.usecases.user.repository.UserQuery;
+import com.project.finances.domain.protocols.usecases.CategoryManagerProtocol;
+import com.project.finances.app.usecases.category.dto.CategoryDto;
+import com.project.finances.app.usecases.category.repository.CategoryCommand;
+import com.project.finances.app.usecases.category.repository.CategoryQuery;
+import com.project.finances.app.usecases.user.repository.UserQuery;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

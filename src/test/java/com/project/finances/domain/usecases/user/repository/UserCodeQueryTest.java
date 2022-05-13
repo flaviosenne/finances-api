@@ -1,5 +1,7 @@
 package com.project.finances.domain.usecases.user.repository;
 
+import com.project.finances.app.usecases.user.repository.UserCodeQuery;
+import com.project.finances.app.usecases.user.repository.UserCodeRepository;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserCode;
 import org.assertj.core.api.BDDAssertions;

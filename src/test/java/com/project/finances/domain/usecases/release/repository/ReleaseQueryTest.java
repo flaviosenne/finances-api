@@ -1,6 +1,8 @@
 package com.project.finances.domain.usecases.release.repository;
 
 
+import com.project.finances.app.usecases.release.repository.ReleaseQuery;
+import com.project.finances.app.usecases.release.repository.ReleaseRepository;
 import com.project.finances.domain.entity.*;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;

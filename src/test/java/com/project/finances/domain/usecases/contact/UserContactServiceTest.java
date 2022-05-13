@@ -1,15 +1,15 @@
 package com.project.finances.domain.usecases.contact;
 
-import com.project.finances.domain.entity.ContactInvite;
+import com.project.finances.app.usecases.contact.UserContactService;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserContact;
 import com.project.finances.domain.exception.BadRequestException;
-import com.project.finances.domain.protocols.UserContactProtocol;
-import com.project.finances.domain.usecases.contact.dto.MakeUserPublicDto;
-import com.project.finances.domain.usecases.contact.repository.ContactInviteQuery;
-import com.project.finances.domain.usecases.contact.repository.UserContactCommand;
-import com.project.finances.domain.usecases.contact.repository.UserContactQuery;
-import com.project.finances.domain.usecases.user.repository.UserQuery;
+import com.project.finances.domain.protocols.usecases.UserContactProtocol;
+import com.project.finances.app.usecases.contact.dto.MakeUserPublicDto;
+import com.project.finances.app.usecases.contact.repository.ContactInviteQuery;
+import com.project.finances.app.usecases.contact.repository.UserContactCommand;
+import com.project.finances.app.usecases.contact.repository.UserContactQuery;
+import com.project.finances.app.usecases.user.repository.UserQuery;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

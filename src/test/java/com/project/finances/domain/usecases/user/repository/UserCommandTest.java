@@ -1,5 +1,7 @@
 package com.project.finances.domain.usecases.user.repository;
 
+import com.project.finances.app.usecases.user.repository.UserCommand;
+import com.project.finances.app.usecases.user.repository.UserRepository;
 import com.project.finances.domain.entity.User;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;

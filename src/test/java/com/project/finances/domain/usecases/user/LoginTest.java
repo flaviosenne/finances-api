@@ -1,13 +1,13 @@
 package com.project.finances.domain.usecases.user;
 
+import com.project.finances.app.usecases.user.Login;
 import com.project.finances.domain.entity.User;
-import com.project.finances.domain.exception.BadRequestException;
-import com.project.finances.domain.protocols.AuthenticationProtocol;
-import com.project.finances.domain.protocols.CryptographyProtocol;
-import com.project.finances.domain.protocols.TokenProtocol;
-import com.project.finances.domain.usecases.user.dto.LoginDto;
-import com.project.finances.domain.usecases.user.dto.ResponseLoginDto;
-import com.project.finances.domain.usecases.user.repository.UserQuery;
+import com.project.finances.domain.protocols.usecases.AuthenticationProtocol;
+import com.project.finances.domain.protocols.ports.CryptographyProtocol;
+import com.project.finances.domain.protocols.ports.TokenProtocol;
+import com.project.finances.app.usecases.user.dto.LoginDto;
+import com.project.finances.app.usecases.user.dto.ResponseLoginDto;
+import com.project.finances.app.usecases.user.repository.UserQuery;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

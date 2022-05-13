@@ -1,14 +1,15 @@
 package com.project.finances.domain.usecases.release;
 
+import com.project.finances.app.usecases.release.FlowCash;
 import com.project.finances.domain.entity.*;
 import com.project.finances.domain.exception.BadRequestException;
-import com.project.finances.domain.protocols.FlowCashProtocol;
-import com.project.finances.domain.usecases.category.repository.CategoryQuery;
-import com.project.finances.domain.usecases.release.dto.ReleaseCategoryDto;
-import com.project.finances.domain.usecases.release.dto.ReleaseDto;
-import com.project.finances.domain.usecases.release.repository.ReleaseCommand;
-import com.project.finances.domain.usecases.release.repository.ReleaseQuery;
-import com.project.finances.domain.usecases.user.repository.UserQuery;
+import com.project.finances.domain.protocols.usecases.FlowCashProtocol;
+import com.project.finances.app.usecases.category.repository.CategoryQuery;
+import com.project.finances.app.usecases.release.dto.ReleaseCategoryDto;
+import com.project.finances.app.usecases.release.dto.ReleaseDto;
+import com.project.finances.app.usecases.release.repository.ReleaseCommand;
+import com.project.finances.app.usecases.release.repository.ReleaseQuery;
+import com.project.finances.app.usecases.user.repository.UserQuery;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,0 +1,33 @@
+package com.project.finances.app.usecases.contact.repository;
+
+import com.project.finances.domain.entity.UserContact;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+
+@Service
+@RequiredArgsConstructor
+public class UserContactQuery {
+    private final UserContactRepository userContactRepository;
+
+    public boolean userIsPublic(String userId){
+        return this.getUserContact(userId).isPresent();
+    }
+
+    public Optional<UserContact> getUserContact(String userId){
+        return userContactRepository.findByUserId(userId);
+    }
+
+    public Optional<UserContact> findContactById(String id){
+        return userContactRepository.findById(id);
+    }
+
+    public List<UserContact> searchUsers(String username){
+        return userContactRepository.search(username);
+    }
+
+
+}
