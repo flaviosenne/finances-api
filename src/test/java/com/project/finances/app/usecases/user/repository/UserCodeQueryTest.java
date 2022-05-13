@@ -1,7 +1,5 @@
-package com.project.finances.domain.usecases.user.repository;
+package com.project.finances.app.usecases.user.repository;
 
-import com.project.finances.app.usecases.user.repository.UserCodeQuery;
-import com.project.finances.app.usecases.user.repository.UserCodeRepository;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserCode;
 import org.assertj.core.api.BDDAssertions;
@@ -31,8 +29,8 @@ class UserCodeQueryTest {
     }
 
     @Test
-    @DisplayName("Should return a optional UserCode when code (id) is provider")
-    void findByCode(){
+    @DisplayName("Should return a optional UserCode when code to active account is provider")
+    void findByCodeActiveAccount(){
         UserCode userCodeMock = new UserCode(User.builder().build(), true, "");
 
         String code = userCodeMock.getId();
@@ -45,6 +43,23 @@ class UserCodeQueryTest {
         BDDAssertions.assertThat(result.get().getId()).isEqualTo(code);
 
         verify(repository, times(1)).findByCodeActiveAccount(code);
+    }
+
+    @Test
+    @DisplayName("Should return a optional UserCode when code to retrieve password is provider")
+    void findByCodeRetrievePassword(){
+        UserCode userCodeMock = new UserCode(User.builder().build(), true, "");
+
+        String code = userCodeMock.getId();
+
+        when(repository.findByCodeRetrievePassword(anyString())).thenReturn(Optional.of(userCodeMock));
+
+        Optional<UserCode> result = userCodeQuery.findByCodeToRetrievePassword(code);
+
+        BDDAssertions.assertThat(result).isPresent();
+        BDDAssertions.assertThat(result.get().getId()).isEqualTo(code);
+
+        verify(repository, times(1)).findByCodeRetrievePassword(code);
     }
 
 }

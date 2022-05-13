@@ -1,6 +1,5 @@
-package com.project.finances.domain.usecases.release;
+package com.project.finances.app.usecases.release;
 
-import com.project.finances.app.usecases.release.FlowCash;
 import com.project.finances.domain.entity.*;
 import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.domain.protocols.usecases.FlowCashProtocol;

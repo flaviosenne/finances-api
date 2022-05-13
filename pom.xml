@@ -8,14 +8,14 @@
 		<version>2.6.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.project</groupId>
+	<groupId>com.project.finances</groupId>
 	<artifactId>finances</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>finances</name>
 	<description>Project Management Finances</description>
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
@@ -131,7 +131,6 @@
 	<build>
 		<plugins>
 			<plugin>
-
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>

@@ -1,6 +1,5 @@
-package com.project.finances.domain.usecases.contact;
+package com.project.finances.app.usecases.contact;
 
-import com.project.finances.app.usecases.contact.UserContactService;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserContact;
 import com.project.finances.domain.exception.BadRequestException;

@@ -1,6 +1,5 @@
-package com.project.finances.domain.usecases.category;
+package com.project.finances.app.usecases.category;
 
-import com.project.finances.app.usecases.category.ManagerCategory;
 import com.project.finances.domain.entity.Category;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.exception.BadRequestException;

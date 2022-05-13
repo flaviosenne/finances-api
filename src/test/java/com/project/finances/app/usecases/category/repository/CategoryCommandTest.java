@@ -1,7 +1,5 @@
-package com.project.finances.domain.usecases.category.repository;
+package com.project.finances.app.usecases.category.repository;
 
-import com.project.finances.app.usecases.category.repository.CategoryCommand;
-import com.project.finances.app.usecases.category.repository.CategoryRepository;
 import com.project.finances.domain.entity.Category;
 import com.project.finances.domain.entity.User;
 import org.assertj.core.api.BDDAssertions;

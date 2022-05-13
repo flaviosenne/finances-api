@@ -1,6 +1,5 @@
-package com.project.finances.domain.usecases.user;
+package com.project.finances.app.usecases.user;
 
-import com.project.finances.app.usecases.user.UserAccount;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserCode;
 import com.project.finances.domain.exception.BadRequestException;
