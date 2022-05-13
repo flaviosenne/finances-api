@@ -1,4 +1,4 @@
-package com.project.finances.app.rest.vo.user;
+package com.project.finances.app.presentation.rest.vo.user;
 
 import com.project.finances.domain.entity.User;
 import lombok.AllArgsConstructor;

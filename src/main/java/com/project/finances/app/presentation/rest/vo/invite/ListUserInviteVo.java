@@ -1,4 +1,4 @@
-package com.project.finances.app.rest.vo.invite;
+package com.project.finances.app.presentation.rest.vo.invite;
 
 import com.project.finances.domain.entity.ContactInvite;
 import lombok.AllArgsConstructor;

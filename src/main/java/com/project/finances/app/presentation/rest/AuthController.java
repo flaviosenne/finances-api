@@ -1,21 +1,23 @@
-package com.project.finances.app.rest;
+package com.project.finances.app.presentation.rest;
 
+import com.project.finances.app.usecases.user.dto.LoginDto;
+import com.project.finances.app.usecases.user.dto.ResponseLoginDto;
 import com.project.finances.domain.protocols.usecases.AuthenticationProtocol;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/health")
+@RequestMapping("/v1/auth")
 @RequiredArgsConstructor
-public class HealthController {
+public class AuthController {
 
     private final AuthenticationProtocol auth;
 
     @CrossOrigin
-    @GetMapping
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public String health(){
-        return "Server is UP";
+    public ResponseLoginDto login(@RequestBody LoginDto dto){
+        return auth.login(dto);
     }
 }

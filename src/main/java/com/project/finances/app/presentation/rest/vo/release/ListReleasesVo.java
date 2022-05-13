@@ -1,4 +1,4 @@
-package com.project.finances.app.rest.vo.release;
+package com.project.finances.app.presentation.rest.vo.release;
 
 import com.project.finances.domain.entity.Release;
 import com.project.finances.domain.entity.StatusRelease;

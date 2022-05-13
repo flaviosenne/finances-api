@@ -1,7 +1,7 @@
-package com.project.finances.app.rest;
+package com.project.finances.app.presentation.rest;
 
-import com.project.finances.app.rest.vo.user.ListContactsVo;
-import com.project.finances.app.rest.vo.user.SearchUsersPublicVo;
+import com.project.finances.app.presentation.rest.vo.user.ListContactsVo;
+import com.project.finances.app.presentation.rest.vo.user.SearchUsersPublicVo;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.protocols.usecases.UserContactProtocol;
 import lombok.RequiredArgsConstructor;

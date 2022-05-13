@@ -1,8 +1,8 @@
-package com.project.finances.app.rest;
+package com.project.finances.app.presentation.rest;
 
-import com.project.finances.app.rest.vo.user.CreateUserVo;
-import com.project.finances.app.rest.vo.user.GetUserVo;
-import com.project.finances.app.rest.vo.user.UpdateUserVo;
+import com.project.finances.app.presentation.rest.vo.user.CreateUserVo;
+import com.project.finances.app.presentation.rest.vo.user.GetUserVo;
+import com.project.finances.app.presentation.rest.vo.user.UpdateUserVo;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.protocols.usecases.UserAccountProtocol;
 import com.project.finances.domain.protocols.usecases.UserContactProtocol;

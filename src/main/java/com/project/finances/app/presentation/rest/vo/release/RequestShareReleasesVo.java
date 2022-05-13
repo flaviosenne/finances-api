@@ -1,4 +1,4 @@
-package com.project.finances.app.rest.vo.release;
+package com.project.finances.app.presentation.rest.vo.release;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

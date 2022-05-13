@@ -1,9 +1,9 @@
-package com.project.finances.app.rest;
+package com.project.finances.app.presentation.rest;
 
 //import br.com.monkey.ecx.annotation.SearchParameter;
 //import br.com.monkey.ecx.annotation.SearchParameter;
-import com.project.finances.app.rest.utils.PageGenerics;
-import com.project.finances.app.rest.vo.release.ListReleasesVo;
+import com.project.finances.app.presentation.rest.utils.PageGenerics;
+import com.project.finances.app.presentation.rest.vo.release.ListReleasesVo;
 import com.project.finances.domain.entity.Release;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.protocols.usecases.FlowCashProtocol;

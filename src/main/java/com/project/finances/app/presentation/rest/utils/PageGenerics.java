@@ -1,4 +1,4 @@
-package com.project.finances.app.rest.utils;
+package com.project.finances.app.presentation.rest.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

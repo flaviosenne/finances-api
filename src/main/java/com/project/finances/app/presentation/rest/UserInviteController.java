@@ -1,6 +1,6 @@
-package com.project.finances.app.rest;
+package com.project.finances.app.presentation.rest;
 
-import com.project.finances.app.rest.vo.invite.ListUserInviteVo;
+import com.project.finances.app.presentation.rest.vo.invite.ListUserInviteVo;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.protocols.usecases.UserInviteProtocol;
 import com.project.finances.app.usecases.contact.dto.CreateContactDto;

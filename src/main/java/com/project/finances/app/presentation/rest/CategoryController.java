@@ -1,4 +1,4 @@
-package com.project.finances.app.rest;
+package com.project.finances.app.presentation.rest;
 
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.protocols.usecases.CategoryManagerProtocol;

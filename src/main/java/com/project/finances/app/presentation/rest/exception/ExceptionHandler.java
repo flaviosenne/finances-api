@@ -1,4 +1,4 @@
-package com.project.finances.app.rest.exception;
+package com.project.finances.app.presentation.rest.exception;
 
 import com.project.finances.domain.exception.BadRequestException;
 import org.springframework.dao.DataIntegrityViolationException;

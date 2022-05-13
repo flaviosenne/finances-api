@@ -21,7 +21,7 @@ public class SwaggerConfig {
         return new Docket(
                 DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.project.finances.app.rest"))
+                .apis(RequestHandlerSelectors.basePackage("com.project.finances.app.presentation.rest"))
                 .paths(PathSelectors.any())
                 .build()
                 .useDefaultResponseMessages(false)
@@ -32,7 +32,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("API Finances Spring Boot")
                 .description("This API it's used to available interface access to manager flow cash")
-                .version("Version 1.0")
+                .version("Version 0.0.3")
                 .contact(new Contact("Joao Flavio","https://github.com/flaviosenne", "facildespesa@gmail.com"))
                 .license("copy right")
                 .build();
