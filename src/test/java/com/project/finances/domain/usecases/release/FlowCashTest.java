@@ -120,7 +120,7 @@ class FlowCashTest {
 
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
         Category categoryMock = new Category("category 1", userMock);
-        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), categoryMock, userMock);
+        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), categoryMock, userMock, true);
 
         when(query.getReleases(userId, specificationMock, pageMock)).thenReturn(new PageImpl<Release>(Arrays.asList(releaseMock)));
 
@@ -242,7 +242,7 @@ class FlowCashTest {
     }
 
     private Release getRelease(){
-        return new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), getCategory(), getUser());
+        return new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), getCategory(), getUser(), true);
     }
 
     private ReleaseDto getReleaseDto(String categoryId){

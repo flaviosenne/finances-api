@@ -36,6 +36,9 @@ public class Release extends BasicEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @Column(columnDefinition = "boolean default true")
+    private boolean active;
+
     public Release withUser(User user){
         return Release.builder()
                 .value(this.value)
