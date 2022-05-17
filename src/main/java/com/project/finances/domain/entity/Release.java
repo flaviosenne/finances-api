@@ -19,11 +19,9 @@ public class Release extends BasicEntity {
 
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private StatusRelease statusRelease = StatusRelease.PENDING;
+    private String statusRelease = StatusRelease.PENDING.name();
 
-    @Enumerated(EnumType.STRING)
-    private TypeRelease typeRelease = TypeRelease.EXPENSE;
+    private String typeRelease = TypeRelease.EXPENSE.name();
 
     @Column(name = "due_date")
     private Date dueDate;
@@ -36,8 +34,8 @@ public class Release extends BasicEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(columnDefinition = "boolean default true")
-    private boolean active;
+    @Column(columnDefinition = "not null boolean default true")
+    private boolean active = true;
 
     public Release withUser(User user){
         return Release.builder()
@@ -47,6 +45,7 @@ public class Release extends BasicEntity {
                 .description(this.description)
                 .dueDate(this.dueDate)
                 .category(this.category)
+                .active(this.active)
                 .user(user)
                 .build();
     }
@@ -60,11 +59,22 @@ public class Release extends BasicEntity {
                 .dueDate(this.dueDate)
                 .category(category)
                 .user(this.user)
+                .active(this.active)
                 .build();
     }
 
     public Release withId(String id){
         this.id = id;
+        return this;
+    }
+
+    public Release active(){
+        this.active = true;
+        return this;
+    }
+
+    public Release disable(){
+        this.active = false;
         return this;
     }
 }

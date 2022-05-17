@@ -6,9 +6,9 @@ spring:
     name: finances
 
   datasource:
-    url: jdbc:postgresql://ec2-3-224-125-117.compute-1.amazonaws.com:5432/d3evemq0sdh006
-    username: ivcafcfqoykzhj
-    password: ff5138d64bf916d5c5cf40256d2411e03a024025db4c09764286061fac4baf55
+    url: jdbc:postgresql://ec2-54-86-224-85.compute-1.amazonaws.com:5432/d7avt2knjp01sr
+    username: ugdduqjfasqnbd
+    password: e785dddd06d0c16222c6301059fae53fcf91b3736119bbd3086dd94133c40e98
   # variavel de ambiente do heroku, que providencia um banco padrão
 
 
@@ -19,25 +19,25 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
-#  mail:
-#    host: smtp.gmail.com
-#    port: 587
-#    protocol: smtp
-#    tls: true
-#    username: facildespesa@gmail.com
-#    password: D3spes@Fac1l
-#    test-connection: true
-#    properties.mail.smtp:
-#      auth: true
-#      starttls.enable: true
-#      ssl.trust: smtp.gmail.com
-
   mail:
-    host: smtp.mailtrap.io
-    port: 2525
-    username: 746a4ee534b529
-    password: 7af5faeee6d2b9
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    tls: true
+    username: facildespesa@gmail.com
+    password: D3spes@Fac1l
     test-connection: true
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp.gmail.com
+
+#  mail:
+#    host: smtp.mailtrap.io
+#    port: 2525
+#    username: 746a4ee534b529
+#    password: 7af5faeee6d2b9
+#    test-connection: true
 
 
 security:

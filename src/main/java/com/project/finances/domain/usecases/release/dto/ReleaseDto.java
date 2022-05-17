@@ -25,8 +25,8 @@ public class ReleaseDto {
         return Release.builder()
                 .dueDate(dto.getDueDate())
                 .description(dto.getDescription())
-                .statusRelease(StatusRelease.getStatus(dto.getStatus()))
-                .typeRelease(TypeRelease.getType(dto.getType()))
+                .statusRelease(StatusRelease.getStatus(dto.getStatus()).name())
+                .typeRelease(TypeRelease.getType(dto.getType()).name())
                 .value(dto.getValue())
                 .build();
     }
@@ -36,8 +36,8 @@ public class ReleaseDto {
                 .id(entity.getId())
                 .dueDate(entity.getDueDate())
                 .description(entity.getDescription())
-                .status(entity.getStatusRelease().name())
-                .type(entity.getTypeRelease().name())
+                .status(entity.getStatusRelease())
+                .type(entity.getTypeRelease())
                 .value(entity.getValue())
                 .category(ReleaseCategoryDto.builder().id(entity.getCategory().getId()).build())
                 .build();

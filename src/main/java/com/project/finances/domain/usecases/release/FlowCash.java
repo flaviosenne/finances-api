@@ -39,8 +39,10 @@ public class FlowCash implements FlowCashProtocol {
 
         Release releaseToSave = ReleaseDto.of(dto)
                 .withCategory(category)
-                .withUser(user);
+                .withUser(user)
+                .active();
 
+        System.out.println("releasev "+ releaseToSave.toString());
         return ReleaseDto.of(command.create(releaseToSave));
     }
 

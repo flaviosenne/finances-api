@@ -19,14 +19,12 @@ interface ReleaseRepository extends JpaRepository<Release, String>, JpaSpecifica
     @Query("select r from Release r join r.user u where u.id = :userId and r.id = :id and r.active = true")
     Optional<Release> findByIdAndByUserId(String id, String userId);
 
-    @Modifying
-    @Query("update Release r " +
-            "set r.active = false " +
-            "where r in " +
-            "( select release from Release release " +
-            "join release.user u " +
-            "where release.id = :id and u.id = :userId ) ")
-    void deleteByIdAndByUserId(String id, String userId);
+    @Query("select r from Release r " +
+            "join r.user u " +
+            "where r.id = :id " +
+            "and u.id = :userId  " +
+            "and r.active = true ")
+    Optional<Release> findOneReleaseByIdAndByUserIdToDelete(String id, String userId);
     @Query("select r from Release r join r.user u where u.id = :userId " +
             "and r.active = true " +
             "and r.dueDate >= :today and r.dueDate <= :plus5Day ")
