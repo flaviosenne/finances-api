@@ -77,4 +77,9 @@ public class Release extends BasicEntity {
         this.active = false;
         return this;
     }
+
+    public Release withStatusPaid(){
+        this.statusRelease = StatusRelease.PAID.name();
+        return this;
+    }
 }

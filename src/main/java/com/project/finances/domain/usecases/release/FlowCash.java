@@ -42,7 +42,6 @@ public class FlowCash implements FlowCashProtocol {
                 .withUser(user)
                 .active();
 
-        System.out.println("releasev "+ releaseToSave.toString());
         return ReleaseDto.of(command.create(releaseToSave));
     }
 
@@ -68,6 +67,17 @@ public class FlowCash implements FlowCashProtocol {
                 .withUser(user);
 
         return ReleaseDto.of(command.update(releaseToUpdate, entity.getId()));
+    }
+
+    @Override
+    public ReleaseDto updateStatusRelease(String id, String userId) {
+
+        Release entity = query.findReleaseById(id, userId)
+                .orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
+
+        Release releaseWithStatusPaid = entity.withStatusPaid();
+
+        return ReleaseDto.of(command.update(releaseWithStatusPaid, entity.getId()));
     }
 
     @Override
