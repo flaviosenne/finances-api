@@ -3,6 +3,13 @@ spring:
   application:
     name: finances
 
+  datasource:
+    url: jdbc:h2:mem:finances
+    username: root
+    password: joao
+    driverClassName: org.h2.Driver
+
+
   mail:
     host: smtp.mailtrap.io
     port: 2525
@@ -10,8 +17,14 @@ spring:
     password: 9117bf7177395f
     test-connection: true
 
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
 security:
   jwt:
     token:
       expire-in:  86400000
-      secret-key: c2VjcmV0LWZpbmFuY2Vz
+      secret-key: super-secret

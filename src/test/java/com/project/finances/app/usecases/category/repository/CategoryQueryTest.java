@@ -33,7 +33,7 @@ class CategoryQueryTest {
     @DisplayName("Should return a list of categories by user id")
     void getCategories(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category("category 1", userMock);
+        Category categoryMock = new Category(null, "category 1", userMock);
 
         String description = "description-example";
         String userId = "user-id-valid";
@@ -51,7 +51,7 @@ class CategoryQueryTest {
     @DisplayName("Should return a category by id")
     void getCategoryById(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category("category 1", userMock);
+        Category categoryMock = new Category(null, "category 1", userMock);
 
         String id = "id-valid";
 
@@ -69,7 +69,7 @@ class CategoryQueryTest {
     @DisplayName("Should return a category by id and by user id")
     void getCategoryByIdAndByUser(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category("category 1", userMock);
+        Category categoryMock = new Category(null, "category 1", userMock);
 
         String id = "id-valid";
 

@@ -14,9 +14,10 @@ import javax.persistence.Table;
 @ToString
 @Getter
 @Entity
-@Table(name = "category")
+@Table(name = "bank")
 @EqualsAndHashCode
-public class Category extends BasicEntity{
+public class Bank extends BasicEntity{
+
     private String image;
 
     private String description;
@@ -25,24 +26,24 @@ public class Category extends BasicEntity{
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public Category withUser(User user){
-        return Category.builder()
+    public Bank withUser(User user){
+        return Bank.builder()
                 .description(this.description)
                 .user(user)
                 .build();
     }
 
-    public Category withId(String id){
+    public Bank withId(String id){
         this.id = id;
         return  this;
     }
 
-    public Category withDescription(String description){
+    public Bank withDescription(String description){
         this.description = description;
         return  this;
     }
 
-    public Category withImage(String image){
+    public Bank withImage(String image){
         this.image = image;
         return  this;
     }

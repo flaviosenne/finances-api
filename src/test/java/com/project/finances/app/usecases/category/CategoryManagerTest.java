@@ -42,8 +42,8 @@ class CategoryManagerTest {
     @DisplayName("Should create a category when request is successful")
     void createCategory(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category("category 1", userMock);
-        CategoryDto dto = new CategoryDto(null, categoryMock.getDescription());
+        Category categoryMock = new Category(null, "category 1", userMock);
+        CategoryDto dto = new CategoryDto(null, categoryMock.getDescription(), categoryMock.getImage());
         String userId = "user-id-valid";
 
 
@@ -62,7 +62,7 @@ class CategoryManagerTest {
     @Test
     @DisplayName("Should throw bad request exception when user do not exist in Db")
     void notCreateCategory(){
-        CategoryDto dto = new CategoryDto(null, "categoryMock");
+        CategoryDto dto = new CategoryDto(null, "categoryMock", null);
         String userId = "user-id-invalid";
 
         when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.empty());
@@ -81,7 +81,7 @@ class CategoryManagerTest {
     @DisplayName("Should return a list categories by user id when request is successful")
     void getCategories(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category("category 1", userMock);
+        Category categoryMock = new Category(null, "category 1", userMock);
         String userId = "user-id-valid";
         String description = "example-description";
 
@@ -101,8 +101,8 @@ class CategoryManagerTest {
     @DisplayName("Should update a category when request is successful")
     void updateCategory(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category("category 1", userMock);
-        CategoryDto dto = new CategoryDto("id-valid", categoryMock.getDescription());
+        Category categoryMock = new Category(null, "category 1", userMock);
+        CategoryDto dto = new CategoryDto("id-valid", categoryMock.getDescription(), categoryMock.getImage());
         String userId = "user-id-valid";
 
         when(categoryQuery.getCategoryByIdAndByUserId(dto.getId(), userId)).thenReturn(Optional.of(categoryMock));
@@ -120,8 +120,8 @@ class CategoryManagerTest {
     @DisplayName("Should throw bad request exception when try update a category nad not found resource in DB")
     void notUpdateCategory(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category("category 1", userMock);
-        CategoryDto dto = new CategoryDto("id-invalid", categoryMock.getDescription());
+        Category categoryMock = new Category(null, "category 1", userMock);
+        CategoryDto dto = new CategoryDto("id-invalid", categoryMock.getDescription(), categoryMock.getImage());
         String userId = "user-id-invalid";
 
         when(categoryQuery.getCategoryByIdAndByUserId(categoryMock.getId(), userId)).thenReturn(Optional.empty());

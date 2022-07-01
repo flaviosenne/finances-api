@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class CategoryInterfaceJpaJpa implements CategoryRepository {
+public class CategoryRepositoryJpa implements CategoryRepository {
 
     private final CategoryInterfaceJpa jpa;
 

@@ -19,8 +19,8 @@ import static com.project.finances.domain.exception.messages.MessagesException.C
 @Service
 @RequiredArgsConstructor
 public class CategoryManager implements CategoryManagerProtocol {
-    private final CategoryQuery categoryQuery;
-    private final CategoryCommand categoryCommand;
+    private final CategoryQuery query;
+    private final CategoryCommand command;
     private final UserQuery userQuery;
 
     @Override
@@ -29,23 +29,21 @@ public class CategoryManager implements CategoryManagerProtocol {
 
         Category categoryToSave = CategoryDto.of(dto).withUser(user);
 
-        Category categorySaved = categoryCommand.save(categoryToSave);
-
-        return CategoryDto.of(categorySaved);
+        return CategoryDto.of(command.save(categoryToSave));
     }
 
     @Override
     public List<CategoryDto> getCategories(String userId, String description) {
-        return categoryQuery.getCategoriesByUser(userId, description).stream().map(CategoryDto::of).collect(Collectors.toList());
+        return query.getCategoriesByUser(userId, description).stream().map(CategoryDto::of).collect(Collectors.toList());
     }
 
     @Override
     public CategoryDto update(CategoryDto dto, String userId) {
-        Category categoryToUpdate = categoryQuery.getCategoryByIdAndByUserId(dto.getId(), userId)
+        Category categoryToUpdate = query.getCategoryByIdAndByUserId(dto.getId(), userId)
                 .orElseThrow(()-> new BadRequestException(CATEGORY_NOT_FOUND));
 
-        categoryToUpdate.withDescription(dto.getDescription());
+        categoryToUpdate.withDescription(dto.getDescription()).withImage(dto.getImage());
 
-        return CategoryDto.of(categoryCommand.save(categoryToUpdate));
+        return CategoryDto.of(command.save(categoryToUpdate));
     }
 }

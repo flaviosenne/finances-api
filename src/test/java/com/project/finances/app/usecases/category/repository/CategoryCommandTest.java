@@ -30,7 +30,7 @@ class CategoryCommandTest {
     @DisplayName("Should save category when category is provider")
     void save(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category("category 1", userMock);
+        Category categoryMock = new Category(null,"category 1", userMock);
 
         when(repository.create(any(Category.class))).thenReturn(categoryMock);
 
