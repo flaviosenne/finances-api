@@ -48,6 +48,13 @@ public class FlowCashController {
     }
 
     @CrossOrigin
+    @PatchMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@RequestParam("id") String id, @AuthenticationPrincipal User user){
+        flowCashProtocol.updateStatusRelease(id, user.getId());
+    }
+
+    @CrossOrigin
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") String id, @AuthenticationPrincipal User user){

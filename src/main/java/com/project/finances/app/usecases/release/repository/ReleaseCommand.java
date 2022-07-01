@@ -1,9 +1,11 @@
 package com.project.finances.app.usecases.release.repository;
 
 import com.project.finances.domain.entity.Release;
+import com.project.finances.domain.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import static com.project.finances.domain.exception.messages.MessagesException.CASH_FLOW_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +20,10 @@ public class ReleaseCommand {
         return repository.save(release.withId(id));
     }
 
-    @Transactional
     public void delete(String id, String userId){
-        repository.deleteByIdAndByUserId(id, userId);
+        Release releaseToDelete = repository.findOneReleaseByIdAndByUserIdToDelete(id, userId)
+                .orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
+
+        repository.save(releaseToDelete.disable());
     }
 }

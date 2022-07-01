@@ -67,7 +67,7 @@ class FlowCashTest {
 
         verify(userQuery, times(1)).findByIdIsActive(userId);
         verify(categoryQuery, times(1)).getCategoryByIdAndByUserId(categoryId, user.getId());
-        verify(command, times(1)).create(ReleaseDto.of(dto).withCategory(getCategory()).withUser(getUser()));
+        verify(command, times(1)).create(ReleaseDto.of(dto).withCategory(getCategory()).withUser(getUser()).active());
     }
 
     @Test
@@ -120,7 +120,7 @@ class FlowCashTest {
 
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
         Category categoryMock = new Category("category 1", userMock);
-        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), categoryMock, userMock);
+        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING.name(), TypeRelease.EXPENSE.name(), new Date(), categoryMock, userMock, true);
 
         when(query.getReleases(userId, specificationMock, pageMock)).thenReturn(new PageImpl<Release>(Arrays.asList(releaseMock)));
 
@@ -141,18 +141,21 @@ class FlowCashTest {
     void update(){
 
         ReleaseDto dto = ReleaseDto.builder().id("valid-id-release")
+                .status(StatusRelease.PENDING.name())
+                .type(TypeRelease.EXPENSE.name())
                 .category(ReleaseCategoryDto.builder().id("valid-id-category").build())
                 .build();
         String userId = "valid-id-user";
 
-        when(query.findReleaseById(dto.getId(), userId)).thenReturn(Optional.of(Release.builder().build().withId(dto.getId())));
+        when(query.findReleaseById(dto.getId(), userId)).thenReturn(Optional.of(Release.builder()
+                .build().withId(dto.getId())));
         when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(getUser().withId(userId)));
         when(categoryQuery.getCategoryByIdAndByUserId(dto.getCategory().getId(), userId))
                 .thenReturn(Optional.of(Category.builder().build().withId(dto.getCategory().getId())));
 
         when(command.update(any(Release.class), eq(dto.getId()))).thenReturn(Release.builder()
                         .category(Category.builder().build().withId(dto.getCategory().getId()))
-                        .typeRelease(TypeRelease.EXPENSE).statusRelease(StatusRelease.PENDING).build().withId(dto.getId()));
+                        .typeRelease(TypeRelease.EXPENSE.name()).statusRelease(StatusRelease.PENDING.name()).build().withId(dto.getId()));
 
         ReleaseDto result = flowCashProtocol.updateRelease(dto,userId);
 
@@ -242,7 +245,7 @@ class FlowCashTest {
     }
 
     private Release getRelease(){
-        return new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), getCategory(), getUser());
+        return new Release(100d, "test", StatusRelease.PENDING.name(), TypeRelease.EXPENSE.name(), new Date(), getCategory(), getUser(), true);
     }
 
     private ReleaseDto getReleaseDto(String categoryId){
@@ -251,8 +254,8 @@ class FlowCashTest {
                 .category(categoryDto)
                 .description(getRelease().getDescription())
                 .dueDate(getRelease().getDueDate())
-                .status(getRelease().getStatusRelease().name())
-                .type(getRelease().getTypeRelease().name())
+                .status(getRelease().getStatusRelease())
+                .type(getRelease().getTypeRelease())
                 .value(getRelease().getValue())
                 .build();
 

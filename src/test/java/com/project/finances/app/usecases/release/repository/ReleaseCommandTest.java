@@ -31,7 +31,7 @@ class ReleaseCommandTest {
     void save(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
         Category categoryMock = new Category("category 1", userMock);
-        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), categoryMock, userMock);
+        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING.name(), TypeRelease.EXPENSE.name(), new Date(), categoryMock, userMock, true);
 
         when(repository.save(releaseMock)).thenReturn(releaseMock);
 
@@ -48,7 +48,7 @@ class ReleaseCommandTest {
     void update(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
         Category categoryMock = new Category("category 1", userMock);
-        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING, TypeRelease.EXPENSE, new Date(), categoryMock, userMock);
+        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING.name(), TypeRelease.EXPENSE.name(), new Date(), categoryMock, userMock, true);
 
         when(repository.save(releaseMock)).thenReturn(releaseMock);
 

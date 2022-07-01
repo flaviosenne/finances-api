@@ -31,12 +31,13 @@ public class ListReleasesVo {
     private CategoryVo category;
 
     public static ListReleasesVo of(Release release){
+        System.out.println("release: "+ release.toString());
         return ListReleasesVo.builder()
                 .id(release.getId())
                 .value(release.getValue())
                 .description(release.getDescription())
-                .statusRelease(release.getStatusRelease())
-                .typeRelease(release.getTypeRelease())
+                .statusRelease(StatusRelease.getStatus(release.getStatusRelease()))
+                .typeRelease(TypeRelease.getType(release.getTypeRelease()))
                 .createdAt(release.getCreatedAt())
                 .dueDate(release.getDueDate())
                 .category(CategoryVo.builder().name(release.getCategory().getDescription()).build())

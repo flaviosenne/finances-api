@@ -13,20 +13,20 @@ import java.util.List;
 import java.util.Optional;
 
 interface ReleaseRepository extends JpaRepository<Release, String>, JpaSpecificationExecutor<Release> {
-    @Query("select r from Release r join r.user u where u.id = :userId")
+    @Query("select r from Release r join r.user u where u.id = :userId and r.active = true")
     Page<Release> findAllByUser(String userId, Pageable pageable);
 
-    @Query("select r from Release r join r.user u where u.id = :userId and r.id = :id")
+    @Query("select r from Release r join r.user u where u.id = :userId and r.id = :id and r.active = true")
     Optional<Release> findByIdAndByUserId(String id, String userId);
 
-    @Modifying
-    @Query("delete from Release r " +
-            "where r in " +
-            "( select release from Release release " +
-            "join release.user u " +
-            "where release.id = :id and u.id = :userId ) ")
-    void deleteByIdAndByUserId(String id, String userId);
+    @Query("select r from Release r " +
+            "join r.user u " +
+            "where r.id = :id " +
+            "and u.id = :userId  " +
+            "and r.active = true ")
+    Optional<Release> findOneReleaseByIdAndByUserIdToDelete(String id, String userId);
     @Query("select r from Release r join r.user u where u.id = :userId " +
+            "and r.active = true " +
             "and r.dueDate >= :today and r.dueDate <= :plus5Day ")
     List<Release> findReleasesCloseExpirationIn5Days(String userId, Date today, Date plus5Day);
 }
