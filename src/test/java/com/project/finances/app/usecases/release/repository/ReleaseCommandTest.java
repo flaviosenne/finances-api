@@ -1,6 +1,7 @@
 package com.project.finances.app.usecases.release.repository;
 
 import com.project.finances.domain.entity.*;
+import com.project.finances.infra.adapters.repositories.release.ReleaseRepositoryJpa;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.*;
 class ReleaseCommandTest {
 
     @Mock
-    private ReleaseRepository repository;
+    private ReleaseRepositoryJpa repository;
 
     private ReleaseCommand command;
 

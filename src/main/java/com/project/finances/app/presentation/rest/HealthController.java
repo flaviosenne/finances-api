@@ -1,6 +1,5 @@
 package com.project.finances.app.presentation.rest;
 
-import com.project.finances.domain.protocols.usecases.AuthenticationProtocol;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/health")
 @RequiredArgsConstructor
 public class HealthController {
-
-    private final AuthenticationProtocol auth;
 
     @CrossOrigin
     @GetMapping

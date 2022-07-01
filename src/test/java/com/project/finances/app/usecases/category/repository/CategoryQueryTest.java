@@ -38,13 +38,13 @@ class CategoryQueryTest {
         String description = "description-example";
         String userId = "user-id-valid";
 
-        when(repository.findCategoryByUserId(userId, description)).thenReturn(Collections.singletonList(categoryMock));
+        when(repository.findCategoryByUserIdAndDescription(userId, description)).thenReturn(Collections.singletonList(categoryMock));
 
         List<Category> result = query.getCategoriesByUser(userId, description);
 
         BDDAssertions.assertThat(result).isNotEmpty().hasSize(1).isEqualTo(Collections.singletonList(categoryMock));
 
-        verify(repository, times(1)).findCategoryByUserId(userId, description);
+        verify(repository, times(1)).findCategoryByUserIdAndDescription(userId, description);
     }
 
     @Test

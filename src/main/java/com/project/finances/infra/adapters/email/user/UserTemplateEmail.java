@@ -1,8 +1,8 @@
 package com.project.finances.infra.adapters.email.user;
 
 import com.project.finances.domain.entity.User;
-import com.project.finances.app.usecases.user.email.MailCreateAccountProtocol;
-import com.project.finances.app.usecases.user.email.MailRetrievePasswordProtocol;
+import com.project.finances.app.usecases.user.ports.MailCreateAccountProtocol;
+import com.project.finances.app.usecases.user.ports.MailRetrievePasswordProtocol;
 import com.project.finances.infra.adapters.email.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

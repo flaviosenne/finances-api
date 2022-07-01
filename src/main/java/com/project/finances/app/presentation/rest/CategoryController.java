@@ -1,7 +1,7 @@
 package com.project.finances.app.presentation.rest;
 
 import com.project.finances.domain.entity.User;
-import com.project.finances.domain.protocols.usecases.CategoryManagerProtocol;
+import com.project.finances.app.usecases.category.CategoryManagerProtocol;
 import com.project.finances.app.usecases.category.dto.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class CategoryController {
     @CrossOrigin
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> getCategories(@AuthenticationPrincipal User user, @RequestParam(value = "description",defaultValue = "")String description){
+    public List<CategoryDto> findAll(@AuthenticationPrincipal User user, @RequestParam(value = "description",defaultValue = "")String description){
         return categoryManagerProtocol.getCategories(user.getId(), description);
     }
 

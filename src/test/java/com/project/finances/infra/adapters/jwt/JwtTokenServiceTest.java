@@ -1,6 +1,6 @@
 package com.project.finances.infra.adapters.jwt;
 
-import com.project.finances.app.usecases.user.dto.ResponseLoginDto;
+import com.project.finances.app.usecases.user.auth.dto.ResponseLoginDto;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

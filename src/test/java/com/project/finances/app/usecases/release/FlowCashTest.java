@@ -2,7 +2,6 @@ package com.project.finances.app.usecases.release;
 
 import com.project.finances.domain.entity.*;
 import com.project.finances.domain.exception.BadRequestException;
-import com.project.finances.domain.protocols.usecases.FlowCashProtocol;
 import com.project.finances.app.usecases.category.repository.CategoryQuery;
 import com.project.finances.app.usecases.release.dto.ReleaseCategoryDto;
 import com.project.finances.app.usecases.release.dto.ReleaseDto;
@@ -122,16 +121,16 @@ class FlowCashTest {
         Category categoryMock = new Category("category 1", userMock);
         Release releaseMock = new Release(100d, "test", StatusRelease.PENDING.name(), TypeRelease.EXPENSE.name(), new Date(), categoryMock, userMock, true);
 
-        when(query.getReleases(userId, specificationMock, pageMock)).thenReturn(new PageImpl<Release>(Arrays.asList(releaseMock)));
+        when(query.getReleases(userId, pageMock)).thenReturn(new PageImpl<Release>(Arrays.asList(releaseMock)));
 
-        Page<Release> result = flowCashProtocol.listReleases(userId, specificationMock, pageMock);
+        Page<Release> result = flowCashProtocol.listReleases(userId, pageMock);
 
 
         BDDAssertions.assertThat(result).isNotNull();
         BDDAssertions.assertThat(result.getContent()).isNotNull().hasSize(1);
         BDDAssertions.assertThat(result.getContent().get(0)).isEqualTo(releaseMock);
 
-        verify(query, times(1)).getReleases(userId, specificationMock, pageMock);
+        verify(query, times(1)).getReleases(userId, pageMock);
 
     }
 

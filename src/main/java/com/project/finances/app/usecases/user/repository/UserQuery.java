@@ -11,7 +11,6 @@ import java.util.Optional;
 public class UserQuery {
     private final UserRepository repository;
 
-
     public Optional<User> findByIdToActiveAccount(String id){
         return repository.findById(id);
     }

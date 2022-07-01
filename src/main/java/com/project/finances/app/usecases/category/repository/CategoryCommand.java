@@ -10,6 +10,6 @@ public class CategoryCommand {
     private final CategoryRepository repository;
 
     public Category save(Category category) {
-        return repository.save(category);
+        return repository.create(category);
     }
 }

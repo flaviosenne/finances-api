@@ -32,12 +32,12 @@ class CategoryCommandTest {
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
         Category categoryMock = new Category("category 1", userMock);
 
-        when(repository.save(any(Category.class))).thenReturn(categoryMock);
+        when(repository.create(any(Category.class))).thenReturn(categoryMock);
 
         Category result = command.save(categoryMock);
 
         BDDAssertions.assertThat(result).isEqualTo(categoryMock);
 
-        verify(repository, times(1)).save(categoryMock);
+        verify(repository, times(1)).create(categoryMock);
     }
 }

@@ -10,9 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
@@ -36,7 +34,6 @@ class ReleaseQueryTest {
     @DisplayName("Should return a list pageable of releases when userId, specification and page is provider")
     void listReleases(){
 
-        Specification<Release> specificationMock = mock(Specification.class);
         Pageable pageMock = Mockito.mock(Pageable.class);
         String userId = "id-valid";
 
@@ -44,15 +41,15 @@ class ReleaseQueryTest {
         Category categoryMock = new Category("category 1", userMock);
         Release releaseMock = new Release(100d, "test", StatusRelease.PENDING.name(), TypeRelease.EXPENSE.name(), new Date(), categoryMock, userMock, true);
 
-        when(repository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(new PageImpl<Release>(Arrays.asList(releaseMock)));
+        when(repository.findAllByUserId(anyString(),any(Pageable.class))).thenReturn(Arrays.asList(releaseMock));
 
-        Page<Release> result = query.getReleases(userId, specificationMock, pageMock);
+        Page<Release> result = query.getReleases(userId, pageMock);
 
         BDDAssertions.assertThat(result).isNotNull();
         BDDAssertions.assertThat(result.getContent()).isNotNull().hasSize(1);
         BDDAssertions.assertThat(result.getContent().get(0)).isEqualTo(releaseMock);
 
-        verify(repository, times(1)).findAll(any(Specification.class), any(Pageable.class));
+        verify(repository, times(1)).findAllByUserId(anyString(), any(Pageable.class));
     }
 
 

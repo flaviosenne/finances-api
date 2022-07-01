@@ -13,7 +13,7 @@ public class CategoryQuery {
     private final CategoryRepository repository;
 
     public List<Category> getCategoriesByUser(String userId, String description) {
-        return repository.findCategoryByUserId(userId, description);
+        return repository.findCategoryByUserIdAndDescription(userId, description);
     }
 
     public Optional<Category> getCategoryById(String id) {

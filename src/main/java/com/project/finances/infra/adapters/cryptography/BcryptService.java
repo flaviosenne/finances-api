@@ -1,7 +1,7 @@
 package com.project.finances.infra.adapters.cryptography;
 
 import com.project.finances.domain.exception.ServerErrorException;
-import com.project.finances.domain.protocols.ports.CryptographyProtocol;
+import com.project.finances.app.usecases.user.ports.CryptographyProtocol;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

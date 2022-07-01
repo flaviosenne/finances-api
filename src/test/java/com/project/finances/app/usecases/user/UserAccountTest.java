@@ -1,17 +1,16 @@
 package com.project.finances.app.usecases.user;
 
+import com.project.finances.app.usecases.user.ports.CryptographyProtocol;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserCode;
 import com.project.finances.domain.exception.BadRequestException;
-import com.project.finances.domain.protocols.ports.CryptographyProtocol;
-import com.project.finances.domain.protocols.usecases.UserAccountProtocol;
 import com.project.finances.app.usecases.user.dto.RedefinePasswordDto;
 import com.project.finances.app.usecases.user.dto.UserCreateDto;
 import com.project.finances.app.usecases.user.dto.UserUpdateDto;
-import com.project.finances.app.usecases.user.email.MailCreateAccountProtocol;
-import com.project.finances.app.usecases.user.email.MailRetrievePasswordProtocol;
-import com.project.finances.app.usecases.user.repository.UserCodeCommand;
-import com.project.finances.app.usecases.user.repository.UserCodeQuery;
+import com.project.finances.app.usecases.user.ports.MailCreateAccountProtocol;
+import com.project.finances.app.usecases.user.ports.MailRetrievePasswordProtocol;
+import com.project.finances.app.usecases.user.repository.code.UserCodeCommand;
+import com.project.finances.app.usecases.user.repository.code.UserCodeQuery;
 import com.project.finances.app.usecases.user.repository.UserCommand;
 import com.project.finances.app.usecases.user.repository.UserQuery;
 import org.assertj.core.api.BDDAssertions;

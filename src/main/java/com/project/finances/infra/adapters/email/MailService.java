@@ -1,6 +1,6 @@
 package com.project.finances.infra.adapters.email;
 
-import com.project.finances.domain.protocols.ports.MailProtocol;
+import com.project.finances.app.usecases.user.ports.MailProtocol;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;

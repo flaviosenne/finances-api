@@ -1,8 +1,8 @@
 package com.project.finances.app.presentation.rest;
 
-import com.project.finances.app.usecases.user.dto.LoginDto;
-import com.project.finances.app.usecases.user.dto.ResponseLoginDto;
-import com.project.finances.domain.protocols.usecases.AuthenticationProtocol;
+import com.project.finances.app.usecases.user.auth.dto.LoginDto;
+import com.project.finances.app.usecases.user.auth.dto.ResponseLoginDto;
+import com.project.finances.app.usecases.user.ports.AuthenticationProtocol;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

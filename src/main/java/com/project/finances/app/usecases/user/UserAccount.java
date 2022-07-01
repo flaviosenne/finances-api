@@ -3,17 +3,16 @@ package com.project.finances.app.usecases.user;
 import com.project.finances.app.usecases.user.dto.RedefinePasswordDto;
 import com.project.finances.app.usecases.user.dto.UserCreateDto;
 import com.project.finances.app.usecases.user.dto.UserUpdateDto;
-import com.project.finances.app.usecases.user.email.MailCreateAccountProtocol;
-import com.project.finances.app.usecases.user.email.MailRetrievePasswordProtocol;
-import com.project.finances.app.usecases.user.repository.UserCodeCommand;
-import com.project.finances.app.usecases.user.repository.UserCodeQuery;
+import com.project.finances.app.usecases.user.ports.MailCreateAccountProtocol;
+import com.project.finances.app.usecases.user.ports.MailRetrievePasswordProtocol;
+import com.project.finances.app.usecases.user.ports.CryptographyProtocol;
+import com.project.finances.app.usecases.user.repository.code.UserCodeCommand;
+import com.project.finances.app.usecases.user.repository.code.UserCodeQuery;
 import com.project.finances.app.usecases.user.repository.UserCommand;
 import com.project.finances.app.usecases.user.repository.UserQuery;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserCode;
 import com.project.finances.domain.exception.BadRequestException;
-import com.project.finances.domain.protocols.ports.CryptographyProtocol;
-import com.project.finances.domain.protocols.usecases.UserAccountProtocol;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -59,7 +58,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     public User updateAccount(UserUpdateDto dto) {
         Optional<User> optionalUser = userQuery.findByIdIsActive(dto.getId());
 
-        if(!optionalUser.isPresent()) throw new BadRequestException(USER_NOT_FOUND);
+        if(optionalUser.isEmpty()) throw new BadRequestException(USER_NOT_FOUND);
 
         User userToUpdate = dto.updateAccount(optionalUser.get(), dto);
 

@@ -4,9 +4,7 @@ import com.project.finances.app.presentation.rest.vo.user.CreateUserVo;
 import com.project.finances.app.presentation.rest.vo.user.GetUserVo;
 import com.project.finances.app.presentation.rest.vo.user.UpdateUserVo;
 import com.project.finances.domain.entity.User;
-import com.project.finances.domain.protocols.usecases.UserAccountProtocol;
-import com.project.finances.domain.protocols.usecases.UserContactProtocol;
-import com.project.finances.app.usecases.contact.dto.MakeUserPublicDto;
+import com.project.finances.app.usecases.user.UserAccountProtocol;
 import com.project.finances.app.usecases.user.dto.RedefinePasswordDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserAccountController {
 
     private final UserAccountProtocol accountProtocol;
-    private final UserContactProtocol contactProtocol;
 
     @CrossOrigin
     @PostMapping
@@ -63,13 +60,5 @@ public class UserAccountController {
         accountProtocol.activeAccount(code);
     }
 
-
-
-    @CrossOrigin
-    @PatchMapping("/make-public")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void makePublic(@AuthenticationPrincipal User user, @RequestBody MakeUserPublicDto dto){
-        contactProtocol.makePublic(user.getId(), dto);
-    }
 
 }

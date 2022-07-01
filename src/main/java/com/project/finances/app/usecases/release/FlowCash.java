@@ -6,15 +6,15 @@ import com.project.finances.domain.entity.Category;
 import com.project.finances.domain.entity.Release;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.exception.BadRequestException;
-import com.project.finances.domain.protocols.usecases.FlowCashProtocol;
 import com.project.finances.app.usecases.category.repository.CategoryQuery;
 import com.project.finances.app.usecases.release.repository.ReleaseCommand;
 import com.project.finances.app.usecases.release.repository.ReleaseQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.project.finances.domain.exception.messages.MessagesException.*;
 
@@ -46,8 +46,8 @@ public class FlowCash implements FlowCashProtocol {
     }
 
     @Override
-    public Page<Release> listReleases(String userId, Specification specification, Pageable pageable) {
-        return query.getReleases(userId, specification, pageable);
+    public Page<Release> listReleases(String userId, Pageable pageable) {
+        return query.getReleases(userId, pageable);
     }
 
     @Override
@@ -92,7 +92,9 @@ public class FlowCash implements FlowCashProtocol {
 
     }
 
-    public void sharedReleases(){
-
+    @Override
+    public List<Release> listReleasesReminder(String userId) {
+        return query.findReleasesCloseExpiration(userId);
     }
+
 }

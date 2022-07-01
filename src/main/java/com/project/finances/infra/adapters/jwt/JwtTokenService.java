@@ -1,7 +1,7 @@
 package com.project.finances.infra.adapters.jwt;
 
-import com.project.finances.domain.protocols.ports.TokenProtocol;
-import com.project.finances.app.usecases.user.dto.ResponseLoginDto;
+import com.project.finances.app.usecases.user.ports.TokenProtocol;
+import com.project.finances.app.usecases.user.auth.dto.ResponseLoginDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
