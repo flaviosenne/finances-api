@@ -37,4 +37,11 @@ public class CategoryController {
     public void update(@RequestBody CategoryDto dto, @AuthenticationPrincipal User user){
         categoryManagerProtocol.update(dto, user.getId());
     }
+
+    @CrossOrigin
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") String id, @AuthenticationPrincipal User user){
+        categoryManagerProtocol.delete(id, user.getId());
+    }
 }

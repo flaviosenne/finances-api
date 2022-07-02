@@ -37,4 +37,11 @@ public class BankController {
     public void update(@RequestBody BankDto dto, @AuthenticationPrincipal User user){
         bankManagerProtocol.update(dto, user.getId());
     }
+
+    @CrossOrigin
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") String id, @AuthenticationPrincipal User user){
+        bankManagerProtocol.delete(id, user.getId());
+    }
 }
