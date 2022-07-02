@@ -8,6 +8,7 @@ import com.project.finances.app.usecases.user.ports.TokenProtocol;
 import com.project.finances.app.usecases.user.auth.dto.LoginDto;
 import com.project.finances.app.usecases.user.auth.dto.ResponseLoginDto;
 import com.project.finances.app.usecases.user.repository.UserQuery;
+import com.project.finances.mocks.entity.UserMock;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +58,7 @@ class LoginTest {
     @DisplayName("Should throw bad request exception when password incorrect")
     void passwordInvalid(){
         LoginDto dto = LoginDto.builder().email("correct@emal.com").password("password-invalid").build();
-        User userMock = User.builder().email(dto.getEmail()).password("hash").build();
+        User userMock = UserMock.get();
 
         when(userQuery.findByEmailActive(anyString())).thenReturn(Optional.of(userMock));
         when(cryptographyProtocol.passwordMatchers(dto.getPassword(), userMock.getPassword())).thenReturn(false);
@@ -76,7 +77,7 @@ class LoginTest {
     @DisplayName("Should return token when user login successful")
     void generateToken(){
         LoginDto dto = LoginDto.builder().email("correct@emal.com").password("password-valid").build();
-        User userMock = User.builder().email(dto.getEmail()).password("hash").build();
+        User userMock = UserMock.get();
         userMock.withId("id");
 
         when(userQuery.findByEmailActive(anyString())).thenReturn(Optional.of(userMock));

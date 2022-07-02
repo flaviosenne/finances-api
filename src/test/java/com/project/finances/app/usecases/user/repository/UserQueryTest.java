@@ -1,6 +1,7 @@
 package com.project.finances.app.usecases.user.repository;
 
 import com.project.finances.domain.entity.User;
+import com.project.finances.mocks.entity.UserMock;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +31,7 @@ class UserQueryTest {
     @Test
     @DisplayName("Should return a optional user when id is provider")
     void findByIdAndIsActive(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get();
         when(repository.findByIdAndIsActive(anyString())).thenReturn(Optional.of(userMock));
 
         String idUser = "id-valid";
@@ -46,7 +47,7 @@ class UserQueryTest {
     @Test
     @DisplayName("Should return a optional user when id is provider")
     void findByIdToActive(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get();
         when(repository.findById(anyString())).thenReturn(Optional.of(userMock));
 
         String idUser = "id-valid";
@@ -64,7 +65,7 @@ class UserQueryTest {
     @DisplayName("Should return a optional user when email is provider")
     void findByUsername(){
         String email = "example@email.com";
-        User userMock = new User(email, "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get().withEmail(email);
         when(repository.findByEmail(anyString())).thenReturn(Optional.of(userMock));
 
         Optional<User> result = userQuery.findByUsername(email);
@@ -79,13 +80,13 @@ class UserQueryTest {
     @DisplayName("Should return a optional user when email is provider and account is active")
     void findByUsernameAndIsActive(){
         String email = "example@email.com";
-        User userMock = new User(email, "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get().withEmail(email);
         when(repository.findByEmailAndIsActive(anyString())).thenReturn(Optional.of(userMock));
 
         Optional<User> result = userQuery.findByEmailActive(email);
 
         BDDAssertions.assertThat(result).isPresent();
-        BDDAssertions.assertThat(result.get()).isEqualTo(userMock);
+        BDDAssertions.assertThat(result.get().getEmail()).isEqualTo(userMock.getEmail());
 
         verify(repository, times(1)).findByEmailAndIsActive(email);
     }

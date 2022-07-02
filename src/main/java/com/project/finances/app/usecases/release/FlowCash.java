@@ -37,10 +37,7 @@ public class FlowCash implements FlowCashProtocol {
         Category category = categoryQuery.getCategoryByIdAndByUserId(dto.getCategory().getId(), user.getId())
                 .orElseThrow(()-> new BadRequestException(CASH_FLOW_CATEGORY_NOT_PROVIDER));
 
-        Release releaseToSave = ReleaseDto.of(dto)
-                .withCategory(category)
-                .withUser(user)
-                .active();
+        Release releaseToSave = ReleaseDto.of(dto).withCategory(category).withUser(user).active();
 
         return ReleaseDto.of(command.create(releaseToSave));
     }
@@ -53,18 +50,13 @@ public class FlowCash implements FlowCashProtocol {
     @Override
     public ReleaseDto updateRelease(ReleaseDto dto, String userId) {
 
-        Release entity = query.findReleaseById(dto.getId(), userId)
-                .orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
+        Release entity = query.findReleaseById(dto.getId(), userId).orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
 
-        User user = userQuery.findByIdIsActive(userId)
-                .orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
+        User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
 
-        Category category = categoryQuery.getCategoryByIdAndByUserId(dto.getCategory().getId(), userId)
-                .orElseThrow(()-> new BadRequestException(CASH_FLOW_CATEGORY_NOT_PROVIDER));
+        Category category = categoryQuery.getCategoryByIdAndByUserId(dto.getCategory().getId(), userId).orElseThrow(()-> new BadRequestException(CASH_FLOW_CATEGORY_NOT_PROVIDER));
 
-        Release releaseToUpdate = ReleaseDto.of(dto)
-                .withCategory(category)
-                .withUser(user);
+        Release releaseToUpdate = ReleaseDto.of(dto).withCategory(category).withUser(user);
 
         return ReleaseDto.of(command.update(releaseToUpdate, entity.getId()));
     }
@@ -72,8 +64,7 @@ public class FlowCash implements FlowCashProtocol {
     @Override
     public ReleaseDto updateStatusRelease(String id, String userId) {
 
-        Release entity = query.findReleaseById(id, userId)
-                .orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
+        Release entity = query.findReleaseById(id, userId).orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
 
         Release releaseWithStatusPaid = entity.withStatusPaid();
 
@@ -82,11 +73,9 @@ public class FlowCash implements FlowCashProtocol {
 
     @Override
     public void deleteRelease(String id, String userId){
-        Release entity = query.findReleaseById(id, userId)
-                .orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
+        Release entity = query.findReleaseById(id, userId).orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
 
-        User user = userQuery.findByIdIsActive(userId)
-                .orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
+        User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
 
         command.delete(entity.getId(), user.getId());
 

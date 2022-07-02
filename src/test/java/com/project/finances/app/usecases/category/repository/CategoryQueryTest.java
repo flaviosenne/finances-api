@@ -2,6 +2,7 @@ package com.project.finances.app.usecases.category.repository;
 
 import com.project.finances.domain.entity.Category;
 import com.project.finances.domain.entity.User;
+import com.project.finances.mocks.entity.CategoryMock;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,7 @@ class CategoryQueryTest {
     @DisplayName("Should return a list of categories by user id")
     void getCategories(){
         User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category(null, "category 1", userMock);
+        Category categoryMock = CategoryMock.get();
 
         String description = "description-example";
         String userId = "user-id-valid";
@@ -50,8 +51,7 @@ class CategoryQueryTest {
     @Test
     @DisplayName("Should return a category by id")
     void getCategoryById(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category(null, "category 1", userMock);
+        Category categoryMock = CategoryMock.get();
 
         String id = "id-valid";
 
@@ -68,19 +68,18 @@ class CategoryQueryTest {
     @Test
     @DisplayName("Should return a category by id and by user id")
     void getCategoryByIdAndByUser(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category(null, "category 1", userMock);
+        Category categoryMock = CategoryMock.get();
 
         String id = "id-valid";
 
-        when(repository.findByIdAndByUserId(id, userMock.getId())).thenReturn(Optional.of(categoryMock));
+        when(repository.findByIdAndByUserId(id, categoryMock.getUser().getId())).thenReturn(Optional.of(categoryMock));
 
-        Optional<Category> result = query.getCategoryByIdAndByUserId(id, userMock.getId());
+        Optional<Category> result = query.getCategoryByIdAndByUserId(id, categoryMock.getUser().getId());
 
         BDDAssertions.assertThat(result).isPresent();
         BDDAssertions.assertThat(result.get()).isEqualTo(categoryMock);
 
-        verify(repository, times(1)).findByIdAndByUserId(id, userMock.getId());
+        verify(repository, times(1)).findByIdAndByUserId(id, categoryMock.getUser().getId());
     }
 
 

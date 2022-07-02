@@ -1,6 +1,7 @@
 package com.project.finances.app.usecases.user.repository;
 
 import com.project.finances.domain.entity.User;
+import com.project.finances.mocks.entity.UserMock;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +28,7 @@ class UserCommandTest {
     @Test
     @DisplayName("Should save user when object is provider")
     void save(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get();
 
         when(repository.save(userMock)).thenReturn(userMock);
 
@@ -43,7 +44,7 @@ class UserCommandTest {
     @Test
     @DisplayName("Should update user when object and id is provider")
     void update(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get();
 
         when(repository.save(userMock)).thenReturn(userMock);
 

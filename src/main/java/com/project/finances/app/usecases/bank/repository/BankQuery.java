@@ -12,7 +12,7 @@ import java.util.Optional;
 public class BankQuery {
     private final BankRepository repository;
 
-    public List<Bank> getCategoriesByUser(String userId, String description) {
+    public List<Bank> getBanksByUser(String userId, String description) {
         return repository.findBankByUserIdAndDescription(userId, description);
     }
 

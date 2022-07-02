@@ -7,17 +7,15 @@ import lombok.*;
 
 import java.util.Date;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Builder
 @Getter
-@EqualsAndHashCode
 public class ReleaseDto {
     private String id;
-    private Date dueDate;
     private String description;
     private String status;
     private String type;
+    private Date dueDate;
     private Double value;
     private ReleaseCategoryDto category;
 

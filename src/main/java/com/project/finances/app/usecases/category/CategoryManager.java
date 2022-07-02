@@ -46,4 +46,14 @@ public class CategoryManager implements CategoryManagerProtocol {
 
         return CategoryDto.of(command.save(categoryToUpdate));
     }
+
+    @Override
+    public void delete(String id, String userId) {
+        Category category = query.getCategoryByIdAndByUserId(id, userId)
+                .orElseThrow(()-> new BadRequestException(CATEGORY_NOT_FOUND));
+
+        category.disable();
+
+        command.save(category);
+    }
 }

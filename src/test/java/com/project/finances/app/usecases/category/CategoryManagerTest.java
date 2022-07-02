@@ -7,6 +7,9 @@ import com.project.finances.app.usecases.category.dto.CategoryDto;
 import com.project.finances.app.usecases.category.repository.CategoryCommand;
 import com.project.finances.app.usecases.category.repository.CategoryQuery;
 import com.project.finances.app.usecases.user.repository.UserQuery;
+import com.project.finances.mocks.dto.CategoryDtoMock;
+import com.project.finances.mocks.entity.CategoryMock;
+import com.project.finances.mocks.entity.UserMock;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,9 +27,9 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 class CategoryManagerTest {
     @Mock
-    private CategoryQuery categoryQuery;
+    private CategoryQuery query;
     @Mock
-    private CategoryCommand categoryCommand;
+    private CategoryCommand command;
     @Mock
     private UserQuery userQuery;
 
@@ -34,35 +37,35 @@ class CategoryManagerTest {
 
     @BeforeEach
     void setup(){
-        categoryManagerProtocol = new CategoryManager(categoryQuery, categoryCommand, userQuery);
+        categoryManagerProtocol = new CategoryManager(query, command, userQuery);
     }
 
     // todo create
     @Test
     @DisplayName("Should create a category when request is successful")
     void createCategory(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category(null, "category 1", userMock);
-        CategoryDto dto = new CategoryDto(null, categoryMock.getDescription(), categoryMock.getImage());
+        User userMock = UserMock.get();
+        Category categoryMock = CategoryMock.get();
+        CategoryDto dto = CategoryDtoMock.get();
         String userId = "user-id-valid";
 
 
         when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(userMock));
-        when(categoryCommand.save(any(Category.class))).thenReturn(categoryMock);
+        when(command.save(any(Category.class))).thenReturn(categoryMock);
 
         CategoryDto result = categoryManagerProtocol.create(dto, userId);
 
         BDDAssertions.assertThat(result).isNotNull();
 
         verify(userQuery, times(1)).findByIdIsActive(userId);
-        verify(categoryCommand, times(1)).save(any(Category.class));
+        verify(command, times(1)).save(any(Category.class));
 
     }
 
     @Test
     @DisplayName("Should throw bad request exception when user do not exist in Db")
     void notCreateCategory(){
-        CategoryDto dto = new CategoryDto(null, "categoryMock", null);
+        CategoryDto dto = CategoryDtoMock.get();
         String userId = "user-id-invalid";
 
         when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.empty());
@@ -72,7 +75,7 @@ class CategoryManagerTest {
         BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Usuário não informado para categoria");
 
         verify(userQuery, times(1)).findByIdIsActive(userId);
-        verify(categoryCommand, never()).save(any(Category.class));
+        verify(command, never()).save(any(Category.class));
 
     }
 
@@ -80,19 +83,18 @@ class CategoryManagerTest {
     @Test
     @DisplayName("Should return a list categories by user id when request is successful")
     void getCategories(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category(null, "category 1", userMock);
+        Category categoryMock = CategoryMock.get();
         String userId = "user-id-valid";
         String description = "example-description";
 
 
-        when(categoryQuery.getCategoriesByUser(userId, description)).thenReturn(Collections.singletonList(categoryMock));
+        when(query.getCategoriesByUser(userId, description)).thenReturn(Collections.singletonList(categoryMock));
 
         List<CategoryDto> result = categoryManagerProtocol.getCategories(userId,description);
 
         BDDAssertions.assertThat(result).isNotEmpty().hasSize(1);
 
-        verify(categoryQuery, times(1)).getCategoriesByUser(userId, description);
+        verify(query, times(1)).getCategoriesByUser(userId, description);
 
     }
 
@@ -100,38 +102,71 @@ class CategoryManagerTest {
     @Test
     @DisplayName("Should update a category when request is successful")
     void updateCategory(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category(null, "category 1", userMock);
-        CategoryDto dto = new CategoryDto("id-valid", categoryMock.getDescription(), categoryMock.getImage());
+        Category categoryMock = CategoryMock.get();
+        CategoryDto dto = CategoryDtoMock.get();
         String userId = "user-id-valid";
 
-        when(categoryQuery.getCategoryByIdAndByUserId(dto.getId(), userId)).thenReturn(Optional.of(categoryMock));
-        when(categoryCommand.save(any(Category.class))).thenReturn(categoryMock);
+        when(query.getCategoryByIdAndByUserId(dto.getId(), userId)).thenReturn(Optional.of(categoryMock));
+        when(command.save(any(Category.class))).thenReturn(categoryMock);
 
         CategoryDto result = categoryManagerProtocol.update(dto, userId);
 
         BDDAssertions.assertThat(result).isNotNull();
 
-        verify(categoryQuery, times(1)).getCategoryByIdAndByUserId(dto.getId(),userId);
-        verify(categoryCommand, times(1)).save(any(Category.class));
+        verify(query, times(1)).getCategoryByIdAndByUserId(dto.getId(),userId);
+        verify(command, times(1)).save(any(Category.class));
 
     }
     @Test
     @DisplayName("Should throw bad request exception when try update a category nad not found resource in DB")
     void notUpdateCategory(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category(null, "category 1", userMock);
-        CategoryDto dto = new CategoryDto("id-invalid", categoryMock.getDescription(), categoryMock.getImage());
+        Category categoryMock = CategoryMock.get();
+        CategoryDto dto = CategoryDtoMock.get();
         String userId = "user-id-invalid";
 
-        when(categoryQuery.getCategoryByIdAndByUserId(categoryMock.getId(), userId)).thenReturn(Optional.empty());
+        when(query.getCategoryByIdAndByUserId(categoryMock.getId(), userId)).thenReturn(Optional.empty());
 
         Throwable exception = BDDAssertions.catchThrowable(()->categoryManagerProtocol.update(dto, userId));
 
         BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Categoria não encontrada");
 
-        verify(categoryQuery, times(1)).getCategoryByIdAndByUserId(dto.getId(),userId);
-        verify(categoryCommand, never()).save(any(Category.class));
+        verify(query, times(1)).getCategoryByIdAndByUserId(dto.getId(),userId);
+        verify(command, never()).save(any(Category.class));
+
+    }
+
+    // todo delete
+    @Test
+    @DisplayName("Should disable a category when request is successful")
+    void deleteCategory(){
+        Category categoryMock = CategoryMock.get();
+        String id = "id-valid";
+        String userId = "user-id-valid";
+
+        when(query.getCategoryByIdAndByUserId(id, userId)).thenReturn(Optional.of(categoryMock));
+        when(command.save(any(Category.class))).thenReturn(categoryMock);
+
+        categoryManagerProtocol.delete(id, userId);
+
+        verify(query, times(1)).getCategoryByIdAndByUserId(id,userId);
+        verify(command, times(1)).save(any(Category.class));
+
+    }
+    @Test
+    @DisplayName("Should throw bad request exception when try delete a category nad not found resource in DB")
+    void notDeleteCategory(){
+        Category categoryMock = CategoryMock.get();
+        String id = "id-invalid";
+        String userId = "user-id-invalid";
+
+        when(query.getCategoryByIdAndByUserId(categoryMock.getId(), userId)).thenReturn(Optional.empty());
+
+        Throwable exception = BDDAssertions.catchThrowable(()->categoryManagerProtocol.delete(id, userId));
+
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Categoria não encontrada");
+
+        verify(query, times(1)).getCategoryByIdAndByUserId(id,userId);
+        verify(command, never()).save(any(Category.class));
 
     }
 

@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.project.finances.domain.exception.messages.MessagesException.CATEGORY_NOT_FOUND;
-import static com.project.finances.domain.exception.messages.MessagesException.CATEGORY_USER_NOT_PROVIDER;
+import static com.project.finances.domain.exception.messages.MessagesException.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class BankManager implements BankManagerProtocol {
 
     @Override
     public BankDto create(BankDto dto, String userId) {
-        User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException(CATEGORY_USER_NOT_PROVIDER));
+        User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException(BANK_USER_NOT_PROVIDER));
 
         Bank bankToSave = BankDto.of(dto).withUser(user);
 
@@ -36,16 +35,24 @@ public class BankManager implements BankManagerProtocol {
 
     @Override
     public List<BankDto> getBanks(String userId, String description) {
-        return query.getCategoriesByUser(userId, description).stream().map(BankDto::of).collect(Collectors.toList());
+        return query.getBanksByUser(userId, description).stream().map(BankDto::of).collect(Collectors.toList());
     }
 
     @Override
     public BankDto update(BankDto dto, String userId) {
-        Bank bankToUpdate = query.getBankByIdAndByUserId(dto.getId(), userId)
-                .orElseThrow(()-> new BadRequestException(CATEGORY_NOT_FOUND));
+        Bank bankToUpdate = query.getBankByIdAndByUserId(dto.getId(), userId).orElseThrow(()-> new BadRequestException(BANK_NOT_FOUND));
 
         bankToUpdate.withDescription(dto.getDescription()).withImage(dto.getImage());
 
         return BankDto.of(command.save(bankToUpdate));
+    }
+
+    @Override
+    public void delete(String id, String userId) {
+        Bank bank = query.getBankByIdAndByUserId(id, userId).orElseThrow(()-> new BadRequestException(BANK_NOT_FOUND));
+
+        bank.disable();
+
+        command.save(bank);
     }
 }

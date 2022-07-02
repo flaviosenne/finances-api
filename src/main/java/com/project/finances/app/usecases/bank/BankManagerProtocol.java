@@ -14,5 +14,6 @@ public interface BankManagerProtocol {
 
     BankDto update(BankDto dto, String userId);
 
+    void delete(String id, String userId);
 
 }

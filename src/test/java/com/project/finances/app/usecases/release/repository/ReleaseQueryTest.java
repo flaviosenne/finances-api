@@ -2,6 +2,7 @@ package com.project.finances.app.usecases.release.repository;
 
 
 import com.project.finances.domain.entity.*;
+import com.project.finances.mocks.entity.ReleaseMock;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import static org.mockito.Mockito.*;
 
@@ -36,10 +36,7 @@ class ReleaseQueryTest {
 
         Pageable pageMock = Mockito.mock(Pageable.class);
         String userId = "id-valid";
-
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        Category categoryMock = new Category(null, "category 1", userMock);
-        Release releaseMock = new Release(100d, "test", StatusRelease.PENDING.name(), TypeRelease.EXPENSE.name(), new Date(), categoryMock, userMock, true);
+        Release releaseMock = ReleaseMock.get();
 
         when(repository.findAllByUserId(anyString(),any(Pageable.class))).thenReturn(Arrays.asList(releaseMock));
 

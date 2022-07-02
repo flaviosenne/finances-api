@@ -4,6 +4,7 @@ import com.project.finances.app.usecases.user.repository.code.UserCodeCommand;
 import com.project.finances.app.usecases.user.repository.code.UserCodeRepository;
 import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserCode;
+import com.project.finances.mocks.entity.UserMock;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +33,7 @@ class UserCodeCommandTest {
     @Test
     @DisplayName("Should disable preview code user when user already contains saved in DB")
     void disableAndSaveCode(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get();
         UserCode userCodeMock = new UserCode(userMock, true, "");
 
         String userId = userMock.getId();
@@ -52,7 +53,7 @@ class UserCodeCommandTest {
     @Test
     @DisplayName("Should save code user when user don't has code saved in DB")
     void saveCode(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get();
         UserCode userCodeMock = new UserCode(userMock, true, "");
 
         String userId = userMock.getId();

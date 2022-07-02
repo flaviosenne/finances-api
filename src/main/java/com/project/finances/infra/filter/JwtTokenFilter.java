@@ -25,7 +25,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {     String token = jwtTokenService.resolveToken((HttpServletRequest) request);
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+        String token = jwtTokenService.resolveToken((HttpServletRequest) request);
 
         if(token != null && jwtTokenService.tokenIsValid(token)){
             String userId = jwtTokenService.decodeToken(token);

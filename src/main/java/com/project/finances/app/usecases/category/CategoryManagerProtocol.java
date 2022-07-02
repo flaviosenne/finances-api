@@ -12,5 +12,7 @@ public interface CategoryManagerProtocol {
 
     CategoryDto update(CategoryDto dto, String userId);
 
+    void delete(String id, String userId);
+
 
 }

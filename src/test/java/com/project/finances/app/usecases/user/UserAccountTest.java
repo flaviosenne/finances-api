@@ -13,6 +13,9 @@ import com.project.finances.app.usecases.user.repository.code.UserCodeCommand;
 import com.project.finances.app.usecases.user.repository.code.UserCodeQuery;
 import com.project.finances.app.usecases.user.repository.UserCommand;
 import com.project.finances.app.usecases.user.repository.UserQuery;
+import com.project.finances.mocks.dto.UserCreateDtoMock;
+import com.project.finances.mocks.dto.UserUpdateDtoMock;
+import com.project.finances.mocks.entity.UserMock;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,8 +62,8 @@ class UserAccountTest {
     @Test
     @DisplayName("Should throw bad request exception when try create user and email already exist in Data base")
     void notCreateAccount(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
-        UserCreateDto userToSaveMock = new UserCreateDto("first-name", "last-name","example@email.com", "password");
+        User userMock = UserMock.get();
+        UserCreateDto userToSaveMock = UserCreateDtoMock.get();
 
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.of(userMock));
 
@@ -76,7 +79,7 @@ class UserAccountTest {
     @Test
     @DisplayName("Should create new user when email do not exist in DB and request is successful")
     void createAccount(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", false);
+        User userMock = UserMock.get();
         UserCreateDto userToSaveMock = new UserCreateDto("first-name", "last-name", "example@email.com","password");
 
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.empty());
@@ -98,7 +101,7 @@ class UserAccountTest {
     @Test
     @DisplayName("Should throw bad request exception when try update user and id do not exists in Data base")
     void notUpdateAccount(){
-        UserUpdateDto userToUpdateMock = new UserUpdateDto("id-invalid","first-name", "last-name","example@email.com");
+        UserUpdateDto userToUpdateMock = UserUpdateDtoMock.get();
 
         when(userQuery.findByIdIsActive(userToUpdateMock.getId())).thenReturn(Optional.empty());
 
@@ -114,7 +117,7 @@ class UserAccountTest {
     @Test
     @DisplayName("Should update account when exist user in Data base")
     void updateAccount(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get();
         UserUpdateDto userToUpdateMock = new UserUpdateDto("id-valid","first-name", "last-name","example@email.com");
 
         when(userQuery.findByIdIsActive(userToUpdateMock.getId())).thenReturn(Optional.of(userMock));
@@ -145,8 +148,8 @@ class UserAccountTest {
     @Test
     @DisplayName("Should update user active account when user exist in DB")
     void activeAccount(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", false);
-        User userActive = userMock.activeAccount();
+        User userMock = UserMock.get();
+        User userActive = UserMock.get().activeAccount();
         UserCode userCodeMock = new UserCode(userMock, true, "valid-code");
         String id = "valid-code";
         userMock.withId(id);
@@ -168,7 +171,7 @@ class UserAccountTest {
     @Test
     @DisplayName("Should send email retrieve password to user when exist in DB")
     void retrievePassword(){
-        User userMock = new User("example@email.com", "first-name", "last-name", "hash", false);
+        User userMock = UserMock.get();
 
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.of(userMock));
         when(userCodeCommand.save(userMock)).thenReturn("code");
@@ -183,7 +186,7 @@ class UserAccountTest {
     @Test
     @DisplayName("Do not should send email retrieve password to user when do not exists in DB")
     void notRetrievePassword(){
-        User userMock = new User("invalid@email.com", "first-name", "last-name", "hash", false);
+        User userMock = UserMock.get();
 
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.empty());
 
@@ -201,7 +204,7 @@ class UserAccountTest {
         UserAccount service = new UserAccount(userQuery, userCommand, cryptographyProtocol,
                 mailCreateAccountProtocol, mailRetrievePasswordProtocol, userCodeCommand, userCodeQuery);
 
-        User userMock = new User("valid@email.com", "first-name", "last-name", "hash", false);
+        User userMock = UserMock.get();
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.of(userMock));
 
         UserDetails result = service.loadUserByUsername(userMock.getEmail());
@@ -218,7 +221,7 @@ class UserAccountTest {
         UserAccount service = new UserAccount(userQuery, userCommand, cryptographyProtocol,
                 mailCreateAccountProtocol, mailRetrievePasswordProtocol, userCodeCommand, userCodeQuery);
 
-        User userMock = new User("invalid@email.com", "first-name", "last-name", "hash", false);
+        User userMock = UserMock.get();
         when(userQuery.findByUsername(anyString())).thenReturn(Optional.empty());
 
         Throwable exception = BDDAssertions.catchThrowable(() ->service.loadUserByUsername(userMock.getEmail()));
@@ -232,8 +235,7 @@ class UserAccountTest {
     @Test
     @DisplayName("Should return account details when id exist in DB")
     void findById(){
-
-        User userMock = new User("valid@email.com", "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get();
         when(userQuery.findByIdIsActive(anyString())).thenReturn(Optional.of(userMock));
 
         User result = userAccountProtocol.detailsAccount(userMock.getId());
@@ -246,7 +248,7 @@ class UserAccountTest {
     @Test
     @DisplayName("Should throw BadRequestException when id not found in DB")
     void findByIdException(){
-        User userMock = new User("invalid@email.com", "first-name", "last-name", "hash", false);
+        User userMock = UserMock.get();
         when(userQuery.findByIdIsActive(anyString())).thenReturn(Optional.empty());
 
         Throwable exception = BDDAssertions.catchThrowable(() ->userAccountProtocol.detailsAccount(userMock.getId()));
@@ -279,7 +281,7 @@ class UserAccountTest {
     @Test
     @DisplayName("Should redefine password of user and invalidate code in DB")
     void redefinePassword(){
-        User userMock = new User("valid@email.com", "first-name", "last-name", "hash", true);
+        User userMock = UserMock.get();
         User userUpdatedMock = new User("valid@email.com", "first-name", "last-name", "new-pass-hashed", true);
         UserCode userCodeMock = new UserCode(userMock, true, "valid-code");
         userUpdatedMock.withId(userMock.getId());
