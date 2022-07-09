@@ -21,4 +21,6 @@ public interface FlowCashProtocol {
     Page<Release> listReleases(String userId, Pageable pageable);
 
     List<Release> listReleasesReminder(String userId);
+
+    Double getBalanceTotal(String userId);
 }

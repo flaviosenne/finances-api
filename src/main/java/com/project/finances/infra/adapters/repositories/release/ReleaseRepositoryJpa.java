@@ -51,4 +51,9 @@ public class ReleaseRepositoryJpa implements ReleaseRepository {
     public Release save(Release release) {
         return jpa.save(release);
     }
+
+    @Override
+    public Double getBalanceTotal(String userId) {
+        return jpa.getBalanceTotal(userId);
+    }
 }

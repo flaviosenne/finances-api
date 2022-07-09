@@ -20,4 +20,6 @@ public interface ReleaseRepository {
     List<Release> findAllByUserId(String userId, Pageable pageable);
 
     Release save(Release release);
+
+    Double getBalanceTotal(String userId);
 }

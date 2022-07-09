@@ -28,4 +28,21 @@ interface ReleaseInterfaceJpa extends JpaRepository<Release, String>, JpaSpecifi
             "and r.active = true " +
             "and r.dueDate >= :today and r.dueDate <= :plus5Day ")
     List<Release> findReleasesCloseExpirationIn5Days(String userId, Date today, Date plus5Day);
+
+    @Query(value = "select distinct ( " +
+            " (select sum(r.value) " +
+            " from custom_release r " +
+            " join custom_user u on (r.user_id = u.id)  " +
+            " where u.id = :userId  " +
+            " and r.active = true " +
+            " and r.type_release = 'RECEP') " +
+            " - " +
+            " (select sum(r.value) " +
+            " from custom_release r " +
+            " join custom_user u on (r.user_id = u.id)  " +
+            " where u.id = :userId  " +
+            " and r.active = true " +
+            " and r.type_release = 'EXPENSE') " +
+            " ) from custom_release", nativeQuery = true)
+    Double getBalanceTotal(String userId);
 }

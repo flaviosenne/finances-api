@@ -86,4 +86,9 @@ public class FlowCash implements FlowCashProtocol {
         return query.findReleasesCloseExpiration(userId);
     }
 
+    @Override
+    public Double getBalanceTotal(String userId) {
+        return query.getBalanceTotal(userId);
+    }
+
 }

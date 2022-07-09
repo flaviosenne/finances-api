@@ -31,4 +31,8 @@ public class ReleaseQuery {
         Date plus6day = new Date(yesterday.getTime() + 518400000);
         return repository.findReleasesCloseExpirationIn5Days(userId, yesterday, plus6day);
     }
+
+    public Double getBalanceTotal(String userId) {
+        return repository.getBalanceTotal(userId);
+    }
 }

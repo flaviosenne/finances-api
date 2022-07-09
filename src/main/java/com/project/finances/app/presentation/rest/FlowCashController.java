@@ -2,6 +2,7 @@ package com.project.finances.app.presentation.rest;
 
 import com.project.finances.app.presentation.rest.utils.PageGenerics;
 import com.project.finances.app.presentation.rest.vo.release.ListReleasesVo;
+import com.project.finances.app.presentation.rest.vo.release.ReleaseBalanceVo;
 import com.project.finances.domain.entity.Release;
 import com.project.finances.domain.entity.User;
 import com.project.finances.app.usecases.release.FlowCashProtocol;
@@ -82,5 +83,15 @@ public class FlowCashController {
                 .stream().map(ListReleasesVo::of)
                 .collect(Collectors.toList());
     }
+
+    @CrossOrigin
+    @GetMapping("/balance")
+    @ResponseStatus(HttpStatus.OK)
+    public ReleaseBalanceVo getBalance(@AuthenticationPrincipal User user){
+        return ReleaseBalanceVo.builder()
+                .balance(flowCashProtocol.getBalanceTotal(user.getId()))
+                .build();
+    }
+
 
 }
