@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -30,6 +31,10 @@ public class Release extends BasicEntity {
     private Category category;
 
     @ManyToOne
+    @JoinColumn(name = "bank_id", referencedColumnName = "id")
+    private Bank bank;
+
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -38,6 +43,13 @@ public class Release extends BasicEntity {
 
     public Release withUser(User user){
         this.user = user;
+        return this;
+    }
+
+    public Release withBank(Optional<Bank> bank){
+        if(bank.isPresent() && TypeRelease.RECEP.name().equals(this.typeRelease)){
+            this.bank = bank.get();
+        }
         return this;
     }
 

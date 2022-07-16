@@ -1,5 +1,6 @@
 package com.project.finances.mocks.dto;
 
+import com.project.finances.app.usecases.release.dto.ReleaseBankDto;
 import com.project.finances.app.usecases.release.dto.ReleaseDto;
 import com.project.finances.domain.entity.Release;
 import com.project.finances.mocks.entity.ReleaseMock;
@@ -11,6 +12,14 @@ public class ReleaseDtoMock {
         return new ReleaseDto(
                 release.getId(), release.getDescription(), release.getStatusRelease(),
                 release.getTypeRelease(), release.getDueDate(), release.getValue(),
-                ReleaseCategoryDtoMock.get());
+                ReleaseCategoryDtoMock.get(), ReleaseBankDto.builder().id(null).build());
+    }
+
+    public static ReleaseDto getWithBank(){
+        Release release = ReleaseMock.get();
+        return new ReleaseDto(
+                release.getId(), release.getDescription(), release.getStatusRelease(),
+                release.getTypeRelease(), release.getDueDate(), release.getValue(),
+                ReleaseCategoryDtoMock.get(),ReleaseBankDtoMock.get());
     }
 }

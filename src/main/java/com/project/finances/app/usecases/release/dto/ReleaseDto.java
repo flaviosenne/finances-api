@@ -18,6 +18,7 @@ public class ReleaseDto {
     private Date dueDate;
     private Double value;
     private ReleaseCategoryDto category;
+    private ReleaseBankDto bank;
 
     public static Release of(ReleaseDto dto){
         return Release.builder()
@@ -30,6 +31,7 @@ public class ReleaseDto {
     }
 
     public static ReleaseDto of(Release entity){
+        String bankId = entity.getBank() == null ? null : entity.getBank().getId();
         return ReleaseDto.builder()
                 .id(entity.getId())
                 .dueDate(entity.getDueDate())
@@ -38,6 +40,7 @@ public class ReleaseDto {
                 .type(entity.getTypeRelease())
                 .value(entity.getValue())
                 .category(ReleaseCategoryDto.builder().id(entity.getCategory().getId()).build())
+                .bank(ReleaseBankDto.builder().id(bankId).build())
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package com.project.finances.app.usecases.release;
 
+import com.project.finances.app.usecases.bank.repository.BankQuery;
 import com.project.finances.domain.entity.*;
 import com.project.finances.domain.exception.BadRequestException;
 import com.project.finances.app.usecases.category.repository.CategoryQuery;
@@ -8,6 +9,8 @@ import com.project.finances.app.usecases.release.repository.ReleaseCommand;
 import com.project.finances.app.usecases.release.repository.ReleaseQuery;
 import com.project.finances.app.usecases.user.repository.UserQuery;
 import com.project.finances.mocks.dto.ReleaseDtoMock;
+import com.project.finances.mocks.entity.BankMock;
+import com.project.finances.mocks.entity.CategoryMock;
 import com.project.finances.mocks.entity.ReleaseMock;
 import com.project.finances.mocks.entity.UserMock;
 import org.assertj.core.api.BDDAssertions;
@@ -22,7 +25,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -39,11 +43,14 @@ class FlowCashTest {
     @Mock
     private ReleaseQuery query;
 
+    @Mock
+    private BankQuery bankQuery;
+
     private FlowCashProtocol flowCashProtocol;
 
     @BeforeEach
     void setup(){
-        flowCashProtocol = new FlowCash(command,userQuery, categoryQuery, query);
+        flowCashProtocol = new FlowCash(command,userQuery, categoryQuery, query, bankQuery);
     }
 
     // todo save release
@@ -108,6 +115,37 @@ class FlowCashTest {
         verify(command, never()).create(any(Release.class));
     }
 
+
+    @Test
+    @DisplayName("Should save release with bank linked")
+    void saveRecepInOtherBank(){
+        Release releaseMock = new Release(
+                100d, "test", StatusRelease.PENDING.name(),
+                TypeRelease.RECEP.name(), new Date(),
+                CategoryMock.get(), BankMock.get(), UserMock.get(), true);
+
+        User userMock = releaseMock.getUser();
+        Bank bankMock = releaseMock.getBank();
+        String userId = userMock.getId();
+        ReleaseDto dto = ReleaseDtoMock.getWithBank();
+        String categoryId = dto.getCategory().getId();
+
+        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(userMock));
+        when(categoryQuery.getCategoryByIdAndByUserId(categoryId, userMock.getId())).thenReturn(Optional.of(releaseMock.getCategory().withId(categoryId)));
+        when(bankQuery.getBankByIdAndByUserId(dto.getBank().getId(), userId)).thenReturn(Optional.of(bankMock.withId(dto.getBank().getId())));
+        when(command.create(any(Release.class))).thenReturn(releaseMock);
+
+        ReleaseDto result = flowCashProtocol.createRelease(dto, userId);
+
+        BDDAssertions.assertThat(result).isNotNull().isInstanceOf(ReleaseDto.class);
+        BDDAssertions.assertThat(result.getBank().getId()).isEqualTo(bankMock.getId());
+
+        verify(userQuery, times(1)).findByIdIsActive(userId);
+        verify(categoryQuery, times(1)).getCategoryByIdAndByUserId(categoryId, releaseMock.getUser().getId());
+        verify(bankQuery, times(1)).getBankByIdAndByUserId(bankMock.getId(), userId);
+        verify(command, times(1)).create(any(Release.class));
+    }
+
     //todo list releases
     @Test
     @DisplayName("Should return a list pageable of releases when request is successful")
@@ -117,7 +155,7 @@ class FlowCashTest {
 
         Release releaseMock = ReleaseMock.get();
 
-        when(query.getReleases(userId, pageMock)).thenReturn(new PageImpl<Release>(Arrays.asList(releaseMock)));
+        when(query.getReleases(userId, pageMock)).thenReturn(new PageImpl<>(List.of(releaseMock)));
 
         Page<Release> result = flowCashProtocol.listReleases(userId, pageMock);
 
@@ -223,6 +261,139 @@ class FlowCashTest {
         verify(command, never()).create(any(Release.class));
     }
 
+
+    // todo update status to paid
+    @Test
+    void updateStatusRelease(){
+
+        Release releaseMock = ReleaseMock.get();
+        String userId = releaseMock.getUser().getId();
+        Release releaseWithStatusPaid = releaseMock.withStatusPaid();
+
+
+        when(query.findReleaseById(releaseMock.getId(), userId)).thenReturn(Optional.of(releaseMock));
+        when(command.update(releaseWithStatusPaid, releaseMock.getId())).thenReturn(releaseWithStatusPaid);
+
+        ReleaseDto result = flowCashProtocol.updateStatusRelease(releaseMock.getId(), userId);
+
+        BDDAssertions.assertThat(result).isNotNull();
+        BDDAssertions.assertThat(result.getStatus()).isEqualTo(StatusRelease.PAID.name());
+
+        verify(query, times(1)).findReleaseById(releaseMock.getId(), userId);
+        verify(command, times(1)).update(releaseWithStatusPaid, releaseMock.getId());
+    }
+
+    @Test
+    void updateStatusReleaseNotFound(){
+
+        Release releaseMock = ReleaseMock.get();
+        String userId = releaseMock.getUser().getId();
+
+
+        when(query.findReleaseById(releaseMock.getId(), userId)).thenReturn(Optional.empty());
+
+        Throwable exception = BDDAssertions.catchThrowable(()->flowCashProtocol.updateStatusRelease(releaseMock.getId(), userId));
+
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Lançamento não encontrado");
+
+        verify(query, times(1)).findReleaseById(releaseMock.getId(), userId);
+    }
+
+    // todo delete
+
+    @Test
+    @DisplayName("Should delete release in DB when exist id and category is valid and is owner user")
+    void delete(){
+
+        User userMock = UserMock.get();
+        ReleaseDto dto = ReleaseDtoMock.get();
+        Release releaseMock = ReleaseMock.get();
+        String userId = "valid-id-user";
+
+        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(userMock.withId(userId)));
+        when(query.findReleaseById(dto.getId(), userId)).thenReturn(Optional.of(releaseMock.withId(dto.getId())));
+
+        flowCashProtocol.deleteRelease(releaseMock.getId(), userId);
+
+
+        verify(userQuery, times(1)).findByIdIsActive(userId);
+        verify(query, times(1)).findReleaseById(dto.getId(), userId);
+        verify(command, times(1)).delete(releaseMock.getId(), userId);
+
+
+    }
+
+    @Test
+    @DisplayName("Should throw bad request exception when try delete release and user is not provider or invalid")
+    void deleteNotFoundUser(){
+        String id = "release-valid";
+        String userId = "user-id-invalid";
+
+        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.empty());
+
+        Throwable exception = BDDAssertions.catchThrowable(() -> flowCashProtocol.deleteRelease(id, userId));
+
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Usuário não encontrado");
+
+        verify(userQuery, times(1)).findByIdIsActive(userId);
+        verify(query, never()).findReleaseById(anyString(), anyString());
+        verify(command, never()).delete(anyString(), anyString());
+    }
+
+
+    @Test
+    @DisplayName("Should throw bad request exception when try delete release and user is not provider or invalid")
+    void deleteNotFoundRelease(){
+        String id = "invalid-id-release";
+        String userId = "user-id-valid";
+
+        when(userQuery.findByIdIsActive(userId)).thenReturn(Optional.of(UserMock.get().withId(userId)));
+        when(query.findReleaseById(id, userId)).thenReturn(Optional.empty());
+
+        Throwable exception = BDDAssertions.catchThrowable(() -> flowCashProtocol.deleteRelease(id, userId));
+
+        BDDAssertions.assertThat(exception).isInstanceOf(BadRequestException.class).hasMessage("Lançamento não encontrado");
+
+        verify(userQuery, times(1)).findByIdIsActive(userId);
+        verify(query, times(1)).findReleaseById(id, userId);
+        verify(command, never()).delete(anyString(), anyString());
+    }
+
+
+    @Test
+    @DisplayName("Should return a list of releases pending in 5 days when request is successful")
+    void listReleasesReminder(){
+        String userId = "id-valid";
+
+        Release releaseMock = ReleaseMock.get();
+
+        when(query.findReleasesCloseExpiration(userId)).thenReturn(List.of(releaseMock));
+
+        List<Release> result = flowCashProtocol.listReleasesReminder(userId);
+
+
+        BDDAssertions.assertThat(result).isNotNull().isEqualTo(List.of(releaseMock));
+
+        verify(query, times(1)).findReleasesCloseExpiration(userId);
+
+    }
+
+    @Test
+    @DisplayName("Should return total balance of releases by user id")
+    void getBalanceTotal(){
+        String userId = "id-valid";
+        Release releaseMock = ReleaseMock.get();
+        Double total = 100d;
+
+        when(query.getBalanceTotal(userId)).thenReturn(total);
+
+        Double result = flowCashProtocol.getBalanceTotal(userId);
+
+        BDDAssertions.assertThat(result).isNotNull().isEqualTo(total);
+
+        verify(query, times(1)).getBalanceTotal(userId);
+
+    }
 
 
 }

@@ -1,7 +1,9 @@
 package com.project.finances.app.usecases.release;
 
+import com.project.finances.app.usecases.bank.repository.BankQuery;
 import com.project.finances.app.usecases.release.dto.ReleaseDto;
 import com.project.finances.app.usecases.user.repository.UserQuery;
+import com.project.finances.domain.entity.Bank;
 import com.project.finances.domain.entity.Category;
 import com.project.finances.domain.entity.Release;
 import com.project.finances.domain.entity.User;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.project.finances.domain.exception.messages.MessagesException.*;
 
@@ -28,6 +31,8 @@ public class FlowCash implements FlowCashProtocol {
     private final CategoryQuery categoryQuery;
     private final ReleaseQuery query;
 
+    private final BankQuery bankQuery;
+
     @Override
     public ReleaseDto createRelease(ReleaseDto dto, String userId) {
 
@@ -37,7 +42,14 @@ public class FlowCash implements FlowCashProtocol {
         Category category = categoryQuery.getCategoryByIdAndByUserId(dto.getCategory().getId(), user.getId())
                 .orElseThrow(()-> new BadRequestException(CASH_FLOW_CATEGORY_NOT_PROVIDER));
 
-        Release releaseToSave = ReleaseDto.of(dto).withCategory(category).withUser(user).active();
+        Optional<Bank> bank = Optional.empty();
+
+        if(dto.getBank().getId() != null){
+            bank = bankQuery.getBankByIdAndByUserId(dto.getBank().getId(), user.getId());
+        }
+
+        Release releaseToSave = ReleaseDto.of(dto)
+                .withCategory(category).withBank(bank).withUser(user).active();
 
         return ReleaseDto.of(command.create(releaseToSave));
     }
@@ -73,9 +85,9 @@ public class FlowCash implements FlowCashProtocol {
 
     @Override
     public void deleteRelease(String id, String userId){
-        Release entity = query.findReleaseById(id, userId).orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
-
         User user = userQuery.findByIdIsActive(userId).orElseThrow(()-> new BadRequestException(USER_NOT_FOUND));
+
+        Release entity = query.findReleaseById(id, userId).orElseThrow(()-> new BadRequestException(CASH_FLOW_NOT_FOUND));
 
         command.delete(entity.getId(), user.getId());
 

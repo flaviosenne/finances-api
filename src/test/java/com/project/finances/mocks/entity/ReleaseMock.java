@@ -11,6 +11,6 @@ public class ReleaseMock {
         return new Release(
                 100d, "test", StatusRelease.PENDING.name(),
                 TypeRelease.EXPENSE.name(), new Date(),
-                CategoryMock.get(), UserMock.get(), true);
+                CategoryMock.get(), BankMock.get(), UserMock.get(), true);
     }
 }
