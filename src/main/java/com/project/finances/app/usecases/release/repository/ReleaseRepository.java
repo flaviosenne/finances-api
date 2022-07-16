@@ -15,7 +15,7 @@ public interface ReleaseRepository {
 
     Optional<Release> findOneReleaseByIdAndByUserIdToDelete(String id, String userId);
 
-    List<Release> findReleasesCloseExpirationIn5Days(String userId, Date today, Date plus5Day);
+    List<Release> findReleasesCloseExpirationIn5Days(String userId, Date today);
 
     List<Release> findAllByUserId(String userId, Pageable pageable);
 

@@ -36,7 +36,8 @@ public class ReleaseRepositoryJpa implements ReleaseRepository {
     }
 
     @Override
-    public List<Release> findReleasesCloseExpirationIn5Days(String userId, Date today, Date plus5Day) {
+    public List<Release> findReleasesCloseExpirationIn5Days(String userId, Date today) {
+        Date plus5Day = new Date(today.getTime() + 518400000);
         return jpa.findReleasesCloseExpirationIn5Days(userId, today, plus5Day);
     }
 
