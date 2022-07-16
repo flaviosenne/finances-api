@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Random;
 
 
 @NoArgsConstructor
@@ -21,6 +20,7 @@ public class UserCode extends BasicEntity  {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @Column(name = "is_valid")
     private boolean isValid;
 
     private String code;

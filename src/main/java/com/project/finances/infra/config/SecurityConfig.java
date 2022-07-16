@@ -1,7 +1,7 @@
 package com.project.finances.infra.config;
 
-import com.project.finances.domain.usecases.user.repository.UserQuery;
-import com.project.finances.infra.service.jwt.JwtTokenService;
+import com.project.finances.app.usecases.user.repository.UserQuery;
+import com.project.finances.infra.adapters.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

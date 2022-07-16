@@ -17,7 +17,6 @@ import java.util.Collection;
 @Getter
 @Entity
 @Table(name = "custom_user")
-@EqualsAndHashCode
 public class User extends BasicEntity implements UserDetails {
 
     @Column(nullable = false, unique = true)
@@ -35,23 +34,18 @@ public class User extends BasicEntity implements UserDetails {
     private boolean isActive;
 
     public User withPassword(String hash){
-        return User.builder()
-                .password(hash)
-                .email(email)
-                .firstName(firstName)
-                .lastName(lastName)
-                .isActive(isActive)
-                .build();
+        this.password = hash;
+        return this;
+    }
+
+    public User withEmail(String email){
+        this.email = email;
+        return this;
     }
 
     public User activeAccount(){
-        return User.builder()
-                .password(password)
-                .email(email)
-                .firstName(firstName)
-                .lastName(lastName)
-                .isActive(true)
-                .build();
+        this.isActive = true;
+        return this;
     }
 
     public User withId(String id){
