@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 interface BankInterfaceJpa extends JpaRepository<Bank, String> {
-    @Query("select c from Bank c join c.user u " +
-            "where u.id = :userId and c.description like %:description% ")
+    @Query("select b from Bank b join b.user u " +
+            "where u.id = :userId and b.description like %:description% ")
     List<Bank> findBankByUserId(String userId, String description);
 
-    @Query("select c from Bank c join c.user u " +
-            "where c.id = :id and u.id = :userId")
+    @Query("select b from Bank b join b.user u " +
+            "where b.id = :id and u.id = :userId")
     Optional<Bank> findByIdAndByUserId(String id, String userId);
 }

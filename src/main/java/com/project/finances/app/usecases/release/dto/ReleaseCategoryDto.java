@@ -3,6 +3,7 @@ package com.project.finances.app.usecases.release.dto;
 
 import lombok.*;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter

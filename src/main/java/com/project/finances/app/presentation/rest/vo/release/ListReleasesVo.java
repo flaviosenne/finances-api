@@ -30,8 +30,10 @@ public class ListReleasesVo {
 
     private CategoryVo category;
 
+    private BankVo bank;
+
     public static ListReleasesVo of(Release release){
-        System.out.println("release: "+ release.toString());
+        String bankDescription = release.getBank() == null ? null : release.getBank().getDescription();
         return ListReleasesVo.builder()
                 .id(release.getId())
                 .value(release.getValue())
@@ -41,6 +43,7 @@ public class ListReleasesVo {
                 .createdAt(release.getCreatedAt())
                 .dueDate(release.getDueDate())
                 .category(CategoryVo.builder().name(release.getCategory().getDescription()).build())
+                .bank(BankVo.builder().name(bankDescription).build())
                 .build();
     }
 }
