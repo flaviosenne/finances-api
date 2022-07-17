@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ class ReleaseQueryTest {
         String userId = "id-valid";
         Release releaseMock = ReleaseMock.get();
 
-        when(repository.findAllByUserId(anyString(),any(Pageable.class))).thenReturn(List.of(releaseMock));
+        when(repository.findAllByUserId(anyString(),any(Pageable.class))).thenReturn(Collections.singletonList(releaseMock));
 
         Page<Release> result = query.getReleases(userId, pageMock);
 
@@ -76,11 +77,11 @@ class ReleaseQueryTest {
         Release releaseMock = ReleaseMock.get();
         String userId = releaseMock.getUser().getId();
 
-        when(repository.findReleasesCloseExpirationIn5Days(eq(userId), any(Date.class))).thenReturn(List.of(releaseMock));
+        when(repository.findReleasesCloseExpirationIn5Days(eq(userId), any(Date.class))).thenReturn(Collections.singletonList(releaseMock));
 
         List<Release> result = query.findReleasesCloseExpiration(userId);
 
-        BDDAssertions.assertThat(result).isNotNull().isEqualTo(List.of(releaseMock));
+        BDDAssertions.assertThat(result).isNotNull().isEqualTo(Collections.singletonList(releaseMock));
 
         verify(repository, times(1)).findReleasesCloseExpirationIn5Days(eq(userId), any(Date.class));
     }

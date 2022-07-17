@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,11 +41,11 @@ class ReleaseRepositoryJpaTest {
         String userId = releaseMock.getUser().getId();
         Pageable pageMock = mock(Pageable.class);
 
-        when(jpa.findAllByUser(userId, pageMock)).thenReturn(new PageImpl<>(List.of(releaseMock)));
+        when(jpa.findAllByUser(userId, pageMock)).thenReturn(new PageImpl<>(Collections.singletonList(releaseMock)));
 
         Page<Release> result = repository.findAllByUser(userId, pageMock);
 
-        BDDAssertions.assertThat(result).isEqualTo(new PageImpl<>(List.of(releaseMock)));
+        BDDAssertions.assertThat(result).isEqualTo(new PageImpl<>(Collections.singletonList(releaseMock)));
         verify(jpa, times(1)).findAllByUser(userId, pageMock);
     }
 
@@ -87,11 +88,11 @@ class ReleaseRepositoryJpaTest {
         Date today = new Date();
         Date plus5Day = new Date(today.getTime() + 518400000);
 
-        when(jpa.findReleasesCloseExpirationIn5Days(userId, today, plus5Day)).thenReturn(List.of(releaseMock));
+        when(jpa.findReleasesCloseExpirationIn5Days(userId, today, plus5Day)).thenReturn(Collections.singletonList(releaseMock));
 
         List<Release> result = repository.findReleasesCloseExpirationIn5Days(userId, today);
 
-        BDDAssertions.assertThat(result).isEqualTo(List.of(releaseMock));
+        BDDAssertions.assertThat(result).isEqualTo(Collections.singletonList(releaseMock));
         verify(jpa, times(1)).findReleasesCloseExpirationIn5Days(userId, today, plus5Day);
     }
 
@@ -103,11 +104,11 @@ class ReleaseRepositoryJpaTest {
 
         Pageable pageableMock = mock(Pageable.class);
 
-        when(jpa.findAll(any(Specification.class), eq(pageableMock))).thenReturn(new PageImpl(List.of(releaseMock)));
+        when(jpa.findAll(any(Specification.class), eq(pageableMock))).thenReturn(new PageImpl(Collections.singletonList(releaseMock)));
 
         List<Release> result = repository.findAllByUserId(userId, pageableMock);
 
-        BDDAssertions.assertThat(result).isEqualTo(List.of(releaseMock));
+        BDDAssertions.assertThat(result).isEqualTo(Collections.singletonList(releaseMock));
         verify(jpa, times(1)).findAll(any(Specification.class), eq(pageableMock));
     }
 

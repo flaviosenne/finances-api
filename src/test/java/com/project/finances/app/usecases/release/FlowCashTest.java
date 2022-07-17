@@ -25,6 +25,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -155,7 +156,7 @@ class FlowCashTest {
 
         Release releaseMock = ReleaseMock.get();
 
-        when(query.getReleases(userId, pageMock)).thenReturn(new PageImpl<>(List.of(releaseMock)));
+        when(query.getReleases(userId, pageMock)).thenReturn(new PageImpl<>(Collections.singletonList(releaseMock)));
 
         Page<Release> result = flowCashProtocol.listReleases(userId, pageMock);
 
@@ -367,12 +368,12 @@ class FlowCashTest {
 
         Release releaseMock = ReleaseMock.get();
 
-        when(query.findReleasesCloseExpiration(userId)).thenReturn(List.of(releaseMock));
+        when(query.findReleasesCloseExpiration(userId)).thenReturn(Collections.singletonList(releaseMock));
 
         List<Release> result = flowCashProtocol.listReleasesReminder(userId);
 
 
-        BDDAssertions.assertThat(result).isNotNull().isEqualTo(List.of(releaseMock));
+        BDDAssertions.assertThat(result).isNotNull().isEqualTo(Collections.singletonList(releaseMock));
 
         verify(query, times(1)).findReleasesCloseExpiration(userId);
 
@@ -382,7 +383,6 @@ class FlowCashTest {
     @DisplayName("Should return total balance of releases by user id")
     void getBalanceTotal(){
         String userId = "id-valid";
-        Release releaseMock = ReleaseMock.get();
         Double total = 100d;
 
         when(query.getBalanceTotal(userId)).thenReturn(total);

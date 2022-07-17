@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +37,12 @@ public class BankRepositoryJpaTest {
         Bank bankDb = BankMock.get();
         String userId = bankDb.getUser().getId();
         String description = bankDb.getDescription();
-        when(jpa.findBankByUserId(userId, description)).thenReturn(List.of(bankDb));
+        when(jpa.findBankByUserId(userId, description)).thenReturn(Collections.singletonList(bankDb));
 
         List<Bank> result = repository.findBankByUserIdAndDescription(userId, description);
 
         BDDAssertions.assertThat(result).isNotNull().isNotEmpty();
-        BDDAssertions.assertThat(result).isEqualTo(List.of(bankDb));
+        BDDAssertions.assertThat(result).isEqualTo(Collections.singletonList(bankDb));
 
         verify(jpa, times(1)).findBankByUserId(userId, description);
     }

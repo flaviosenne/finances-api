@@ -58,7 +58,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     public User updateAccount(UserUpdateDto dto) {
         Optional<User> optionalUser = userQuery.findByIdIsActive(dto.getId());
 
-        if(optionalUser.isEmpty()) throw new BadRequestException(USER_NOT_FOUND);
+        if(!optionalUser.isPresent()) throw new BadRequestException(USER_NOT_FOUND);
 
         User userToUpdate = dto.updateAccount(optionalUser.get(), dto);
 

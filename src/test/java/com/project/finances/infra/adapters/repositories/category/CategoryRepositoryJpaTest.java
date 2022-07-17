@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +37,12 @@ class CategoryRepositoryJpaTest {
         Category categoryDb = CategoryMock.get();
         String userId = categoryDb.getUser().getId();
         String description = categoryDb.getDescription();
-        when(jpa.findCategoryByUserId(userId, description)).thenReturn(List.of(categoryDb));
+        when(jpa.findCategoryByUserId(userId, description)).thenReturn(Collections.singletonList(categoryDb));
 
         List<Category> result = repository.findCategoryByUserIdAndDescription(userId, description);
 
         BDDAssertions.assertThat(result).isNotNull().isNotEmpty();
-        BDDAssertions.assertThat(result).isEqualTo(List.of(categoryDb));
+        BDDAssertions.assertThat(result).isEqualTo(Collections.singletonList(categoryDb));
 
         verify(jpa, times(1)).findCategoryByUserId(userId, description);
     }
