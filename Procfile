@@ -1,0 +1,1 @@
+web: java -jar target/finances.0.0.1-SNAPSHOT.jar
