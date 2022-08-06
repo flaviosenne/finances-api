@@ -6,6 +6,13 @@ spring:
   application:
     name: finances
 
+  rabbitmq:
+    addresses:
+    host:
+    port:
+    username:
+    password:
+
   datasource:
     url: jdbc:mysql://localhost:3307/finances
     username: root
