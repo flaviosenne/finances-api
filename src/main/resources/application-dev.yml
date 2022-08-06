@@ -8,10 +8,10 @@ spring:
 
   rabbitmq:
     addresses:
-    host:
-    port:
-    username:
-    password:
+    host: localhost
+    port: 5672
+    username: admin
+    password: 123456
 
   datasource:
     url: jdbc:mysql://localhost:3307/finances

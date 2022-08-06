@@ -8,12 +8,15 @@ import com.project.finances.infra.adapters.rabbitmq.dto.EmailRabbitmqDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 
 import static com.project.finances.infra.adapters.rabbitmq.RoutingKeys.ACTIVATE_ACCOUNT;
 import static com.project.finances.infra.adapters.rabbitmq.RoutingKeys.RECOVERY_PASSWORD;
 
-@Service
+@Primary
+@Component("SendEmailRabbitmq")
 @AllArgsConstructor
 @Slf4j
 public class SendEmailRabbitmq implements MailCreateAccountProtocol, MailRetrievePasswordProtocol {
