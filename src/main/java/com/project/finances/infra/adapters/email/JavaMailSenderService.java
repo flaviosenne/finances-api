@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class MailService implements MailProtocol {
+public class JavaMailSenderService implements MailProtocol {
 
     private final JavaMailSender mailSender;
 

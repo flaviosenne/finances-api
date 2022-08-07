@@ -20,14 +20,14 @@ class MailServiceTest {
 
     private JavaMailSender javaMailSender;
 
-    private MailService mailService;
+    private JavaMailSenderService mailService;
 
     @BeforeEach
     void setup(){
         MimeMessage mimeMessage = new MimeMessage((Session)null);
         javaMailSender = mock(JavaMailSender.class);
         when(javaMailSender.createMimeMessage()).thenReturn(mimeMessage);
-        mailService = new MailService(javaMailSender);
+        mailService = new JavaMailSenderService(javaMailSender);
     }
 
     @Test

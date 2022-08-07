@@ -1,4 +1,4 @@
-package com.project.finances.infra.adapters.rabbitmq;
+package com.project.finances.infra.adapters.email;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.finances.app.usecases.user.ports.MailCreateAccountProtocol;
@@ -8,18 +8,17 @@ import com.project.finances.infra.adapters.rabbitmq.dto.EmailRabbitmqDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import static com.project.finances.infra.adapters.rabbitmq.RoutingKeys.ACTIVATE_ACCOUNT;
-import static com.project.finances.infra.adapters.rabbitmq.RoutingKeys.RECOVERY_PASSWORD;
+import static com.project.finances.infra.adapters.rabbitmq.ExchangesMapped.ACTIVATE_ACCOUNT;
+import static com.project.finances.infra.adapters.rabbitmq.ExchangesMapped.RECOVERY_PASSWORD;
 
 @Primary
 @Component("SendEmailRabbitmq")
 @AllArgsConstructor
 @Slf4j
-public class SendEmailRabbitmq implements MailCreateAccountProtocol, MailRetrievePasswordProtocol {
+public class MailRabbitmqService implements MailCreateAccountProtocol, MailRetrievePasswordProtocol {
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -32,7 +31,7 @@ public class SendEmailRabbitmq implements MailCreateAccountProtocol, MailRetriev
 
             String messageJson = this.mapper.writeValueAsString(dto);
 
-            this.rabbitTemplate.convertAndSend(ACTIVATE_ACCOUNT,messageJson);
+            this.rabbitTemplate.convertAndSend(ACTIVATE_ACCOUNT,"",messageJson);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -46,7 +45,7 @@ public class SendEmailRabbitmq implements MailCreateAccountProtocol, MailRetriev
 
             String messageJson = this.mapper.writeValueAsString(dto);
 
-            this.rabbitTemplate.convertAndSend(RECOVERY_PASSWORD,messageJson);
+            this.rabbitTemplate.convertAndSend(RECOVERY_PASSWORD,"",messageJson);
 
         }catch (Exception e){
             e.printStackTrace();
