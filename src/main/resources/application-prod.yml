@@ -5,11 +5,17 @@ spring:
   application:
     name: finances
 
+  rabbitmq:
+    addresses: amqps://ddssohmz:UkTPfpcEB5KvqE_bu37s2nb2-yoNQ8ru@shark.rmq.cloudamqp.com/ddssohmz
+    host: localhost
+    port: 5672
+    username: admin
+    password: 123456
+
   datasource:
-    url: jdbc:postgresql://ec2-54-86-224-85.compute-1.amazonaws.com:5432/d7avt2knjp01sr
-    username: ugdduqjfasqnbd
-    password: e785dddd06d0c16222c6301059fae53fcf91b3736119bbd3086dd94133c40e98
-  # variavel de ambiente do heroku, que providencia um banco padrão
+    url: jdbc:postgresql://ec2-54-158-26-89.compute-1.amazonaws.com:5432/de31lhss3cultl
+    username: hpsyvogsqbztvk
+    password: a6749e009a1180146ca374e2a884690fa59b7f5535e61de9b5c63dd2f70a1221
 
 
   jpa:
@@ -19,18 +25,6 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
-#  mail:
-#    host: smtp.gmail.com
-#    port: 587
-#    protocol: smtp
-#    tls: true
-#    username: facildespesa@gmail.com
-#    password: D3spes@Fac1l
-#    test-connection: true
-#    properties.mail.smtp:
-#      auth: true
-#      starttls.enable: true
-#      ssl.trust: smtp.gmail.com
 
   mail:
     host: smtp.mailtrap.io

@@ -1,5 +1,6 @@
 services:
   db-mysql:
+    container_name: mysql-finances
     image: mysql
     restart: always
     environment:
@@ -7,3 +8,15 @@ services:
       MYSQL_DATABASE: finances
     ports:
       - "3307:3306"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-finances
+    ports:
+      - "0.0.0.0:5672:5672"
+      - "0.0.0.0:15672:15672"
+    volumes:
+      - ./dados:/var/lib/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=123456

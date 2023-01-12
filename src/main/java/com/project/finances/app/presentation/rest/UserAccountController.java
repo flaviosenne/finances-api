@@ -6,16 +6,19 @@ import com.project.finances.app.presentation.rest.vo.user.UpdateUserVo;
 import com.project.finances.domain.entity.User;
 import com.project.finances.app.usecases.user.UserAccountProtocol;
 import com.project.finances.app.usecases.user.dto.RedefinePasswordDto;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/users")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserAccountController {
 
+    @Autowired
     private final UserAccountProtocol accountProtocol;
 
     @CrossOrigin

@@ -9,6 +9,11 @@ spring:
     password: joao
     driverClassName: org.h2.Driver
 
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
 
   mail:
     host: smtp.mailtrap.io
@@ -17,8 +22,15 @@ spring:
     password: 9117bf7177395f
     test-connection: true
 
+  rabbitmq:
+    addresses: amqps://ddssohmz:UkTPfpcEB5KvqE_bu37s2nb2-yoNQ8ru@shark.rmq.cloudamqp.com/ddssohmz
+    host: localhost
+    port: 5672
+    username: admin
+    password: 123456
+
   jpa:
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create
     generate-ddl: true
     show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect

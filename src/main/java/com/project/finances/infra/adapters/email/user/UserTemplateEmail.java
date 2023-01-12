@@ -3,7 +3,7 @@ package com.project.finances.infra.adapters.email.user;
 import com.project.finances.domain.entity.User;
 import com.project.finances.app.usecases.user.ports.MailCreateAccountProtocol;
 import com.project.finances.app.usecases.user.ports.MailRetrievePasswordProtocol;
-import com.project.finances.infra.adapters.email.MailService;
+import com.project.finances.infra.adapters.email.JavaMailSenderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -16,7 +16,7 @@ import org.thymeleaf.context.Context;
 @RequiredArgsConstructor
 public class UserTemplateEmail implements MailCreateAccountProtocol, MailRetrievePasswordProtocol {
     private final TemplateEngine templateEngine;
-    private final MailService mailService;
+    private final JavaMailSenderService mailService;
 
     @Async
     @Override

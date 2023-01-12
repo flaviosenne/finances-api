@@ -6,6 +6,13 @@ spring:
   application:
     name: finances
 
+  rabbitmq:
+    addresses: amqps://ddssohmz:UkTPfpcEB5KvqE_bu37s2nb2-yoNQ8ru@shark.rmq.cloudamqp.com/ddssohmz
+    host: localhost
+    port: 5672
+    username: admin
+    password: 123456
+
   datasource:
     url: jdbc:mysql://localhost:3307/finances
     username: root
