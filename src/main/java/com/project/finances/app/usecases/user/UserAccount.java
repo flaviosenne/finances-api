@@ -14,8 +14,6 @@ import com.project.finances.domain.entity.User;
 import com.project.finances.domain.entity.UserCode;
 import com.project.finances.domain.exception.BadRequestException;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,9 +30,7 @@ public class UserAccount implements UserAccountProtocol, UserDetailsService {
     private final UserQuery userQuery;
     private final UserCommand userCommand;
     private final CryptographyProtocol cryptographyProtocol;
-    @Qualifier("SendEmailRabbitmq")
     private final MailCreateAccountProtocol mailCreateAccountProtocol;
-    @Qualifier("SendEmailRabbitmq")
     private final MailRetrievePasswordProtocol mailRetrievePasswordProtocol;
     private final UserCodeCommand userCodeCommand;
     private final UserCodeQuery userCodeQuery;
