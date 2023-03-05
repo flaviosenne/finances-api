@@ -7,7 +7,7 @@ spring:
     name: finances
 
   rabbitmq:
-    addresses: amqps://ddssohmz:UkTPfpcEB5KvqE_bu37s2nb2-yoNQ8ru@shark.rmq.cloudamqp.com/ddssohmz
+    addresses: amqps://zpqvtjak:AXMkh2gOZtNpOZmoWMN-Nq6eOdJCBUhL@chimpanzee.rmq.cloudamqp.com/zpqvtjak
     host: localhost
     port: 5672
     username: admin
@@ -19,15 +19,15 @@ spring:
     password: joao
 
   jpa:
-    hibernate.ddl-auto: update
-    generate-ddl: true
+    hibernate.ddl-auto: none
+    generate-ddl: false
     show-sql: true
 
   mail:
-    host: smtp.mailtrap.io
+    host: sandbox.smtp.mailtrap.io
     port: 2525
-    username: d02c5b57a35423
-    password: 9117bf7177395f
+    username: 9a75971236d92c
+    password: a76e0329cbf718
     test-connection: true
 
 
